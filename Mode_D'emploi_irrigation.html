@@ -1,0 +1,607 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Utilisateur - Dimensionnement Réseau d'Irrigation ISEP MATAM</title>
+    <style>
+        
+        
+        /* [Vos styles CSS existants...] */
+        body {
+            font-family: 'Arial', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #0056b3;
+            text-align: center;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 15px;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #007bff;
+            border-left: 5px solid #007bff;
+            padding-left: 15px;
+            margin-top: 40px;
+            font-size: 22px;
+            page-break-after: avoid;
+        }
+        
+        h3 {
+            color: #17a2b8;
+            margin-top: 30px;
+            font-size: 18px;
+            page-break-after: avoid;
+        }        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            max-width: 150px;
+            height: auto;
+        }
+        .toc {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .toc ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        .toc li {
+            margin-bottom: 5px;
+        }
+        .toc a {
+            text-decoration: none;
+            color: #2c3e50;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        .section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+        .steps {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .steps ol {
+            padding-left: 25px;
+        }
+        .steps li {
+            margin-bottom: 10px;
+        }
+        .results {
+            background-color: #e8f8f5;
+            padding: 10px 15px;
+            border-left: 4px solid #1abc9c;
+            margin: 15px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+            border-top: 1px solid #bdc3c7;
+            padding-top: 20px;
+        }
+        .screenshot {
+            border: 1px solid #ddd;
+            margin: 15px auto;
+            max-width: 100%;
+            display: block;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            page-break-inside: avoid;
+        }
+        .screenshot-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }        /* Boutons améliorés */
+        .print-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 30px auto;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .steps {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .steps ol {
+            padding-left: 25px;
+        }
+        .steps li {
+            margin-bottom: 10px;
+        }
+        .results {
+            background-color: #e8f8f5;
+            padding: 10px 15px;
+            border-left: 4px solid #1abc9c;
+            margin: 15px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+            border-top: 1px solid #bdc3c7;
+            padding-top: 20px;
+        }
+ /* Optimisation pour l'impression */
+ @media print {
+            body {
+                font-size: 12pt;
+                padding: 0;
+                max-width: 100%;
+                line-height: 1.6;
+            }
+            
+            .no-print {
+                display: none;
+            }
+            
+            .section {
+                margin-bottom: 20pt;
+            }
+            
+            h1 {
+                font-size: 24pt;
+                margin-top: 0;
+            }
+            
+            h2 {
+                font-size: 18pt;
+                margin-top: 30pt;
+            }
+            
+            .screenshot {
+                max-width: 80%;
+                border: 0.5pt solid #ddd;
+            }
+            
+            .steps, .results {
+                page-break-inside: avoid;
+            }
+        }
+
+        @media print {
+            body {
+                font-size: 12pt;
+            }
+            .no-print {
+                display: none;
+            }
+            .page-break {
+                page-break-after: always;
+            }
+        }
+
+        /* Ajoutez ces styles pour la génération PDF */
+        .page-break {
+            page-break-after: always;
+            break-after: page;
+        }
+        @page {
+            size: A4;
+            margin: 1.5cm;
+        }
+    </style>
+    
+    <!-- Bibliothèques pour la génération PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <img src="../images/logo isep.jpg" alt="Logo ISEP MATAM" class="logo">
+        <h1>Guide Utilisateur - Dimensionnement Réseau d'Irrigation ISEP MATAM</h1>
+        <p>Version 1.0 - Avril 2025</p>
+        
+        <!-- Emplacement pour capture d'écran -->
+        <img src="https://via.placeholder.com/800x400?text=Capture+Ecran+Analyse+Sol" alt="" class="screenshot">
+        <p class="screenshot-caption">Figure 1: Interface principale de l'application ISEP MATAM </p>
+
+    </div>
+
+    <div class="toc">
+        <h2>Table des Matières</h2>
+        <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#fonctionnalites">Fonctionnalités Principales</a></li>
+            <li><a href="#utilisation">Mode d'Utilisation</a>
+                <ul>
+                    <li><a href="#besoins-eau">1. Calcul des besoins en eau</a></li>
+                    <li><a href="#analyse-sol">2. Analyse du sol</a></li>
+                    <li><a href="#conception-reseau">3. Conception du réseau</a></li>
+                    <li><a href="#selection-materiel">4. Sélection du matériel</a></li>
+                    <li><a href="#dimensionnement-pompe">5. Dimensionnement de la pompe</a></li>
+                    <li><a href="#resultats">Résultats complets</a></li>
+                </ul>
+            </li>
+            <li><a href="#convertisseur">Convertisseur d'unités</a></li>
+            <li><a href="#rapports">Génération de rapports</a></li>
+            <li><a href="#conclusion">Conclusion</a></li>
+        </ul>
+    </div>
+
+    <div class="section" id="introduction">
+        <h2>Introduction</h2>
+        <p>L'outil de dimensionnement de réseau d'irrigation ISEP MATAM est une application web professionnelle conçue pour aider les agriculteurs, ingénieurs et techniciens à concevoir des systèmes d'irrigation optimaux. Ce guide explique en détail toutes les fonctionnalités de l'outil et son mode d'utilisation.</p>
+        </div>
+
+    <div class="section" id="fonctionnalites">
+        <h2>Fonctionnalités Principales</h2>
+        <p>L'application offre cinq modules principaux :</p>
+        <ul>
+            <li>Calcul des besoins en eau des cultures</li>
+            <li>Analyse physique du sol</li>
+            <li>Conception du réseau d'irrigation</li>
+            <li>Sélection des équipements</li>
+            <li>Dimensionnement de la pompe</li>
+        </ul>
+        <p>Et des fonctionnalités supplémentaires :</p>
+        <ul>
+            <li>Convertisseur d'unités intégré</li>
+            <li>Génération de schémas du réseau</li>
+            <li>Création de rapports complets</li>
+            <li>Impression des résultats</li>
+        </ul>
+          <!-- Emplacement pour capture d'écran -->
+          <img src="https://via.placeholder.com/800x400?text=Capture+Ecran+Analyse+Sol" alt="" class="screenshot">
+          <p class="screenshot-caption">Figure 2: Menu des différents modules disponibles</p>
+    </div>
+
+    <div class="section" id="utilisation">
+        <h2>Mode d'Utilisation</h2>
+        
+        <div id="besoins-eau">
+            <h3>1. Calcul des besoins en eau</h3>
+            <p><strong>Objectif :</strong> Déterminer les besoins hydriques des cultures en fonction du climat et du type de culture.</p>
+            
+            <div class="steps">
+                <p><strong>Étapes :</strong></p>
+                <ol>
+                    <li>Sélectionnez la localité (Podor, Guédé, Dakar...)</li>
+                    <li>Choisissez la saison (sèche ou des pluies)</li>
+                    <li>Sélectionnez le mois de pointe</li>
+                    <li>Indiquez le type de culture (légumes, tomates, bananiers...)</li>
+                    <li>Choisissez le système d'irrigation (goutte-à-goutte, aspersion...)</li>
+                    <li>Entrez la superficie à irriguer (en hectares)</li>
+                    <li>Cliquez sur "Calculer les besoins"</li>
+                </ol>
+            </div>
+            
+            <div class="results">
+                <p><strong>Résultats affichés :</strong></p>
+                <ul>
+                    <li>Evaporation Bac Classe A</li>
+                    <li>ETP (Évapotranspiration potentielle)</li>
+                    <li>Coefficient cultural (Kc)</li>
+                    <li>Dose d'irrigation pratique</li>
+                    <li>Besoins quotidiens en eau</li>
+                </ul>
+            </div>
+              <!-- Emplacement pour capture d'écran -->
+              <img src="https://via.placeholder.com/800x400?text=Capture+Ecran+Analyse+Sol" alt="" class="screenshot">
+              <p class="screenshot-caption">Figure 3: Interface du module de calcul des besoins en eau</p>
+        </div>
+        
+        <div id="analyse-sol">
+            <h3>2. Analyse du sol</h3>
+            <p><strong>Objectif :</strong> Déterminer la texture du sol par deux méthodes.</p>
+            
+            <h4>Méthode du toucher :</h4>
+            <div class="steps">
+                <ol>
+                    <li>Répondez aux questions successives sur la capacité à former une boule, saucisse, crayon, etc.</li>
+                    <li>Le système déduit automatiquement la texture (sable, limon, argile...)</li>
+                </ol>
+            </div>
+            
+            <h4>Méthode de sédimentation :</h4>
+            <div class="steps">
+                <ol>
+                    <li>Entrez les hauteurs des couches d'argile, limon et sable</li>
+                    <li>Cliquez sur "Déterminer la texture"</li>
+                </ol>
+            </div>
+            
+            <div class="results">
+                <p><strong>Résultats affichés :</strong></p>
+                <ul>
+                    <li>Texture déterminée par chaque méthode</li>
+                    <li>Pourcentages d'argile, limon et sable</li>
+                    <li>Texture finale synthétisée</li>
+                </ul>
+            </div>
+              <!-- Emplacement pour capture d'écran -->
+              <img src="https://via.placeholder.com/800x400?text=Capture+Ecran+Analyse+Sol" alt="" class="screenshot">
+              <p class="screenshot-caption">Figure 4: Interface du module d'analyse du sol</p>
+        </div>
+        
+        <div id="conception-reseau">
+            <h3>3. Conception du réseau</h3>
+            <p><strong>Objectif :</strong> Dimensionner les éléments du réseau d'irrigation.</p>
+            
+            <p><strong>Systèmes disponibles :</strong></p>
+            <ul>
+                <li>Goutte à goutte</li>
+                <li>Aspersion</li>
+                <li>Micro-aspersion</li>
+                <li>Laser spray</li>
+            </ul>
+            
+            <p><strong>Paramètres à renseigner (variables selon le système) :</strong></p>
+            <ul>
+                <li>Type de gaine et caractéristiques des émetteurs</li>
+                <li>Débit du forage</li>
+                <li>Superficie à irriguer</li>
+                <li>Temps d'irrigation journalier</li>
+            </ul>
+            
+            <p><strong>Fonctionnalités spéciales :</strong></p>
+            <ul>
+                <li>Générateur de schéma interactif</li>
+                <li>Zoom et réinitialisation de la vue</li>
+                <li>Export du schéma vers le rapport</li>
+            </ul>
+              <!-- Emplacement pour capture d'écran -->
+              <img src="https://via.placeholder.com/800x400?text=Capture+Ecran+Analyse+Sol" alt="" class="screenshot">
+              <p class="screenshot-caption">Figure 5: Interface de Dimensionner les éléments du réseau d'irrigation</p>
+        </div>
+        
+        <div id="selection-materiel">
+            <h3>4. Sélection du matériel</h3>
+            <p><strong>Objectif :</strong> Choisir les équipements adaptés au système conçu.</p>
+            
+            <p><strong>Types d'émetteurs :</strong></p>
+            <ul>
+                <li>Goutteurs (plusieurs marques disponibles)</li>
+                <li>Asperseurs</li>
+                <li>Micro-asperseurs</li>
+                <li>Rampe laser spray</li>
+            </ul>
+            
+            <p><strong>Paramètres configurables :</strong></p>
+            <ul>
+                <li>Débit nominal</li>
+                <li>Pression de fonctionnement</li>
+                <li>Espacement entre émetteurs</li>
+                <li>Dimensions des rampes</li>
+            </ul>
+              <!-- Emplacement pour capture d'écran -->
+              <img src="https://via.placeholder.com/800x400?text=Capture+Ecran+Analyse+Sol" alt="" class="screenshot">
+              <p class="screenshot-caption">Figure 6: Interface Choix des équipements adaptés au système</p>
+        </div>
+        
+        <div id="dimensionnement-pompe">
+            <h3>5. Dimensionnement de la pompe</h3>
+            <p><strong>Objectif :</strong> Calculer la Hauteur Manométrique Totale (HMT) nécessaire.</p>
+            
+            <p><strong>Paramètres à renseigner :</strong></p>
+            <ul>
+                <li>Type de pompe (surface ou immergée)</li>
+                <li>Hauteurs d'aspiration et de refoulement</li>
+                <li>Longueur des tuyaux</li>
+                <li>Pression utile nécessaire</li>
+                <li>Débit requis</li>
+            </ul>
+            
+            <div class="results">
+                <p><strong>Résultats calculés :</strong></p>
+                <ul>
+                    <li>Pertes de charge</li>
+                    <li>HMT totale</li>
+                    <li>Caractéristiques de la pompe recommandée</li>
+                </ul>
+            </div>
+              <!-- Emplacement pour capture d'écran -->
+              <img src="https://via.placeholder.com/800x400?text=Capture+Ecran+Analyse+Sol" alt="" class="screenshot">
+              <p class="screenshot-caption">Figure 7: Interface  de Dimensionnement de la pompe </p>
+        </div>
+        
+        <div id="resultats">
+            <h3>Résultats complets</h3>
+            <p><strong>Fonctionnalités :</strong></p>
+            <ul>
+                <li>Synthèse de tous les calculs</li>
+                <li>Génération de rapport détaillé</li>
+                <li>Impression du rapport</li>
+                <li>Export PDF (via le navigateur)</li>
+            </ul>
+              <!-- Emplacement pour capture d'écran -->
+              <img src="https://via.placeholder.com/800x400?text=Capture+Ecran+Analyse+Sol" alt="" class="screenshot">
+              <p class="screenshot-caption">Figure 8: Interface récaputilative des Résultats complets sur les étapes du dimensionnement </p>
+        </div>
+    </div>
+    
+    <div class="section" id="convertisseur">
+        <h2>Convertisseur d'unités</h2>
+        <p><strong>Accès :</strong> Via le bouton "Ouvrir le Convertisseur" en haut de page</p>
+        
+        <p><strong>Fonctionnalités :</strong></p>
+        <ul>
+            <li>Conversion entre unités de volume (litres, m³...)</li>
+            <li>Conversion entre unités de surface (m², hectares...)</li>
+            <li>Résultat précis à 6 décimales</li>
+            <li>Réinitialisation facile</li>
+        </ul>
+          <!-- Emplacement pour capture d'écran -->
+          <img src="https://via.placeholder.com/800x400?text=Capture+Ecran+Analyse+Sol" alt="" class="screenshot">
+          <p class="screenshot-caption">Figure 9: Interface Convertisseur d'unités</p>
+    </div>
+    
+    <div class="section" id="rapports">
+        <h2>Génération de rapports</h2>
+        <div class="steps">
+            <p><strong>Étapes :</strong></p>
+            <ol>
+                <li>Complétez tous les modules (1 à 5)</li>
+                <li>Cliquez sur "Générer le rapport complet"</li>
+                <li>Visualisez le rapport généré</li>
+                <li>Imprimez ou exportez en PDF</li>
+            </ol>
+        </div>
+        
+        <p><strong>Contenu du rapport :</strong></p>
+        <ul>
+            <li>Données générales du projet</li>
+            <li>Résultats détaillés par module</li>
+            <li>Schéma du réseau (si exporté)</li>
+            <li>Espace pour signatures</li>
+        </ul>
+          <!-- Emplacement pour capture d'écran -->
+          <img src="https://via.placeholder.com/800x400?text=Capture+Ecran+Analyse+Sol" alt="" class="screenshot">
+          <p class="screenshot-caption">Figure 10: Interface de Génération des rapports</p>
+    </div>
+    
+    
+    <div class="section" id="conclusion">
+        <h2>Conclusion</h2>
+        <p>Cet outil complet permet de concevoir des systèmes d'irrigation optimaux en suivant une méthodologie professionnelle. Toutes les fonctionnalités sont intégrées dans une interface intuitive avec des guides contextuels.</p>
+        <p>Pour toute question supplémentaire, contactez l'ISEP MATAM.</p>
+    </div>
+    <!-- [Votre contenu HTML existant...] -->
+  
+
+    <div class="no-print" style="text-align: center; margin: 30px 0;">
+
+        <button class="print-btn no-print" onclick="window.print()" style="background-color: #17a2b8;">Générer PDF Complet</button>
+      
+    </div>
+    <div class="footer">
+        <p>© 2025 ISEP MATAM - Tous droits réservés</p>
+        <p>Document généré le <span id="date"></span></p>
+    </div>
+    <script>
+        // Solution améliorée pour les documents longs
+        async function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'pt', 'a4');
+            const pdfWidth = doc.internal.pageSize.getWidth();
+            const pdfHeight = doc.internal.pageSize.getHeight();
+            const margin = 40;
+            
+            // Désactiver le bouton pendant la génération
+            const btn = document.querySelector('button[onclick="generatePDF()"]');
+            btn.disabled = true;
+            btn.textContent = 'Génération en cours...';
+            
+            try {
+                // Diviser le document en sections visibles
+                const sections = document.querySelectorAll('.section');
+                let positionY = margin;
+                
+                for (let i = 0; i < sections.length; i++) {
+                    const section = sections[i];
+                    
+                    // Créer un canvas de la section
+                    const canvas = await html2canvas(section, {
+                        scale: 2,
+                        logging: false,
+                        useCORS: true,
+                        allowTaint: true,
+                        scrollY: -window.scrollY
+                    });
+                    
+                    const imgData = canvas.toDataURL('image/png');
+                    const imgWidth = pdfWidth - 2*margin;
+                    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                    
+                    // Vérifier si la section tient sur la page actuelle
+                    if (positionY + imgHeight > pdfHeight - margin && positionY > margin) {
+                        doc.addPage();
+                        positionY = margin;
+                    }
+                    
+                    // Ajouter l'image au PDF
+                    doc.addImage(imgData, 'PNG','JPEG', margin, positionY, imgWidth, imgHeight);
+                    positionY += imgHeight + 15;
+                    
+                    // Ajouter une page après certaines sections si nécessaire
+                    if (section.classList.contains('page-break')) {
+                        doc.addPage();
+                        positionY = margin;
+                    }
+                    
+                    // Afficher la progression
+                    btn.textContent = `Génération ${Math.round((i+1)/sections.length*100)}%`;
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+                
+                // Enregistrer le PDF
+                doc.save('guide-isep-matam-complet.pdf');
+                
+            } catch (error) {
+                console.error("Erreur lors de la génération du PDF:", error);
+                alert("Une erreur est survenue lors de la génération du PDF.");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Générer PDF Complet';
+            }
+        }
+              // Alternative simplifiée pour l'impression
+              function printDocument() {
+            window.print();
+             // Recharger la page après l'impression
+            window.location.reload();
+        }
+         // Écouter l'événement afterprint
+         window.addEventListener('afterprint', function() {
+                // Fermer le popup        
+                // Rediriger vers la page d'accueil après un court délai
+                setTimeout(function() {
+                    window.location.href = '../appdimsolirrig.html'; // Remplacez par l'URL de votre page d'accueil
+                }, 500);
+            });
+  
+    </script>
+
+
+</body>
+</html>

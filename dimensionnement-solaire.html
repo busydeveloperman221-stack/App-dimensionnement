@@ -1,0 +1,3261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dimensionnement Pompage Solaire PV</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"> 
+    
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+        }
+        #taillemess {
+            font-size: 20px;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .tab:hover {
+            background-color: #ddd;
+        }
+        
+        .tab.active {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 25px;
+            background-color: white;
+            border-radius: 0 5px 5px 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary {
+            background-color: #7f8c8d;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+        }
+        
+        .btn-danger {
+            background-color: var(--accent-color);
+        }
+        
+        .result-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .result-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .result-item {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .result-label {
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .result-value {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+        
+        .report-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .report-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .report-title {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .report-subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .report-section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+        
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .report-table th, .report-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .report-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .report-table tr:hover {
+            background-color: #f5f7fa;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 1 0 auto;
+                margin-bottom: 5px;
+            }
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9rem;
+            font-weight: normal;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .diagram {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            display: block;
+        }
+
+        /* Style du bouton Pro */
+        .pro-btn {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e6b32 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-color);
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .pro-btn:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .pro-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .pro-btn:hover::before {
+            opacity: 1;
+        }
+
+        /* Animation pulsante */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .pro-btn i {
+            font-size: 12px;
+        }
+        .pro-btn.pulse  {
+            animation: pulse 2s infinite;
+        }
+
+        /* Style du bouton */
+        .converter-toggle-btn {
+          padding: 10px 20px;
+          background-color: #4CAF50;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 16px;
+          margin: 10px;
+          transition: background-color 0.3s;
+        }
+
+        .converter-toggle-btn:hover {
+          background-color: #45a049;
+        }
+
+        /* Style du popup */
+        .converter-popup {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .converter-popup.hidden {
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        .converter-popup:not(.hidden) {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .converter-popup-content {
+          background-color: white;
+          padding: 20px;
+          border-radius: 8px;
+          width: 90%;
+          max-width: 600px;
+          max-height: 90vh;
+          overflow-y: auto;
+          position: relative;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .close-popup {
+          position: absolute;
+          top: 10px;
+          right: 15px;
+          font-size: 24px;
+          cursor: pointer;
+          color: #333;
+          transition: color 0.3s;
+        }
+
+        .close-popup:hover {
+          color: #f44336;
+        }
+
+        /* Styles existants du convertisseur */
+        .converter-container {
+          max-width: 500px;
+          margin: 0 auto;
+        }
+
+        .input-group {
+          margin-bottom: 15px;
+        }
+
+        .input-group label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: bold;
+        }
+
+        .input-group input, 
+        .input-group select {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 16px;
+        }
+
+        .btn {
+          padding: 10px 15px;
+          background-color: #4CAF50;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 16px;
+          margin-right: 10px;
+        }
+
+        .btn.secondary {
+          background-color: #f44336;
+        }
+
+        .btn:hover {
+          opacity: 0.9;
+        }
+
+        #result-container {
+          margin-top: 20px;
+          padding: 15px;
+          background-color: #e8f5e9;
+          border-radius: 4px;
+        }
+
+        .hidden {
+          display: none;
+        }
+
+        .gmap{
+            color: yellowgreen;
+        }
+
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top-btn:hover {
+            background-color: #1e6b32;
+            transform: translateY(-3px);
+        }
+
+        /* Style pour les popups personnalisés */
+        .custom-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .custom-popup.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-popup-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+            animation: popupFadeIn 0.3s ease;
+        }
+
+        @keyframes popupFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .custom-popup-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .custom-popup-message {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .custom-popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #7f8c8d;
+            transition: color 0.3s;
+        }
+
+        .custom-popup-close:hover {
+            color: var(--accent-color);
+        }
+
+        .custom-popup-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .custom-popup-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Styles pour le devis */
+        .prix-input, .qte-input {
+            width: 80px !important;
+            padding: 5px !important;
+        }
+
+        .report-table input {
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 5px;
+        }
+
+        .report-table th {
+            background-color: #f8f9fa;
+        }
+
+        @media print {
+            .action-buttons, #new-item-row {
+                display: none !important;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        #print-devis-btn {
+            margin-left: 10px;
+            background-color: #27ae60;
+        }
+
+        /* Ajoutez ceci dans votre section style */
+        .devis-input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        #devis-content table {
+            margin-bottom: 20px;
+        }
+
+        #devis-content table td, #devis-content table th {
+            padding: 8px;
+        }
+
+        #devis-total {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .signature-area {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .signature-line {
+            width: 45%;
+            text-align: center;
+            border-top: 1px solid #000;
+            padding-top: 30px;
+            margin-top: 50px;
+        }
+
+        .solution-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .solution-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        .solution-table td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .solution-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .solution-actions {
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .solution-actions button {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Styles pour les inputs du devis */
+        .devis-input {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .qte-input, .prix-input {
+            width: 80px;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: right;
+        }
+
+        /* Style pour les boutons de suppression */
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        /* Style pour le tableau du devis */
+        #devis-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        #devis-content th {
+            background-color: #f8f9fa;
+            padding: 10px;
+            text-align: left;
+        }
+
+        #devis-content td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        #devis-total {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #2c3e50;
+        }
+
+
+                /* Styles pour l'assistant */
+                .assistant-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .assistant-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .assistant-container {
+            position: fixed;
+            bottom: 100px;
+            left: 30px;
+            width: 350px;
+            max-height: 500px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1001;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .assistant-container.visible {
+            display: flex;
+        }
+        
+        .assistant-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .assistant-close {
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        .assistant-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            line-height: 1.4;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .user-message {
+            background-color: #e3f2fd;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .assistant-message {
+            background-color: white;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .assistant-input-container {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            background-color: white;
+        }
+        
+        .assistant-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.3s;
+        }
+        
+        .assistant-input:focus {
+            border-color: #3498db;
+        }
+        
+        .resources-list {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+        
+        .resources-list li {
+            margin-bottom: 8px;
+        }
+        
+        .resources-list a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .resources-list a:hover {
+            text-decoration: underline;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            padding: 10px 15px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #7f8c8d;
+            border-radius: 50%;
+            margin-right: 4px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+            margin-right: 0;
+        }
+        
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        
+        .formula-box {
+            background-color: #f5f7fa;
+            border-left: 4px solid #3498db;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            border-radius: 4px;
+        }
+        
+        .definition-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #27ae60;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        
+        /* Styles pour le quiz */
+        .quiz-container {
+            margin-top: 15px;
+        }
+        
+        .quiz-question {
+            font-weight: bold;
+            margin-bottom: 5px;
+            cursor: pointer;
+            color: #2c3e50;
+            padding: 8px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        .quiz-question:hover {
+            background-color: #e3f2fd;
+        }
+        
+        .quiz-answer {
+            display: none;
+            padding: 10px;
+            margin-left: 15px;
+            border-left: 3px solid #3498db;
+            background-color: #f8f9fa;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .quiz-answer.visible {
+            display: block;
+        }
+        
+        .quiz-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 15px 0 10px 0;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        
+        .quiz-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .quiz-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Bouton pour ouvrir le convertisseur -->
+    <button id="open-converter" class="converter-toggle-btn">Ouvrir le Convertisseur</button>
+
+    <!-- Popup du convertisseur (initialement caché) -->
+    <div id="converter-popup" class="converter-popup hidden">
+        <div class="converter-popup-content">
+            <span class="close-popup">&times;</span>
+            
+            <!-- Votre convertisseur existant -->
+            <section id="section-convert">
+                <h1>Convertisseur d'unités</h1>
+                
+                <div class="converter-container">
+                    <div class="input-group">
+                        <label for="value">Entrez un nombre :</label>
+                        <input type="number" id="value" placeholder="Nombre" step="any" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="from-unit">Unité source :</label>
+                        <select id="from-unit" class="unit-select" required>
+                            <option value="">-- Sélectionnez --</option>
+                            <option value="l">Litres (L)</option>
+                            <option value="m3">Mètres cubes (m³)</option>
+                            <option value="ha">Hectare (ha)</option>
+                            <option value="mm3">Millimètre cube (mm³)</option>
+                            <option value="m2">Mètres carré (m²)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="to-unit">Unité cible :</label>
+                        <select id="to-unit" class="unit-select" required>
+                            <option value="">-- Sélectionnez --</option>
+                        </select>
+                    </div>
+                    
+                    <button id="convert-btn" class="btn">Convertir</button>
+                    <button id="reset-btn" class="btn secondary">Réinitialiser</button>
+                    
+                    <div id="result-container" class="hidden">
+                        <h3>Résultat :</h3>
+                        <p id="result"></p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <a href="../appdimsolirrig.html" class="pro-btn pulse" title="Retour à l'accueil" id="Getback">
+        <i class="fas fa-home" style="color: white;"></i>
+    </a>  
+    
+    <div class="container">
+        <header>
+            <h1>Dimensionnement Pompage Solaire PV</h1>
+            <p class="subtitle">Application professionnelle de calcul pour systèmes de pompage photovoltaïque</p>
+            <p> <a class="gmap"  href="https://globalsolaratlas.info/map" target="_blank" rel="noopener">Carte Global Solar Atlas </a>
+            </p>
+        </header>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="besoins">1. Besoins en Eau</div>
+            <div class="tab" data-tab="hmt">2. Hauteur Manométrique</div>
+            <div class="tab" data-tab="energie">3. Énergie Requise</div>     
+            <div class="tab" data-tab="pv">4. Champ Photovoltaïque</div>
+            <div class="tab" data-tab="batteries">5. Batteries</div>
+            <div class="tab" data-tab="pompe">6. Choix de la Pompe</div>
+            <div class="tab" data-tab="rapport">7. Rapport Final</div>
+        </div>
+        
+        <!-- Onglet 1: Besoins en Eau -->
+        <div id="besoins" class="tab-content active">
+            <h2>Besoins en Eau</h2>
+            <p>Déterminez les besoins quotidiens en eau et les caractéristiques de base du système.</p>
+            
+            <div class="form-group">
+                <label for="usage">Usage de l'eau:</label>
+                <select id="usage">
+                    <option value="domestique">Domestique</option>
+                    <option value="irrigation">Irrigation</option>
+                    <option value="elevage">Élevage</option>
+                    <option value="autre">Autre</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="q">Besoin quotidien en eau (Q en m³/jour):</label>
+                <input type="number" id="q" step="0.1" min="0" placeholder="Ex: 5">
+            </div>
+            
+            <div class="form-group">
+                <label for="h">Nombre d'heures d'ensoleillement par jour (h):</label>
+                <input type="number" id="h" step="0.1" min="0" max="24" value="7" placeholder="Ex: 7">
+                <small>Généralement entre 6 et 8 heures selon la région</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="k">Coefficient correcteur (K):</label>
+                <input type="number" id="k" step="0.01" min="0.5" max="0.8" value="0.65" placeholder="Ex: 0.65">
+                <small>Valeur théorique entre 0.55 et 0.75 (0.65 en pratique)</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="stockage-type">Type de stockage:</label>
+                <select id="stockage-type">
+                    <option value="eau">Uniquement stockage en eau</option>
+                    <option value="energie">Uniquement stockage en énergie (batteries)</option>
+                    <option value="mixte">Stockage mixte (eau + énergie)</option>
+                </select>
+            </div>
+            
+            <button class="btn-primary" onclick="nextTab('hmt')">Suivant</button>
+        </div>
+        
+        <!-- Onglet 2: Hauteur Manométrique Totale -->
+        <div id="hmt" class="tab-content">
+            <h2>Hauteur Manométrique Totale (HMT)</h2>
+            <p>Calculez la hauteur manométrique totale en fonction du type de pompe.</p>
+            
+            <div class="form-group">
+                <label for="pompe-type">Type de pompe:</label>
+                <select id="pompe-type">
+                    <option value="immergee">Pompe immergée</option>
+                    <option value="surface">Pompe de surface</option>
+                </select>
+            </div>
+            
+            <div id="immergee-fields">
+                <div class="form-group">
+                    <label for="hr">Hauteur de refoulement (Hr en m):</label>
+                    <input type="number" id="hr" step="0.1" min="0" placeholder="Hauteur entre le sol et la citerne">
+                </div>
+                
+                <div class="form-group">
+                    <label for="nst">Niveau statique (Nst en m):</label>
+                    <input type="number" id="nst" step="0.1" min="0" placeholder="Niveau d'eau lorsque la pompe est arrêtée">
+                </div>
+                
+                <div class="form-group">
+                    <label for="ndy">Niveau dynamique (Ndy en m):</label>
+                    <input type="number" id="ndy" step="0.1" min="0" placeholder="Niveau d'eau lorsque la pompe fonctionne">
+                </div>
+            </div>
+            
+            <div id="surface-fields" class="hidden">
+                <div class="form-group">
+                    <label for="hr-surface">Hauteur de refoulement (Hr en m):</label>
+                    <input type="number" id="hr-surface" step="0.1" min="0" placeholder="Hauteur entre le sol et la citerne">
+                </div>
+                
+                <div class="form-group">
+                    <label for="ha">Hauteur d'aspiration (Ha en m):</label>
+                    <input type="number" id="ha" step="0.1" min="0" placeholder="Différence entre niveau d'eau et pompe">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="hmt-custom">Ou saisir directement la HMT (en m):</label>
+                <input type="number" id="hmt-custom" step="0.1" min="0" placeholder="Si vous connaissez déjà la HMT">
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn-secondary" onclick="prevTab('besoins')">Précédent</button>
+                <button class="btn-primary" onclick="nextTab('energie')">Suivant</button>
+            </div>
+        </div>
+        
+        <!-- Onglet 3: Énergie Requise -->
+        <div id="energie" class="tab-content">
+            <h2>Énergie Requise</h2>
+            <p>Calculez l'énergie hydraulique et électrique nécessaire pour le pompage.</p>
+            
+            <div class="form-group">
+                <label for="rendement">Rendement du groupe motopompe (η):</label>
+                <input type="number" id="rendement" step="0.01" min="0.1" max="1" value="0.5" placeholder="Ex: 0.5 pour 50%">
+                <small>Généralement entre 30% (0.3) et 70% (0.7) selon la qualité de la pompe</small>
+            </div>
+            
+            <div class="result-section">
+                <h3 class="result-title">Résultats intermédiaires</h3>
+                <div class="result-item">
+                    <span class="result-label">Hauteur géométrique (Hg):</span>
+                    <span class="result-value" id="hg-result">--</span> m
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Hauteur Manométrique Totale (HMT):</span>
+                    <span class="result-value" id="hmt-result">--</span> m
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Énergie hydraulique quotidienne requise (Ec):</span>
+                    <span class="result-value" id="ec-result">--</span> kWh/jour
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Énergie électrique fournie par le champ PV (Epv):</span>
+                    <span class="result-value" id="epv-result">--</span> kWh/jour
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn-secondary" onclick="prevTab('hmt')">Précédent</button>
+                <button class="btn-primary" onclick="nextTab('pv')">Suivant</button>
+            </div>
+        </div>
+        
+        <!-- Onglet 4: Champ Photovoltaïque -->
+        <div id="pv" class="tab-content">
+            <h2>Champ Photovoltaïque</h2>
+            <p>Dimensionnez le champ photovoltaïque nécessaire pour alimenter le système.</p>
+            
+            <div class="form-group">
+                <label for="ir">Irradiation solaire de la zone (IR en kWh/m²/jour):</label>
+                <input type="number" id="ir" step="0.1" min="0" value="5" placeholder="Ex: 5 pour une zone ensoleillée">
+                <small>Valeurs typiques: 3-4 (Europe du Nord), 4-5 (Europe du Sud), 5-7 (Afrique)</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="module-type">Type de panneau solaire:</label>
+                <select id="module-type">
+                    <option value="monocristallin">Monocristallin (rendement 13-17%)</option>
+                    <option value="polycristallin">Polycristallin (rendement 11-15%)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="module-power">Puissance crête d'un module (Pp en Wc):</label>
+                <input type="number" id="module-power" step="5" min="50" value="300" placeholder="Ex: 300">
+            </div>
+            
+            <div class="form-group">
+                <label for="module-voltage">Tension nominale d'un module (Up en V):</label>
+                <input type="number" id="module-voltage" step="0.1" min="0" value="36" placeholder="Ex: 36">
+            </div>
+            
+            <div class="result-section">
+                <h3 class="result-title">Dimensionnement du champ PV</h3>
+                <div class="result-item">
+                    <span class="result-label">Puissance crête totale nécessaire (Pwc):</span>
+                    <span class="result-value" id="pwc-result">--</span> Wc
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Tension du système (Ts):</span>
+                    <span class="result-value" id="ts-result">--</span> V
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Nombre total de modules (N):</span>
+                    <span class="result-value" id="n-modules-result">--</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Modules en série (Ns):</span>
+                    <span class="result-value" id="ns-result">--</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Branches en parallèle (Np):</span>
+                    <span class="result-value" id="np-result">--</span>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn-secondary" onclick="prevTab('energie')">Précédent</button>
+                <button class="btn-primary" onclick="nextTab('batteries')">Suivant</button>
+            </div>
+        </div>
+        
+        <!-- Onglet 5: Batteries -->
+        
+<!-- Remplacer la section existante par ce code optimisé -->
+<div id="batteries" class="tab-content">
+    <h2>Dimensionnement des Batteries et Régulation</h2>
+    <p>Configurez le système de stockage d'énergie et les régulateurs si nécessaire.</p>
+    
+    <div id="batterie-fields">
+        <h3>Paramètres des Batteries</h3>
+        <div class="form-group">
+            <label for="autonomie">Nombre de jours d'autonomie (n):</label>
+            <input type="number" id="autonomie" step="1" min="1" max="3" value="2">
+            <small>1-2 jours suffisent généralement pour le pompage solaire (max 3)</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="profondeur-decharge">Profondeur de décharge (β):</label>
+            <input type="number" id="profondeur-decharge" step="0.01" min="0.5" max="0.8" value="0.7">
+            <small>0.5-0.8 (0.7 recommandé pour batteries solaires modernes)</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="rendement-batterie">Rendement des batteries (σ<sub>bat</sub>):</label>
+            <input type="number" id="rendement-batterie" step="0.01" min="0.8" max="1" value="0.85">
+            <small>Typiquement 0.85 pour batteries plomb-acide</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="rendement-onduleur">Rendement de l'onduleur (σ<sub>ond</sub>):</label>
+            <input type="number" id="rendement-onduleur" step="0.01" min="0.85" max="1" value="0.92">
+            <small>0.90-0.95 pour onduleurs modernes</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="tension-batterie">Tension d'une batterie (T<sub>b</sub> en V):</label>
+            <select id="tension-batterie">
+                <option value="12">12V (standard)</option>
+                <option value="6">6V (pour configurations spéciales)</option>
+                <option value="2">2V (batteries stationnaires)</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="capacite-batterie">Capacité d'une batterie (C<sub>b</sub> en Ah):</label>
+            <select id="capacite-batterie">
+                <option value="100">100Ah+ (petit système)</option>
+                <option value="200" selected>200Ah (moyen)</option>
+                <option value="400">400Ah+ (grand système)</option>
+                <option value="600">600Ah+ (professionnel)</option>
+            </select>
+            <small>Choisissez en fonction de la taille de votre installation</small>
+        </div>
+        
+        <h3>Paramètres du Régulateur</h3>
+        <!-- Conserver le reste de la section régulateur -->
+         
+                <div class="form-group">
+                    <label for="voc-module">Tension à vide du module (V<sub>oc</sub> en V):</label>
+                    <input type="number" id="voc-module" step="0.1" min="0" value="22.1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="isc-module">Courant de court-circuit (I<sub>sc</sub> en A):</label>
+                    <input type="number" id="isc-module" step="0.1" min="0" value="9.8">
+                </div>
+                
+                <div class="form-group">
+                    <label for="coeff-correction">Coefficient de correction (α):</label>
+                    <input type="number" id="coeff-correction" step="0.05" min="1" max="1.25" value="1.1">
+                    <small>Entre 1 et 1.25 pour une éventuelle extension</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="nb-regulateurs">Nombre de régulateurs (N<sub>rp</sub>):</label>
+                    <input type="number" id="nb-regulateurs" step="1" min="1" value="1">
+                </div>
+            </div>
+    
+    <!-- Le reste du contenu reste inchangé -->
+               
+            
+            <div class="result-section">
+                <h3 class="result-title">Dimensionnement du parc batterie</h3>
+                <div class="result-item">
+                    <span class="result-label">Capacité totale nécessaire (C<sub>t</sub>):</span>
+                    <span class="result-value" id="ct-result">--</span> Ah
+                    <small>C<sub>t</sub> = (E<sub>c</sub> × n) / (T<sub>S</sub> × β × σ<sub>bat</sub> × σ<sub>ond</sub>)</small>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Batteries en série (N<sub>BS</sub>):</span>
+                    <span class="result-value" id="nbs-result">--</span>
+                    <small>N<sub>BS</sub> = T<sub>S</sub> / T<sub>b</sub></small>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Branches en parallèle (N<sub>Bp</sub>):</span>
+                    <span class="result-value" id="nbp-result">--</span>
+                    <small>N<sub>Bp</sub> = C<sub>t</sub> / C<sub>b</sub></small>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Nombre total de batteries:</span>
+                    <span class="result-value" id="nb-total-result">--</span>
+                    <small>N<sub>total</sub> = N<sub>BS</sub> × N<sub>Bp</sub></small>
+                </div>
+                
+                <h3 class="result-title" style="margin-top: 20px;">Dimensionnement du Régulateur</h3>
+                <div class="result-item">
+                    <span class="result-label">Tension nominale du régulateur:</span>
+                    <span class="result-value" id="tension-reg-result">--</span> V
+                    <small>U<sub>r</sub> = T<sub>S</sub> < N<sub>S</sub> × V<sub>OC</sub></small>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Courant nominal du régulateur:</span>
+                    <span class="result-value" id="courant-reg-result">--</span> A
+                    <small>I<sub>reg</sub> ≥ (α × N<sub>p</sub> × I<sub>sc</sub>) / N<sub>rp</sub></small>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn-secondary" onclick="prevTab('pv')">Précédent</button>
+                <button class="btn-primary" onclick="nextTab('pompe')">Suivant</button>
+            </div>
+        </div>
+        
+        <!-- Onglet 6: Choix de la Pompe -->
+        <div id="pompe" class="tab-content">
+            <h2>Choix de la Pompe</h2>
+            <p>Sélectionnez et vérifiez les caractéristiques de la pompe.</p>
+            
+            <div class="result-section">
+                <h3 class="result-title">Caractéristiques requises pour la pompe</h3>
+                <div class="result-item">
+                    <span class="result-label">Débit horaire nécessaire (d):</span>
+                    <span class="result-value" id="debit-result">--</span> m³/h
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Hauteur Manométrique Totale (HMT):</span>
+                    <span class="result-value" id="hmt-pompe-result">--</span> m
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Puissance électrique de la pompe (Ppom):</span>
+                    <span class="result-value" id="ppom-result">--</span> W
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="pompe-modele">Modèle de pompe (optionnel):</label>
+                <input type="text" id="pompe-modele" placeholder="Ex: Grundfos SQFlex 2.5-2">
+            </div>
+            
+            <div class="form-group">
+                <label for="pompe-debit">Débit nominal de la pompe (m³/h):</label>
+                <input type="number" id="pompe-debit" step="0.1" min="0" placeholder="Vérifiez qu'il est ≥ au débit nécessaire">
+            </div>
+            
+            <div class="form-group">
+                <label for="pompe-hmt">HMT nominale de la pompe (m):</label>
+                <input type="number" id="pompe-hmt" step="0.1" min="0" placeholder="Vérifiez qu'elle est ≥ à la HMT calculée">
+            </div>
+            
+            <div class="form-group">
+                <label for="pompe-power">Puissance nominale de la pompe (W):</label>
+                <input type="number" id="pompe-power" step="10" min="0" placeholder="Vérifiez qu'elle est ≥ à la puissance calculée">
+            </div>
+            
+            <div class="form-group">
+                <label for="pompe-voltage">Tension d'alimentation de la pompe (V):</label>
+                <input type="number" id="pompe-voltage" step="1" min="0" placeholder="Doit correspondre à la tension du système">
+            </div>
+            
+            <div class="result-section">
+                <h3 class="result-title">Contrôleur/Onduleur</h3>
+                <div class="result-item">
+                    <span class="result-label">Puissance minimale de l'onduleur:</span>
+                    <span class="result-value" id="pond-result">--</span> W
+                    <small>(≥ 3 × puissance de la pompe)</small>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn-secondary" onclick="prevTab('batteries')">Précédent</button>
+                <button class="btn-primary" onclick="nextTab('rapport')">Générer le Rapport</button>
+            </div>
+        </div>
+        
+        <!-- Onglet 7: Rapport Final -->
+        <div id="rapport" class="tab-content">
+            <h2>Rapport de Dimensionnement</h2>
+            <p>Récapitulatif complet du dimensionnement avec possibilité d'impression.</p>
+            
+            <div class="report-container" id="report-content">
+                <div class="report-header">
+                    <h1 class="report-title">Rapport de Dimensionnement</h1>
+                    <p class="report-subtitle">Système de Pompage Solaire Photovoltaïque</p>
+                    <p>Date: <span id="report-date"></span></p>
+                </div>
+                
+                <div class="report-section">
+                    <h2 class="section-title">1. Données d'Entrée</h2>
+                    <table class="report-table">
+                        <tr>
+                            <th>Paramètre</th>
+                            <th>Valeur</th>
+                        </tr>
+                        <tr>
+                            <td>Usage de l'eau</td>
+                            <td id="report-usage"></td>
+                        </tr>
+                        <tr>
+                            <td>Besoin quotidien en eau (Q)</td>
+                            <td id="report-q"></td>
+                        </tr>
+                        <tr>
+                            <td>Heures d'ensoleillement par jour (h)</td>
+                            <td id="report-h"></td>
+                        </tr>
+                        <tr>
+                            <td>Type de stockage</td>
+                            <td id="report-stockage-type"></td>
+                        </tr>
+                        <tr>
+                            <td>Type de pompe</td>
+                            <td id="report-pompe-type"></td>
+                        </tr>
+                        <tr>
+                            <td>Hauteur Manométrique Totale (HMT)</td>
+                            <td id="report-hmt"></td>
+                        </tr>
+                        <tr>
+                            <td>Rendement du groupe motopompe (η)</td>
+                            <td id="report-rendement"></td>
+                        </tr>
+                        <tr>
+                            <td>Irradiation solaire (IR)</td>
+                            <td id="report-ir"></td>
+                        </tr>
+                        <tr>
+                            <td>Type de panneau solaire</td>
+                            <td id="report-module-type"></td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="report-section">
+                    <h2 class="section-title">2. Calculs Intermédiaires</h2>
+                    <table class="report-table">
+                        <tr>
+                            <th>Paramètre</th>
+                            <th>Valeur</th>
+                            <th>Formule</th>
+                        </tr>
+                        <tr>
+                            <td>Hauteur géométrique (Hg)</td>
+                            <td id="report-hg"></td>
+                            <td id="report-hg-formula"></td>
+                        </tr>
+                        <tr>
+                            <td>Énergie hydraulique quotidienne (Ec)</td>
+                            <td id="report-ec"></td>
+                            <td>Ec = (2.725 × Q × HMT) / η</td>
+                        </tr>
+                        <tr>
+                            <td>Énergie électrique PV requise (Epv)</td>
+                            <td id="report-epv"></td>
+                            <td>Epv = Ec / K</td>
+                        </tr>
+                        <tr>
+                            <td>Puissance crête totale (Pwc)</td>
+                            <td id="report-pwc"></td>
+                            <td>Pwc = Epv / IR</td>
+                        </tr>
+                        <tr>
+                            <td>Débit horaire de la pompe (d)</td>
+                            <td id="report-debit"></td>
+                            <td>d = Q / h</td>
+                        </tr>
+                        <tr>
+                            <td>Puissance électrique de la pompe (Ppom)</td>
+                            <td id="report-ppom"></td>
+                            <td>Ppom = (2.725 × d × HMT) / η</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="report-section">
+                    <h2 class="section-title">3. Dimensionnement du Champ PV</h2>
+                    <table class="report-table">
+                        <tr>
+                            <th>Paramètre</th>
+                            <th>Valeur</th>
+                        </tr>
+                        <tr>
+                            <td>Puissance crête totale (Pwc)</td>
+                            <td id="report-pwc-final"></td>
+                        </tr>
+                        <tr>
+                            <td>Tension du système (Ts)</td>
+                            <td id="report-ts"></td>
+                        </tr>
+                        <tr>
+                            <td>Nombre total de modules (N)</td>
+                            <td id="report-n-modules"></td>
+                        </tr>
+                        <tr>
+                            <td>Modules en série (Ns)</td>
+                            <td id="report-ns"></td>
+                        </tr>
+                        <tr>
+                            <td>Branches en parallèle (Np)</td>
+                            <td id="report-np"></td>
+                        </tr>
+                        <tr>
+                            <td>Puissance d'un module (Pp)</td>
+                            <td id="report-module-power"></td>
+                        </tr>
+                        <tr>
+                            <td>Tension d'un module (Up)</td>
+                            <td id="report-module-voltage"></td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- Section Batteries et Régulateur sera ajoutée dynamiquement si nécessaire -->
+                
+                <div class="report-section">
+                    <h2 class="section-title">4. Spécifications de la Pompe</h2>
+                    <table class="report-table">
+                        <tr>
+                            <th>Paramètre</th>
+                            <th>Valeur requise</th>
+                            <th>Valeur proposée</th>
+                        </tr>
+                        <tr>
+                            <td>Modèle</td>
+                            <td>-</td>
+                            <td id="report-pompe-modele"></td>
+                        </tr>
+                        <tr>
+                            <td>Débit (m³/h)</td>
+                            <td id="report-debit-req"></td>
+                            <td id="report-pompe-debit"></td>
+                        </tr>
+                        <tr>
+                            <td>HMT (m)</td>
+                            <td id="report-hmt-req"></td>
+                            <td id="report-pompe-hmt"></td>
+                        </tr>
+                        <tr>
+                            <td>Puissance (W)</td>
+                            <td id="report-ppom-req"></td>
+                            <td id="report-pompe-power"></td>
+                        </tr>
+                        <tr>
+                            <td>Tension (V)</td>
+                            <td id="report-ts-req"></td>
+                            <td id="report-pompe-voltage"></td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="report-section">
+                    <h2 class="section-title">5. Contrôleur/Onduleur</h2>
+                    <table class="report-table">
+                        <tr>
+                            <th>Paramètre</th>
+                            <th>Valeur</th>
+                        </tr>
+                        <tr>
+                            <td>Puissance minimale requise</td>
+                            <td id="report-pond-req"></td>
+                        </tr>
+                        <tr>
+                            <td>Tension du système</td>
+                            <td id="report-ts-final"></td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- Devis sera ajouté ici dynamiquement -->
+                
+                <div class="report-section">
+                    <h2 class="section-title">6. Recommandations</h2>
+                    <ul>
+                        <li>Vérifier que tous les composants sont compatibles avec la tension du système (12V, 24V, 48V, etc.)</li>
+                        <li>Prévoir un coffret de protection avec fusibles, parafoudre et dispositif de coupure</li>
+                        <li>Installer une sonde de niveau bas pour protéger la pompe contre le fonctionnement à sec</li>
+                        <li>Mettre à la terre tous les équipements selon les normes en vigueur</li>
+                        <li>Pour les installations importantes (>2000Wc), prévoir un onduleur solaire de pompage avec démarrage progressif</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn-secondary" onclick="prevTab('pompe')">Précédent</button>
+                <button class="btn-success" onclick="printReport()">Imprimer le Rapport</button>
+                <button class="btn-primary" onclick="generateDevis()">Générer le Devis</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup personnalisé -->
+    <div id="custom-popup" class="custom-popup">
+        <div class="custom-popup-content">
+            <span class="custom-popup-close">&times;</span>
+            <h3 class="custom-popup-title">Notification</h3>
+            <p class="custom-popup-message" id="custom-popup-message"></p>
+            <button class="custom-popup-btn" id="custom-popup-ok">OK</button>
+        </div>
+    </div>
+
+    <button id="scrollToTopBtn" class="scroll-top-btn" title="Retour en haut">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+   <!-- Bouton de l'assistant -->
+   <button class="assistant-btn" id="assistantButton">
+    <i class="fas fa-robot"></i>
+</button>
+
+<!-- Interface de l'assistant -->
+<div class="assistant-container" id="assistantContainer">
+    <div class="assistant-header">
+        <span>Assistant Dimensionnement Solaire</span>
+        <span class="assistant-close" id="assistantClose">&times;</span>
+    </div>
+    <div class="assistant-messages" id="assistantMessages">
+        <div class="message assistant-message" id="taillemess">
+            Bonjour ! Je suis Dim-bot, votre assistant pour le dimensionnement solaire. Posez-moi vos questions sur les concepts, formules ou calculs et je vais essayer de d'apporter des reponses localement dans la mesure du possible !.
+        </div>
+    </div>
+    <div class="assistant-input-container">
+        <input type="text" class="assistant-input" id="assistantInput" placeholder="Posez votre question...">
+    </div>
+</div>
+
+    
+    <script>
+        // Variables globales pour stocker les résultats
+        let results = {
+            q: 0,
+            h: 7,
+            k: 0.65,
+            hg: 0,
+            hmt: 0,
+            ec: 0,
+            epv: 0,
+            pwc: 0,
+            ts: 0,
+            n: 0,
+            ns: 0,
+            np: 0,
+            debit: 0,
+            ppom: 0,
+            pond: 0,
+            stockageType: 'eau',
+            ct: 0,
+            nbs: 0,
+            nbp: 0,
+            nbTotal: 0,
+            tensionReg: 0,
+            courantReg: 0
+        };
+        
+        // Gestion des onglets
+        function showTab(tabId) {
+            // Masquer tous les onglets
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Afficher l'onglet sélectionné
+            document.getElementById(tabId).classList.add('active');
+            
+            // Mettre à jour les onglets actifs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.tab === tabId) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Si on est sur l'onglet rapport, générer le rapport
+            if (tabId === 'rapport') {
+                generateReport();
+            }
+        }
+        
+        function nextTab(tabId) {
+            // Si on passe à l'onglet pompe et que le stockage est en eau, sauter l'onglet batteries
+            if (tabId === 'batteries' && document.getElementById('stockage-type').value === 'eau') {
+                tabId = 'pompe';
+            }
+            
+            if (validateCurrentTab(tabId)) {
+                calculateResults();
+                showTab(tabId);
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        function prevTab(tabId) {
+            // Si on revient de l'onglet pompe et que le stockage est en eau, revenir à pv
+            if (tabId === 'pompe' && document.getElementById('stockage-type').value === 'eau') {
+                tabId = 'pv';
+            }
+            showTab(tabId);
+            window.scrollTo(0, 0);
+        }
+        
+        // Validation des données avant de passer à l'onglet suivant
+        function validateCurrentTab(nextTabId) {
+            const currentTab = document.querySelector('.tab-content.active').id;
+            
+            if (currentTab === 'besoins') {
+                const q = parseFloat(document.getElementById('q').value);
+                const h = parseFloat(document.getElementById('h').value);
+                const k = parseFloat(document.getElementById('k').value);
+                
+                if (isNaN(q) || q <= 0) {
+                    showPopup("Veuillez saisir un besoin quotidien en eau valide (Q > 0)","Erreur de saisie");
+                    return false;
+                }
+                
+                if (isNaN(h) || h <= 0 || h > 24) {
+                    showPopup("Veuillez saisir un nombre d'heures d'ensoleillement valide (0 < h ≤ 24)","Erreur de saisie");
+                    return false;
+                }
+                
+                if (isNaN(k) || k < 0.5 || k > 0.8) {
+                    showPopup("Le coefficient correcteur K doit être compris entre 0.5 et 0.8","Erreur de saisie");
+                    return false;
+                }
+            }
+            else if (currentTab === 'hmt') {
+                const pompeType = document.getElementById('pompe-type').value;
+                let hmtCustom = parseFloat(document.getElementById('hmt-custom').value);
+                
+                // Si HMT est saisi directement, on l'utilise
+                if (!isNaN(hmtCustom)) {
+                    if (hmtCustom <= 0) {
+                        showPopup("La HMT doit être supérieure à 0","Erreur de saisie");
+                        return false;
+                    }
+                    return true;
+                }
+                
+                // Sinon on calcule à partir des autres paramètres
+                if (pompeType === 'immergee') {
+                    const hr = parseFloat(document.getElementById('hr').value);
+                    const nst = parseFloat(document.getElementById('nst').value);
+                    const ndy = parseFloat(document.getElementById('ndy').value);
+                    
+                    if (isNaN(hr) || isNaN(nst) || isNaN(ndy)) {
+                        showPopup("Veuillez saisir toutes les valeurs pour le calcul de la HMT","Erreur de saisie");
+                        return false;
+                    }
+                    
+                    if (hr < 0 || nst < 0 || ndy < 0) {
+                        showPopup("Les hauteurs ne peuvent pas être négatives","Erreur de saisie");
+                        return false;
+                    }
+                } else {
+                    const hr = parseFloat(document.getElementById('hr-surface').value);
+                    const ha = parseFloat(document.getElementById('ha').value);
+                    
+                    if (isNaN(hr) || isNaN(ha)) {
+                        showPopup("Veuillez saisir toutes les valeurs pour le calcul de la HMT","Erreur de saisie");
+                        return false;
+                    }
+                    
+                    if (hr < 0 || ha < 0) {
+                        showPopup("Les hauteurs ne peuvent pas être négatives","Erreur de saisie");
+                        return false;
+                    }
+                }
+            }
+            else if (currentTab === 'energie') {
+                const rendement = parseFloat(document.getElementById('rendement').value);
+                
+                if (isNaN(rendement) || rendement <= 0 || rendement > 1) {
+                    showPopup("Veuillez saisir un rendement valide (0 < η ≤ 1)","Erreur de saisie");
+                    return false;
+                }
+            }
+            else if (currentTab === 'pv') {
+                const ir = parseFloat(document.getElementById('ir').value);
+                const modulePower = parseFloat(document.getElementById('module-power').value);
+                const moduleVoltage = parseFloat(document.getElementById('module-voltage').value);
+                
+                if (isNaN(ir) || ir <= 0) {
+                    showPopup("Veuillez saisir une irradiation solaire valide (IR > 0)","Erreur de saisie");
+                    return false;
+                }
+                
+                if (isNaN(modulePower) || modulePower <= 0) {
+                    showPopup("Veuillez saisir une puissance de module valide (Pp > 0)","Erreur de saisie");
+                    return false;
+                }
+                
+                if (isNaN(moduleVoltage) || moduleVoltage <= 0) {
+                    showPopup("Veuillez saisir une tension de module valide (Up > 0)","Erreur de saisie");
+                    return false;
+                }
+            }
+            else if (currentTab === 'batteries') {
+                const stockageType = document.getElementById('stockage-type').value;
+                
+                if (stockageType !== 'eau') {
+                    const autonomie = parseInt(document.getElementById('autonomie').value);
+                    const profondeurDecharge = parseFloat(document.getElementById('profondeur-decharge').value);
+                    const rendementBatterie = parseFloat(document.getElementById('rendement-batterie').value);
+                    const rendementOnduleur = parseFloat(document.getElementById('rendement-onduleur').value);
+                    const tensionBatterie = parseInt(document.getElementById('tension-batterie').value);
+                    const capaciteBatterie = parseInt(document.getElementById('capacite-batterie').value);
+                    const vocModule = parseFloat(document.getElementById('voc-module').value);
+                    const iscModule = parseFloat(document.getElementById('isc-module').value);
+                    const coeffCorrection = parseFloat(document.getElementById('coeff-correction').value);
+                    const nbRegulateurs = parseInt(document.getElementById('nb-regulateurs').value);
+                    
+                    if (isNaN(autonomie) || autonomie <= 0) {
+                        showPopup("Veuillez saisir un nombre de jours d'autonomie valide","Erreur de saisie");
+                        return false;
+                    }
+                    
+                    if (isNaN(profondeurDecharge) || profondeurDecharge <= 0 || profondeurDecharge > 0.8) {
+                        showPopup("La profondeur de décharge doit être entre 0.1 et 0.8","Erreur de saisie");
+                        return false;
+                    }
+                    
+                    if (isNaN(vocModule) || vocModule <= 0) {
+                        showPopup("Veuillez saisir une tension à vide valide","Erreur de saisie");
+                        return false;
+                    }
+                    
+                    if (isNaN(iscModule) || iscModule  <= 0) {
+                        showPopup("Veuillez saisir un courant de court-circuit valide","Erreur de saisie");
+                        return false;
+                    }
+                }
+            }
+            else if (currentTab === 'pompe') {
+                // Pas de validation stricte ici car les champs sont optionnels
+                // (l'utilisateur peut juste vouloir voir les caractéristiques requises)
+            }
+            
+            return true;
+        }
+        
+        // Calculs des résultats
+        function calculateResults() {
+            // Onglet 1: Besoins en Eau
+            results.q = parseFloat(document.getElementById('q').value);
+            results.h = parseFloat(document.getElementById('h').value);
+            results.k = parseFloat(document.getElementById('k').value);
+            results.stockageType = document.getElementById('stockage-type').value;
+            
+            // Onglet 2: Hauteur Manométrique Totale
+            const pompeType = document.getElementById('pompe-type').value;
+            let hmtCustom = parseFloat(document.getElementById('hmt-custom').value);
+            
+            if (!isNaN(hmtCustom)) {
+                results.hmt = hmtCustom;
+                // Pour le rapport, on affichera que la HMT a été saisie directement
+                results.hg = hmtCustom / 1.1; // Approximation pour le rapport
+            } else {
+                if (pompeType === 'immergee') {
+                    const hr = parseFloat(document.getElementById('hr').value);
+                    const nst = parseFloat(document.getElementById('nst').value);
+                    const ndy = parseFloat(document.getElementById('ndy').value);
+                    results.hg = hr + nst + ndy;
+                } else {
+                    const hr = parseFloat(document.getElementById('hr-surface').value);
+                    const ha = parseFloat(document.getElementById('ha').value);
+                    results.hg = hr + ha;
+                }
+                results.hmt = 1.1 * results.hg;
+            }
+            
+            // Onglet 3: Énergie Requise
+            const rendement = parseFloat(document.getElementById('rendement').value);
+            const CH = 2.725; // Constante hydraulique
+            
+            results.ec = (CH * results.q * results.hmt) / rendement;
+            results.epv = results.ec / results.k;
+            
+            // Onglet 4: Champ Photovoltaïque
+            const ir = parseFloat(document.getElementById('ir').value);
+            results.pwc = results.epv / ir;
+
+            // Déterminer la tension système initiale en fonction de la puissance crête
+            if (results.pwc <= 500) {
+                results.ts = 12;
+            } else if (results.pwc <= 2000) {
+                results.ts = 24;
+            } else {
+                results.ts = 48;
+            }
+
+            const modulePower = parseFloat(document.getElementById('module-power').value);
+            const moduleVoltage = parseFloat(document.getElementById('module-voltage').value);
+            const vocModule = parseFloat(document.getElementById('voc-module').value);
+
+            // Calcul initial du nombre de modules en série
+            results.ns = Math.ceil(results.ts / moduleVoltage);
+
+            // Vérification de la tension maximale (Ns × Voc)
+            const tensionMax = results.ns * vocModule;
+
+            // Ajustement automatique si nécessaire (avec marge de sécurité de 20%)
+            if (results.ts >= tensionMax * 0.8) {
+                // Solution 1: Augmenter le nombre de modules en série
+                results.ns = Math.ceil(results.ts / (vocModule * 0.8));
+                
+                // Solution alternative 2: Ajuster la tension système
+                // results.ts = tensionMax * 0.8;
+                // (Décommentez cette ligne si vous préférez ajuster Ts au lieu d'augmenter Ns)
+            }
+
+            // Recalculer la tension max après ajustement
+            const newTensionMax = results.ns * vocModule;
+
+            // Avertissement si on approche des limites (optionnel)
+            if (results.ts >= newTensionMax * 0.9) {
+                showPopup(`Configuration ajustée : Tension système ${results.ts}V avec ${results.ns} modules en série (Voc max=${newTensionMax.toFixed(1)}V)`, 
+                          "Ajustement automatique");
+            }
+
+            // Calcul du nombre total de modules
+            results.n = Math.ceil(results.pwc / modulePower);
+            results.np = Math.ceil(results.n / results.ns);            
+            
+            // Onglet 5: Batteries
+            if (results.stockageType !== 'eau') {
+                const autonomie = parseInt(document.getElementById('autonomie').value);
+                const profondeurDecharge = parseFloat(document.getElementById('profondeur-decharge').value);
+                const rendementBatterie = parseFloat(document.getElementById('rendement-batterie').value);
+                const rendementOnduleur = parseFloat(document.getElementById('rendement-onduleur').value);
+                const tensionBatterie = parseInt(document.getElementById('tension-batterie').value);
+                const capaciteBatterie = parseInt(document.getElementById('capacite-batterie').value);
+                const vocModule = parseFloat(document.getElementById('voc-module').value);
+                const iscModule = parseFloat(document.getElementById('isc-module').value);
+                const coeffCorrection = parseFloat(document.getElementById('coeff-correction').value);
+                const nbRegulateurs = parseInt(document.getElementById('nb-regulateurs').value);
+
+                // Calcul de la capacité totale
+                results.ct = (results.ec * autonomie) / (results.ts * profondeurDecharge * rendementBatterie * rendementOnduleur);
+                
+                // Calcul du nombre de batteries
+                results.nbs = Math.ceil(results.ts / tensionBatterie);
+                results.nbp = Math.ceil(results.ct / capaciteBatterie);
+                results.nbTotal = results.nbs * results.nbp;
+
+                // Calculs du régulateur
+                results.tensionReg = results.ts;
+                const tensionMax = results.ns * vocModule;
+                if (results.tensionReg >= tensionMax) {
+                    showPopup(`Attention: La tension système (${results.tensionReg}V) doit être inférieure à ${tensionMax.toFixed(1)}V (Ns × Voc)`, "Alerte Tension");
+                }
+
+                // Calcul courant régulateur
+                results.courantReg = (coeffCorrection * results.np * iscModule) / nbRegulateurs;
+            }
+            
+            // Onglet 6: Choix de la Pompe
+            results.debit = results.q / results.h;
+            results.ppom = (CH * results.debit * results.hmt) / rendement;
+            results.pond = 3 * results.ppom;
+            
+            // Mise à jour des résultats affichés
+            updateResultDisplays();
+        }
+        
+        // Mise à jour des affichages de résultats
+        function updateResultDisplays() {
+            // Onglet 3: Énergie Requise
+            document.getElementById('hg-result').textContent = results.hg.toFixed(1);
+            document.getElementById('hmt-result').textContent = results.hmt.toFixed(1);
+            document.getElementById('ec-result').textContent = results.ec.toFixed(2);
+            document.getElementById('epv-result').textContent = results.epv.toFixed(2);
+            
+            // Onglet 4: Champ Photovoltaïque
+            document.getElementById('pwc-result').textContent = results.pwc.toFixed(0);
+            document.getElementById('ts-result').textContent = results.ts;
+            document.getElementById('n-modules-result').textContent = results.n;
+            document.getElementById('ns-result').textContent = results.ns;
+            document.getElementById('np-result').textContent = results.np;
+            
+            // Onglet 5: Batteries
+            if (results.stockageType !== 'eau') {
+                document.getElementById('ct-result').textContent = results.ct.toFixed(0);
+                document.getElementById('nbs-result').textContent = results.nbs;
+                document.getElementById('nbp-result').textContent = results.nbp;
+                document.getElementById('nb-total-result').textContent = results.nbTotal;
+                document.getElementById('tension-reg-result').textContent = results.tensionReg;
+                document.getElementById('courant-reg-result').textContent = results.courantReg.toFixed(1);
+            } else {
+                document.getElementById('ct-result').textContent = 'Non applicable';
+                document.getElementById('nbs-result').textContent = 'Non applicable';
+                document.getElementById('nbp-result').textContent = 'Non applicable';
+                document.getElementById('nb-total-result').textContent = 'Non applicable';
+                document.getElementById('tension-reg-result').textContent = 'Non applicable';
+                document.getElementById('courant-reg-result').textContent = 'Non applicable';
+            }
+            
+            // Onglet 6: Choix de la Pompe
+            document.getElementById('debit-result').textContent = results.debit.toFixed(2);
+            document.getElementById('hmt-pompe-result').textContent = results.hmt.toFixed(1);
+            document.getElementById('ppom-result').textContent = results.ppom.toFixed(0);
+            document.getElementById('pond-result').textContent = results.pond.toFixed(0);
+        }
+        
+        // Génération du rapport
+        function generateReport() {
+            // Date du rapport
+            const today = new Date();
+            document.getElementById('report-date').textContent = today.toLocaleDateString('fr-FR');
+            
+            // Section 1: Données d'entrée
+            document.getElementById('report-usage').textContent = document.getElementById('usage').options[document.getElementById('usage').selectedIndex].text;
+            document.getElementById('report-q').textContent = `${results.q} m³/jour`;
+            document.getElementById('report-h').textContent = `${results.h} heures`;
+            document.getElementById('report-stockage-type').textContent = document.getElementById('stockage-type').options[document.getElementById('stockage-type').selectedIndex].text;
+            document.getElementById('report-pompe-type').textContent = document.getElementById('pompe-type').options[document.getElementById('pompe-type').selectedIndex].text;
+            document.getElementById('report-hmt').textContent = `${results.hmt.toFixed(1)} m`;
+            document.getElementById('report-rendement').textContent = `${(parseFloat(document.getElementById('rendement').value) * 100)}%`;
+            document.getElementById('report-ir').textContent = `${document.getElementById('ir').value} kWh/m²/jour`;
+            document.getElementById('report-module-type').textContent = document.getElementById('module-type').options[document.getElementById('module-type').selectedIndex].text;
+            
+            // Section 2: Calculs intermédiaires
+            document.getElementById('report-hg').textContent = `${results.hg.toFixed(1)} m`;
+            
+            // Déterminer la formule Hg en fonction du type de pompe
+            const pompeType = document.getElementById('pompe-type').value;
+            let hmtCustom = parseFloat(document.getElementById('hmt-custom').value);
+            
+            if (!isNaN(hmtCustom)) {
+                document.getElementById('report-hg-formula').textContent = "HMT saisie directement";
+            } else {
+                if (pompeType === 'immergee') {
+                    const hr = parseFloat(document.getElementById('hr').value);
+                    const nst = parseFloat(document.getElementById('nst').value);
+                    const ndy = parseFloat(document.getElementById('ndy').value);
+                    document.getElementById('report-hg-formula').textContent = `Hg = Hr + Nst + Ndy = ${hr} + ${nst} + ${ndy}`;
+                } else {
+                    const hr = parseFloat(document.getElementById('hr-surface').value);
+                    const ha = parseFloat(document.getElementById('ha').value);
+                    document.getElementById('report-hg-formula').textContent = `Hg = Hr + Ha = ${hr} + ${ha}`;
+                }
+            }
+            
+            document.getElementById('report-ec').textContent = `${results.ec.toFixed(2)} kWh/jour`;
+            document.getElementById('report-epv').textContent = `${results.epv.toFixed(2)} kWh/jour`;
+            document.getElementById('report-pwc').textContent = `${results.pwc.toFixed(0)} Wc`;
+            document.getElementById('report-debit').textContent = `${results.debit.toFixed(2)} m³/h`;
+            document.getElementById('report-ppom').textContent = `${results.ppom.toFixed(0)} W`;
+            
+            // Section 3: Dimensionnement du champ PV
+            document.getElementById('report-pwc-final').textContent = `${results.pwc.toFixed(0)} Wc`;
+            document.getElementById('report-ts').textContent = `${results.ts} V`;
+            document.getElementById('report-n-modules').textContent = results.n;
+            document.getElementById('report-ns').textContent = results.ns;
+            document.getElementById('report-np').textContent = results.np;
+            document.getElementById('report-module-power').textContent = `${document.getElementById('module-power').value} Wc`;
+            document.getElementById('report-module-voltage').textContent = `${document.getElementById('module-voltage').value} V`;
+            
+            // Section 4: Batteries et Régulateur (si nécessaire)
+            const batteriesSection = document.getElementById('report-batteries-section');
+            if (batteriesSection) batteriesSection.remove();
+            
+            if (results.stockageType !== 'eau') {
+                const batteriesHTML = `
+                    <div class="report-section" id="report-batteries-section">
+                        <h2 class="section-title">4. Dimensionnement Batteries et Régulateur</h2>
+                        <table class="report-table">
+                            <tr>
+                                <th>Paramètre</th>
+                                <th>Valeur</th>
+                                <th>Formule</th>
+                            </tr>
+                            <tr>
+                                <td>Capacité totale batterie (C<sub>t</sub>)</td>
+                                <td>${results.ct.toFixed(0)} Ah</td>
+                                <td>(E<sub>c</sub> × n) / (T<sub>S</sub> × β × σ<sub>bat</sub> × σ<sub>ond</sub>)</td>
+                            </tr>
+                            <tr>
+                                <td>Batteries en série (N<sub>BS</sub>)</td>
+                                <td>${results.nbs}</td>
+                                <td>T<sub>S</sub> / T<sub>b</sub></td>
+                            </tr>
+                            <tr>
+                                <td>Branches parallèle (N<sub>Bp</sub>)</td>
+                                <td>${results.nbp}</td>
+                                <td>C<sub>t</sub> / C<sub>b</sub></td>
+                            </tr>
+                            <tr>
+                                <td>Total batteries</td>
+                                <td>${results.nbTotal}</td>
+                                <td>N<sub>BS</sub> × N<sub>Bp</sub></td>
+                            </tr>
+                            <tr>
+                                <td>Tension régulateur</td>
+                                <td>${results.tensionReg} V</td>
+                                <td>U<sub>r</sub> = T<sub>S</sub> < N<sub>S</sub> × V<sub>OC</sub></td>
+                            </tr>
+                            <tr>
+                                <td>Courant régulateur</td>
+                                <td>${results.courantReg.toFixed(1)} A</td>
+                                <td>(α × N<sub>p</sub> × I<sub>sc</sub>) / N<sub>rp</sub></td>
+                            </tr>
+                        </table>
+                    </div>
+                `;
+                
+                // Insérer avant la section de la pompe
+                const pompeSection = document.querySelector('.report-section:nth-child(4)');
+                pompeSection.insertAdjacentHTML('beforebegin', batteriesHTML);
+                
+                // Mettre à jour les numéros de section
+                document.querySelectorAll('.report-section h2.section-title').forEach((title, index) => {
+                    title.textContent = title.textContent.replace(/^\d+\./, `${index+1}.`);
+                });
+            }
+            
+            // Section 5: Spécifications de la pompe (devenue section 4 ou 5 selon le cas)
+            document.getElementById('report-pompe-modele').textContent = document.getElementById('pompe-modele').value || "-";
+            document.getElementById('report-debit-req').textContent = `≥ ${results.debit.toFixed(2)} m³/h`;
+            document.getElementById('report-pompe-debit').textContent = document.getElementById('pompe-debit').value || "-";
+            document.getElementById('report-hmt-req').textContent = `≥ ${results.hmt.toFixed(1)} m`;
+            document.getElementById('report-pompe-hmt').textContent = document.getElementById('pompe-hmt').value || "-";
+            document.getElementById('report-ppom-req').textContent = `≥ ${results.ppom.toFixed(0)} W`;
+            document.getElementById('report-pompe-power').textContent = document.getElementById('pompe-power').value || "-";
+            document.getElementById('report-ts-req').textContent = results.ts + " V";
+            document.getElementById('report-pompe-voltage').textContent = document.getElementById('pompe-voltage').value || "-";
+            
+            // Section 6: Contrôleur/Onduleur (devenue section 5 ou 6 selon le cas)
+            document.getElementById('report-pond-req').textContent = `≥ ${results.pond.toFixed(0)} W`;
+            document.getElementById('report-ts-final').textContent = `${results.ts} V`;
+            
+            // Supprimer l'ancien devis s'il existe
+            const oldDevis = document.getElementById('devis-container');
+            if (oldDevis) oldDevis.remove();
+        }
+        
+        // Impression du rapport
+        function printReport() {
+            const printContents = document.getElementById('report-content').innerHTML;
+            const originalContents = document.body.innerHTML;
+            
+            document.body.innerHTML = `
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                    .report-header { text-align: center; margin-bottom: 20px; }
+                    .report-title { font-size: 24px; color: #2c3e50; margin-bottom: 10px; }
+                    .report-subtitle { font-size: 16px; color: #7f8c8d; }
+                    .section-title { font-size: 18px; color: #2c3e50; margin: 20px 0 10px; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+                    table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+                    th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #ddd; }
+                    th { background-color: #f8f9fa; font-weight: bold; }
+                    ul { margin: 10px 0 10px 20px; }
+                    .action-buttons, #new-item-row { display: none !important; }
+                    @page { size: A4; margin: 15mm; }
+                </style>
+                ${printContents}
+                <div style="text-align: center; margin-top: 30px; font-size: 12px; color: #7f8c8d;">
+                    Rapport généré par l'application de dimensionnement de pompage solaire PV
+                </div>
+            `;
+            
+            window.print();
+            document.body.innerHTML = originalContents;
+            showTab('rapport');
+        }
+        
+        // Génération du devis
+        function generateDevis() {
+            const devisContainer = document.getElementById('devis-container');
+            if (!devisContainer) {
+                const devisHTML = `
+                    <div id="devis-container" class="report-container" style="margin-top: 30px;">
+                        <div class="report-header">
+                            <h1 class="report-title">Devis Technique</h1>
+                            <p class="report-subtitle">Système de Pompage Solaire Photovoltaïque</p>
+                            <p>Date: <span>${new Date().toLocaleDateString('fr-FR')}</span></p>
+                        </div>
+                        <div id="devis-content">
+                            <!-- Le contenu du devis sera généré ici -->
+                        </div>
+                        <div style="margin-top: 50px; display: flex; justify-content: space-between;">
+                            <div style="text-align: center; width: 45%;">
+                                <p style="border-top: 1px solid #000; padding-top: 30px; margin-top: 50px;">
+                                    Signature du client
+                                </p>
+                            </div>
+                            <div style="text-align: center; width: 45%;">
+                                <p style="border-top: 1px solid #000; padding-top: 30px; margin-top: 50px;">
+                                    Signature du fournisseur
+                                </p>
+                            </div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn-success" onclick="printDevis()">Imprimer le Devis</button>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('report-content').insertAdjacentHTML('beforeend', devisHTML);
+            }
+
+            let devisHTML = `
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Article</th>
+                            <th>Description</th>
+                            <th>Quantité</th>
+                            <th>Prix unitaire</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            // Modules PV - maintenant modifiable
+            devisHTML += `
+                        <tr>
+                            <td><input type="text" class="devis-input" value="Module PV" oninput="updateDevisTotal()"></td>
+                            <td><input type="text" class="devis-input" value="${document.getElementById('module-power').value}Wc ${document.getElementById('module-type').options[document.getElementById('module-type').selectedIndex].text}" oninput="updateDevisTotal()"></td>
+                            <td><input type="number" class="qte-input" value="${results.n}" min="1" step="1" oninput="updateDevisTotal()"></td>
+                            <td><input type="number" class="prix-input" value="150" min="0" step="0.01" oninput="updateDevisTotal()"></td>
+                            <td class="total-ligne">${(results.n * 150).toFixed(2)}</td>
+                            <td><button class="btn-danger" onclick="removeDevisItem(this)">×</button></td>
+                        </tr>
+            `;
+
+            // Pompe - maintenant modifiable
+            devisHTML += `
+                        <tr>
+                            <td><input type="text" class="devis-input" value="Pompe solaire" oninput="updateDevisTotal()"></td>
+                            <td><input type="text" class="devis-input" value="${document.getElementById('pompe-modele').value || 'Modèle standard'}" oninput="updateDevisTotal()"></td>
+                            <td><input type="number" class="qte-input" value="1" min="1" step="1" oninput="updateDevisTotal()"></td>
+                            <td><input type="number" class="prix-input" value="500" min="0" step="0.01" oninput="updateDevisTotal()"></td>
+                            <td class="total-ligne">500.00</td>
+                            <td><button class="btn-danger" onclick="removeDevisItem(this)">×</button></td>
+                        </tr>
+            `;
+
+            // Batteries si nécessaire - maintenant modifiable
+            if (results.stockageType !== 'eau') {
+                devisHTML += `
+                        <tr>
+                            <td><input type="text" class="devis-input" value="Batterie" oninput="updateDevisTotal()"></td>
+                            <td><input type="text" class="devis-input" value="${document.getElementById('capacite-batterie').value}Ah ${document.getElementById('tension-batterie').value}V" oninput="updateDevisTotal()"></td>
+                            <td><input type="number" class="qte-input" value="${results.nbTotal}" min="1" step="1" oninput="updateDevisTotal()"></td>
+                            <td><input type="number" class="prix-input" value="200" min="0" step="0.01" oninput="updateDevisTotal()"></td>
+                            <td class="total-ligne">${(results.nbTotal * 200).toFixed(2)}</td>
+                            <td><button class="btn-danger" onclick="removeDevisItem(this)">×</button></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="devis-input" value="Régulateur" oninput="updateDevisTotal()"></td>
+                            <td><input type="text" class="devis-input" value="${results.tensionReg}V ${results.courantReg.toFixed(1)}A" oninput="updateDevisTotal()"></td>
+                            <td><input type="number" class="qte-input" value="1" min="1" step="1" oninput="updateDevisTotal()"></td>
+                            <td><input type="number" class="prix-input" value="150" min="0" step="0.01" oninput="updateDevisTotal()"></td>
+                            <td class="total-ligne">150.00</td>
+                            <td><button class="btn-danger" onclick="removeDevisItem(this)">×</button></td>
+                        </tr>
+                `;
+            }
+
+            // Contrôleur/Onduleur - maintenant modifiable
+            devisHTML += `
+                        <tr>
+                            <td><input type="text" class="devis-input" value="Onduleur" oninput="updateDevisTotal()"></td>
+                            <td><input type="text" class="devis-input" value="${results.pond.toFixed(0)}W ${results.ts}V" oninput="updateDevisTotal()"></td>
+                            <td><input type="number" class="qte-input" value="1" min="1" step="1" oninput="updateDevisTotal()"></td>
+                            <td><input type="number" class="prix-input" value="300" min="0" step="0.01" oninput="updateDevisTotal()"></td>
+                            <td class="total-ligne">300.00</td>
+                            <td><button class="btn-danger" onclick="removeDevisItem(this)">×</button></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="devis-input" value="Câblage et accessoires" oninput="updateDevisTotal()"></td>
+                            <td><input type="text" class="devis-input" value="Kit installation" oninput="updateDevisTotal()"></td>
+                            <td><input type="number" class="qte-input" value="1" min="1" step="1" oninput="updateDevisTotal()"></td>
+                            <td><input type="number" class="prix-input" value="200" min="0" step="0.01" oninput="updateDevisTotal()"></td>
+                            <td class="total-ligne">200.00</td>
+                            <td><button class="btn-danger" onclick="removeDevisItem(this)">×</button></td>
+                        </tr>
+            `;
+
+            // Ligne pour ajouter des articles
+            devisHTML += `
+                        <tr id="new-item-row">
+                            <td colspan="6" style="text-align: center;">
+                                <button class="btn-primary" onclick="addDevisItem()">+ Ajouter un article</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="text-align: right;"><strong>Total HT</strong></td>
+                            <td id="devis-total" style="font-weight: bold;">0.00</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('devis-content').innerHTML = devisHTML;
+            updateDevisTotal();
+        }
+
+        function addDevisItem() {
+            const newRow = `
+                <tr class="custom-item">
+                    <td><input type="text" placeholder="Article" class="devis-input" oninput="updateDevisTotal()"></td>
+                    <td><input type="text" placeholder="Description" class="devis-input" oninput="updateDevisTotal()"></td>
+                    <td><input type="number" class="qte-input" value="1" min="0" step="1" oninput="updateDevisTotal()"></td>
+                    <td><input type="number" class="prix-input" value="0" min="0" step="0.01" oninput="updateDevisTotal()"></td>
+                    <td class="total-ligne">0.00</td>
+                    <td><button class="btn-danger" onclick="removeDevisItem(this)">×</button></td>
+                </tr>
+            `;
+            document.getElementById('new-item-row').insertAdjacentHTML('beforebegin', newRow);
+        }
+
+        function removeDevisItem(button) {
+            const row = button.closest('tr');
+            if (row && !row.id) { // Ne pas supprimer la ligne d'ajout
+                row.remove();
+                updateDevisTotal();
+            }
+        }
+
+        function updateDevisTotal() {
+            let total = 0;
+            const rows = document.querySelectorAll('#devis-content tbody tr');
+            
+            rows.forEach(row => {
+                if (!row.id) { // Ignorer la ligne d'ajout
+                    const qteInput = row.querySelector('.qte-input');
+                    const prixInput = row.querySelector('.prix-input');
+                    const totalCell = row.querySelector('.total-ligne');
+                    
+                    if (qteInput && prixInput && totalCell) {
+                        const qte = parseFloat(qteInput.value) || 0;
+                        const prix = parseFloat(prixInput.value) || 0;
+                        const ligneTotal = qte * prix;
+                        totalCell.textContent = ligneTotal.toFixed(2);
+                        total += ligneTotal;
+                    }
+                }
+            });
+            
+            document.getElementById('devis-total').textContent = total.toFixed(2);
+        }
+
+        function printDevis() {
+            const printContents = document.getElementById('devis-container').innerHTML;
+            const originalContents = document.body.innerHTML;
+            
+            document.body.innerHTML = `
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                    .report-header { text-align: center; margin-bottom: 20px; }
+                    .report-title { font-size: 24px; color: #2c3e50; margin-bottom: 10px; }
+                    .report-subtitle { font-size: 16px; color: #7f8c8d; }
+                    table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+                    th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #ddd; }
+                    th { background-color: #f8f9fa; font-weight: bold; }
+                    .action-buttons, #new-item-row { display: none !important; }
+                    .signature-area { display: flex; justify-content: space-between; margin-top: 50px; }
+                    .signature-line { border-top: 1px solid #000; padding-top: 30px; width: 45%; text-align: center; }
+                    @page { size: A4; margin: 15mm; }
+                </style>
+                ${printContents}
+            `;
+            
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+
+        // Gestion du changement de type de pompe
+        document.getElementById('pompe-type').addEventListener('change', function() {
+            if (this.value === 'immergee') {
+                document.getElementById('immergee-fields').classList.remove('hidden');
+                document.getElementById('surface-fields').classList.add('hidden');
+            } else {
+                document.getElementById('immergee-fields').classList.add('hidden');
+                document.getElementById('surface-fields').classList.remove('hidden');
+            }
+        });
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Activer le premier onglet
+            showTab('besoins');
+            
+            // Désactiver les champs surface par défaut
+            document.getElementById('surface-fields').classList.add('hidden');
+            
+            // Gestion du popup
+            const openConverterBtn = document.getElementById('open-converter');
+            const converterPopup = document.getElementById('converter-popup');
+            const closePopupBtn = document.querySelector('.close-popup');
+            
+            // Ouvrir le popup
+            openConverterBtn.addEventListener('click', function() {
+                converterPopup.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Empêche le défilement
+            });
+            
+            // Fermer le popup
+            closePopupBtn.addEventListener('click', function() {
+                converterPopup.classList.add('hidden');
+                document.body.style.overflow = ''; // Rétablit le défilement
+            });
+            
+            // Fermer quand on clique en dehors du contenu
+            converterPopup.addEventListener('click', function(e) {
+                if (e.target === converterPopup) {
+                    converterPopup.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Facteurs de conversion
+            const conversionFactors = {
+                'l': { 'm3': 0.001, 'ml': 1000, 'mm3': 1000000 },
+                'm3': { 'l': 1000, 'ml': 1000000, 'mm3': 1000000000 },
+                'mm3': { 'l': 0.000001, 'm3': 0.000000001, 'ml': 0.001 },
+                'm2': { 'ha': 0.0001, 'cm2': 10000, 'km2': 0.000001 },
+                'ha': { 'm2': 10000, 'cm2': 100000000, 'km2': 0.01 }
+            };
+            
+            // Groupes d'unités compatibles
+            const unitGroups = {
+                volume: ['l', 'm3', 'ml', 'mm3'],
+                surface: ['m2', 'ha', 'cm2', 'km2']
+            };
+            
+            // Éléments du convertisseur
+            const fromUnitSelect = document.getElementById('from-unit');
+            const toUnitSelect = document.getElementById('to-unit');
+            const valueInput = document.getElementById('value');
+            const convertBtn = document.getElementById('convert-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const resultContainer = document.getElementById('result-container');
+            const resultText = document.getElementById('result');
+            
+            // Mettre à jour les unités cibles
+            fromUnitSelect.addEventListener('change', updateTargetUnits);
+            
+            function updateTargetUnits() {
+                const fromUnit = fromUnitSelect.value;
+                toUnitSelect.innerHTML = '<option value="">-- Sélectionnez --</option>';
+                
+                if (!fromUnit) return;
+                
+                let unitGroup = null;
+                for (const group in unitGroups) {
+                    if (unitGroups[group].includes(fromUnit)) {
+                        unitGroup = group;
+                        break;
+                    }
+                }
+                
+                if (!unitGroup) return;
+                
+                unitGroups[unitGroup].forEach(unit => {
+                    if (unit !== fromUnit) {
+                        const option = document.createElement('option');
+                        option.value = unit;
+                        option.textContent = getUnitName(unit);
+                        toUnitSelect.appendChild(option);
+                    }
+                });
+            }
+            
+            // Conversion
+            convertBtn.addEventListener('click', function() {
+                const value = parseFloat(valueInput.value);
+                const fromUnit = fromUnitSelect.value;
+                const toUnit = toUnitSelect.value;
+                
+                if (isNaN(value)) {
+                    showPopup("Veuillez entrer un nombre valide","Erreur de saisie");
+                    return;
+                }
+                
+                if (!fromUnit || !toUnit) {
+                    showPopup("Veuillez sélectionner les unités source et cible","Erreur de saisie");
+                    return;
+                }
+                
+                if (!conversionFactors[fromUnit] || !conversionFactors[fromUnit][toUnit]) {
+                    showPopup("Conversion non prise en charge entre ces unités","Erreur de saisie");
+                    return;
+                }
+                
+                const factor = conversionFactors[fromUnit][toUnit];
+                const result = value * factor;
+                
+                resultText.textContent = `${value} ${getUnitName(fromUnit)} = ${result.toFixed(6)} ${getUnitName(toUnit)}`;
+                resultContainer.classList.remove('hidden');
+            });
+            
+            // Réinitialisation
+            resetBtn.addEventListener('click', function() {
+                valueInput.value = '';
+                fromUnitSelect.value = '';
+                toUnitSelect.innerHTML = '<option value="">-- Sélectionnez --</option>';
+                resultContainer.classList.add('hidden');
+            });
+            
+            // Obtenir le nom complet d'une unité
+            function getUnitName(unit) {
+                const unitNames = {
+                    'l': 'L', 'm3': 'm³', 'ha': 'ha', 'mm3': 'mm³', 'm2': 'm²',
+                    'ml': 'ml', 'cm2': 'cm²', 'km2': 'km²'
+                };
+                return unitNames[unit] || unit;
+            }
+            
+            // Bouton retour en haut
+            const scrollBtn = document.getElementById('scrollToTopBtn');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollBtn.classList.add('visible');
+                } else {
+                    scrollBtn.classList.remove('visible');
+                }
+            });
+            
+            scrollBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Fonction pour afficher un popup personnalisé
+        function showPopup(message, title = 'Notification') {
+            const popup = document.createElement('div');
+            popup.id = 'custom-popup';
+            popup.className = 'custom-popup show';
+            popup.innerHTML = `
+                <div class="custom-popup-content">
+                    <span class="custom-popup-close">&times;</span>
+                    <h3 class="custom-popup-title">${title}</h3>
+                    <p class="custom-popup-message">${message}</p>
+                    <button class="custom-popup-btn" id="custom-popup-ok">OK</button>
+                </div>
+            `;
+            
+            document.body.appendChild(popup);
+            
+            // Fermer le popup
+            const closePopup = () => {
+                popup.classList.remove('show');
+                setTimeout(() => popup.remove(), 300);
+            };
+            
+            popup.querySelector('.custom-popup-close').onclick = closePopup;
+            popup.querySelector('#custom-popup-ok').onclick = closePopup;
+            
+            // Fermer en cliquant à l'extérieur
+            popup.onclick = function(e) {
+                if (e.target === popup) {
+                    closePopup();
+                }
+            };
+        }
+    </script>
+
+<script>
+    // Base de connaissances de l'assistant
+    const knowledgeBase = {
+        // Définitions
+        "definition hmt": {
+            response: `
+                <div class="definition-box">
+                    <strong>Hauteur Manométrique Totale (HMT)</strong> : C'est la hauteur totale que doit vaincre la pompe pour amener l'eau du point de captage au point de refoulement. 
+                    Elle prend en compte :
+                    <ul>
+                        <li>La hauteur géométrique (différence d'altitude)</li>
+                        <li>Les pertes de charge (frottements dans les conduites)</li>
+                        <li>La pression nécessaire au point de refoulement</li>
+                    </ul>
+                    La formule générale est : <strong>HMT = Hg + Pc</strong> où Hg est la hauteur géométrique et Pc les pertes de charge.
+                </div>
+            `,
+            keywords: ["hmt", "hauteur manométrique", "hauteur totale", "définition hmt"]
+        },
+        "definition irradiation": {
+            response: `
+                <div class="definition-box">
+                    <strong>Irradiation solaire (IR)</strong> : C'est la quantité d'énergie solaire reçue par unité de surface pendant une période donnée. 
+                    Elle s'exprime généralement en kWh/m²/jour.
+                    <br><br>
+                    L'irradiation varie selon :
+                    <ul>
+                        <li>La localisation géographique</li>
+                        <li>La saison</li>
+                        <li>L'orientation et l'inclinaison des panneaux</li>
+                        <li>Les conditions météorologiques</li>
+                    </ul>
+                    Pour le dimensionnement, on utilise généralement des valeurs moyennes annuelles.
+                </div>
+            `,
+            keywords: ["irradiation", "ensoleillement", "énergie solaire", "définition irradiation"]
+        },
+        "definition rendement": {
+            response: `
+                <div class="definition-box">
+                    <strong>Rendement (η)</strong> : En pompage solaire, le rendement représente l'efficacité avec laquelle l'énergie solaire est convertie en énergie hydraulique.
+                    <br><br>
+                    Il prend en compte :
+                    <ul>
+                        <li>Le rendement des panneaux photovoltaïques (15-20%)</li>
+                        <li>Le rendement du groupe motopompe (30-70%)</li>
+                        <li>Les pertes dans les câbles et le régulateur</li>
+                    </ul>
+                    Un rendement global de 50% est souvent utilisé pour les calculs préliminaires.
+                </div>
+            `,
+            keywords: ["rendement", "efficacité", "définition rendement", "η"]
+        },
+        
+        // Formules
+        "formule hmt": {
+            response: `
+                <div class="formula-box">
+                    <strong>Formule de la HMT pour une pompe immergée :</strong>
+                    <br>HMT = 1.1 × (Hr + Nst + Ndy)
+                    <br><br>
+                    <strong>Formule de la HMT pour une pompe de surface :</strong>
+                    <br>HMT = 1.1 × (Hr + Ha)
+                    <br><br>
+                    Où :
+                    <ul>
+                        <li>Hr : Hauteur de refoulement (m)</li>
+                        <li>Nst : Niveau statique (m)</li>
+                        <li>Ndy : Niveau dynamique (m)</li>
+                        <li>Ha : Hauteur d'aspiration (m)</li>
+                        <li>1.1 : Coefficient de sécurité pour les pertes de charge</li>
+                    </ul>
+                </div>
+            `,
+            keywords: ["formule hmt", "calcul hmt", "formule hauteur manométrique", "calcul hauteur"]
+        },
+        "formule puissance pompe": {
+            response: `
+                <div class="formula-box">
+                    <strong>Puissance hydraulique requise :</strong>
+                    <br>P<sub>hyd</sub> = (ρ × g × Q × HMT) / η
+                    <br><br>
+                    <strong>Puissance électrique équivalente :</strong>
+                    <br>P<sub>elec</sub> = (2.725 × Q × HMT) / η
+                    <br><br>
+                    Où :
+                    <ul>
+                        <li>ρ : Masse volumique de l'eau (1000 kg/m³)</li>
+                        <li>g : Accélération de la pesanteur (9.81 m/s²)</li>
+                        <li>Q : Débit (m³/jour)</li>
+                        <li>HMT : Hauteur manométrique totale (m)</li>
+                        <li>η : Rendement du groupe motopompe (0.3 à 0.7)</li>
+                        <li>2.725 : Constante = (1000 × 9.81) / (3600 × 1000)</li>
+                    </ul>
+                </div>
+            `,
+            keywords: ["puissance pompe", "formule puissance", "calcul puissance", "puissance électrique"]
+        },
+        "formule énergie pv": {
+            response: `
+                <div class="formula-box">
+                    <strong>Énergie électrique requise :</strong>
+                    <br>E<sub>pv</sub> = E<sub>c</sub> / K
+                    <br><br>
+                    <strong>Puissance crête du champ PV :</strong>
+                    <br>P<sub>wc</sub> = E<sub>pv</sub> / IR
+                    <br><br>
+                    Où :
+                    <ul>
+                        <li>E<sub>c</sub> : Énergie hydraulique quotidienne (kWh/jour)</li>
+                        <li>K : Coefficient correcteur (0.5 à 0.8)</li>
+                        <li>IR : Irradiation solaire (kWh/m²/jour)</li>
+                    </ul>
+                </div>
+            `,
+            keywords: ["énergie pv", "formule énergie", "calcul panneaux", "puissance crête"]
+        },
+        
+        // Calculs spécifiques
+        "calcul débit": {
+            response: `
+                <div class="formula-box">
+                    <strong>Calcul du débit horaire :</strong>
+                    <br>d = Q / h
+                    <br><br>
+                    Où :
+                    <ul>
+                        <li>d : Débit horaire (m³/h)</li>
+                        <li>Q : Besoin quotidien en eau (m³/jour)</li>
+                        <li>h : Heures de pompage par jour</li>
+                    </ul>
+                    <br>
+                    <strong>Exemple :</strong> Pour Q = 5 m³/jour et h = 7 heures
+                    <br>d = 5 / 7 ≈ 0.71 m³/h
+                </div>
+            `,
+            keywords: ["calcul débit", "débit horaire", "besoin en eau", "débit pompe"]
+        },
+        "calcul nombre panneaux": {
+            response: `
+                <div class="formula-box">
+                    <strong>Calcul du nombre de panneaux :</strong>
+                    <br>N = P<sub>wc</sub> / P<sub>module</sub>
+                    <br><br>
+                    <strong>Modules en série :</strong>
+                    <br>N<sub>s</sub> = T<sub>s</sub> / U<sub>module</sub>
+                    <br><br>
+                    <strong>Branches en parallèle :</strong>
+                    <br>N<sub>p</sub> = N / N<sub>s</sub>
+                    <br><br>
+                    Où :
+                    <ul>
+                        <li>P<sub>wc</sub> : Puissance crête totale (Wc)</li>
+                        <li>P<sub>module</sub> : Puissance d'un module (Wc)</li>
+                        <li>T<sub>s</sub> : Tension système (V)</li>
+                        <li>U<sub>module</sub> : Tension nominale d'un module (V)</li>
+                    </ul>
+                </div>
+            `,
+            keywords: ["nombre panneaux", "calcul panneaux", "modules série", "branches parallèle"]
+        },
+        
+        // Conseils généraux
+        "choix pompe": {
+            response: `
+                <div class="definition-box">
+                    <strong>Conseils pour le choix d'une pompe solaire :</strong>
+                    <ul>
+                        <li>Vérifier que la HMT nominale est supérieure à la HMT calculée</li>
+                        <li>Le débit nominal doit couvrir vos besoins (Q/h)</li>
+                        <li>Privilégier les pompes spécialement conçues pour le solaire (démarrage à faible intensité)</li>
+                        <li>Pour les puissances > 1kW, préférer les systèmes avec contrôleur MPPT</li>
+                        <li>Vérifier la compatibilité de tension avec votre champ PV</li>
+                        <li>Prévoir une marge de sécurité de 10-20% sur la puissance</li>
+                    </ul>
+                </div>
+            `,
+            keywords: ["choix pompe", "sélection pompe", "type pompe", "pompe solaire"]
+        },
+        "optimisation installation": {
+            response: `
+                <div class="definition-box">
+                    <strong>Optimisation d'une installation solaire :</strong>
+                    <ul>
+                        <li>Orienter les panneaux plein Sud (dans l'hémisphère Nord)</li>
+                        <li>Inclinaison égale à la latitude pour une production annuelle optimale</li>
+                        <li>Minimiser la longueur des câbles entre panneaux et pompe</li>
+                        <li>Utiliser des câbles de section appropriée pour limiter les pertes</li>
+                        <li>Prévoir un système de protection contre les surtensions</li>
+                        <li>Nettoyer régulièrement les panneaux (poussière réduit le rendement)</li>
+                        <li>Pour les zones poussiéreuses, prévoir un nettoyage mensuel</li>
+                    </ul>
+                </div>
+            `,
+            keywords: ["optimisation", "conseils installation", "rendement panneaux", "performance système"]
+        }
+    };
+
+    // Base de questions/réponses pour le quiz
+    const quizQuestions = [
+        {
+            question: "Qu'est-ce que la HMT dans un système de pompage ?",
+            answer: `
+                <div class="definition-box">
+                    La <strong>Hauteur Manométrique Totale (HMT)</strong> représente la hauteur totale que doit vaincre la pompe, 
+                    comprenant la hauteur géométrique (différence d'altitude) et les pertes de charge (frottements dans les conduites).
+                    <br><br>
+                    Formule : <strong>HMT = Hg + Pc</strong>
+                </div>
+            `,
+            keywords: ["hmt", "hauteur manométrique", "définition hmt", "qu'est-ce que hmt"]
+        },
+        {
+            question: "Comment calculer la puissance électrique nécessaire pour une pompe solaire ?",
+            answer: `
+                <div class="formula-box">
+                    <strong>Formule de la puissance électrique :</strong>
+                    <br>P<sub>elec</sub> = (2.725 × Q × HMT) / η
+                    <br><br>
+                    Où :
+                    <ul>
+                        <li>Q : Débit en m³/jour</li>
+                        <li>HMT : Hauteur manométrique totale en mètres</li>
+                        <li>η : Rendement du groupe motopompe (0.3 à 0.7)</li>
+                        <li>2.725 : Constante = (1000 × 9.81) / (3600 × 1000)</li>
+                    </ul>
+                </div>
+            `,
+            keywords: ["puissance pompe", "calcul puissance", "formule puissance électrique", "puissance nécessaire"]
+        },
+        {
+            question: "Quelle est la différence entre niveau statique et niveau dynamique ?",
+            answer: `
+                <div class="definition-box">
+                    <strong>Niveau statique (Nst)</strong> : Niveau d'eau dans le forage lorsque la pompe est à l'arrêt.
+                    <br><br>
+                    <strong>Niveau dynamique (Ndy)</strong> : Niveau d'eau dans le forage lorsque la pompe fonctionne.
+                    <br><br>
+                    La différence entre ces deux niveaux dépend du débit pompé et des caractéristiques de l'aquifère.
+                </div>
+            `,
+            keywords: ["niveau statique", "niveau dynamique", "différence nst ndy", "forage"]
+        },
+        {
+            question: "Comment déterminer le nombre de panneaux solaires nécessaires ?",
+            answer: `
+                <div class="formula-box">
+                    <strong>Étapes de calcul :</strong>
+                    <ol>
+                        <li>Calculer l'énergie électrique requise : E<sub>pv</sub> = E<sub>c</sub> / K</li>
+                        <li>Déterminer la puissance crête : P<sub>wc</sub> = E<sub>pv</sub> / IR</li>
+                        <li>Calculer le nombre de modules : N = P<sub>wc</sub> / P<sub>module</sub></li>
+                    </ol>
+                    <br>
+                    Où :
+                    <ul>
+                        <li>E<sub>c</sub> : Énergie hydraulique (kWh/jour)</li>
+                        <li>K : Coefficient correcteur (0.5-0.8)</li>
+                        <li>IR : Irradiation solaire (kWh/m²/jour)</li>
+                        <li>P<sub>module</sub> : Puissance d'un module (Wc)</li>
+                    </ul>
+                </div>
+            `,
+            keywords: ["nombre panneaux", "calcul panneaux", "dimensionnement champ pv", "panneaux nécessaires"]
+        },
+        {
+            question: "Quels sont les critères pour choisir une pompe solaire ?",
+            answer: `
+                <div class="definition-box">
+                    <strong>Critères de sélection :</strong>
+                    <ul>
+                        <li>HMT nominale ≥ HMT calculée</li>
+                        <li>Débit nominal ≥ besoin horaire (Q/h)</li>
+                        <li>Tension compatible avec le champ PV</li>
+                        <li>Type adapté (immergée/surface selon l'application)</li>
+                        <li>Rendement élevé (>50%)</li>
+                        <li>Technologie adaptée (DC, AC avec onduleur, MPPT)</li>
+                        <li>Robustesse et durée de vie</li>
+                    </ul>
+                </div>
+            `,
+            keywords: ["choix pompe", "critères pompe", "sélection pompe", "pompe adaptée"]
+        }
+    ];
+
+    // Ressources externes
+    const externalResources = {
+        "solaire": [
+            {
+                title: "Global Solar Atlas",
+                url: "https://globalsolaratlas.info",
+                description: "Carte mondiale des ressources solaires"
+            },
+            {
+                title: "Guide ADEME sur le pompage solaire",
+                url: "https://www.ademe.fr",
+                description: "Guide technique complet sur les systèmes de pompage solaire"
+            }
+        ],
+        "pompe": [
+            {
+                title: "Guide de sélection des pompes solaires",
+                url: "https://www.lorentz.de",
+                description: "Critères de choix pour les pompes solaires"
+            },
+            {
+                title: "Comparatif des technologies de pompage",
+                url: "https://www.grundfos.com",
+                description: "Avantages et inconvénients des différentes technologies"
+            }
+        ],
+        "dimensionnement": [
+            {
+                title: "Manuel de dimensionnement solaire",
+                url: "https://www.pvsyst.com",
+                description: "Méthodologie complète de dimensionnement"
+            },
+            {
+                title: "Calculatrice en ligne de dimensionnement",
+                url: "https://www.solar-electric.com",
+                description: "Outil interactif pour estimer vos besoins"
+            }
+        ],
+        "batteries": [
+            {
+                title: "Guide des batteries solaires",
+                url: "https://www.batteryuniversity.com",
+                description: "Comparaison des technologies de stockage"
+            },
+            {
+                title: "Calcul autonomie batteries",
+                url: "https://www.victronenergy.com",
+                description: "Méthode de calcul de l'autonomie"
+            }
+        ]
+    };
+
+    // Fonction pour normaliser le texte (supprimer accents, majuscules, etc.)
+    function normalizeText(text) {
+        return text
+            .toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Supprime les accents
+            .replace(/[^a-z0-9\s]/g, "") // Supprime la ponctuation
+            .replace(/\s+/g, " ") // Réduit les espaces multiples
+            .trim();
+    }
+
+    // Fonction pour trouver la meilleure réponse dans la base de connaissances
+    function findBestResponse(question) {
+        const normalizedQuestion = normalizeText(question);
+        let bestMatch = null;
+        let bestScore = 0;
+        
+        // 1. Vérifier d'abord les questions du quiz
+        for (const q of quizQuestions) {
+            let score = 0;
+            
+            // Vérifier chaque mot-clé
+            for (const keyword of q.keywords) {
+                const normalizedKeyword = normalizeText(keyword);
+                if (normalizedQuestion.includes(normalizedKeyword)) {
+                    score += 1;
+                }
+            }
+            
+            // Garder la meilleure correspondance
+            if (score > bestScore) {
+                bestScore = score;
+                bestMatch = { response: q.answer, isQuiz: true };
+            }
+        }
+        
+        // 2. Si pas de correspondance avec le quiz, chercher dans la base de connaissances générale
+        if (!bestMatch) {
+            for (const key in knowledgeBase) {
+                const entry = knowledgeBase[key];
+                let score = 0;
+                
+                // Vérifier chaque mot-clé
+                for (const keyword of entry.keywords) {
+                    const normalizedKeyword = normalizeText(keyword);
+                    if (normalizedQuestion.includes(normalizedKeyword)) {
+                        score += 1;
+                    }
+                }
+                
+                // Garder la meilleure correspondance
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMatch = { response: entry.response, isQuiz: false };
+                }
+            }
+        }
+        
+        return bestMatch;
+    }
+
+    // Fonction pour trouver des ressources externes pertinentes
+    function findExternalResources(question) {
+        const normalizedQuestion = normalizeText(question);
+        const relevantResources = [];
+        
+        // Vérifier chaque catégorie de ressources
+        for (const category in externalResources) {
+            if (normalizedQuestion.includes(category)) {
+                relevantResources.push(...externalResources[category]);
+            }
+        }
+        
+        // Si aucune ressource spécifique, retourner des ressources générales
+        if (relevantResources.length === 0) {
+            return externalResources["solaire"].concat(externalResources["dimensionnement"]);
+        }
+        
+        return relevantResources;
+    }
+
+    // Fonction pour afficher un message dans l'interface
+    function displayMessage(message, isUser = false) {
+        const messagesContainer = document.getElementById('assistantMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isUser ? 'user-message' : 'assistant-message'}`;
+        messageDiv.innerHTML = message;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Fonction pour afficher l'indicateur de saisie
+    function showTypingIndicator() {
+        const messagesContainer = document.getElementById('assistantMessages');
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message assistant-message typing-indicator';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = `
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+        `;
+        messagesContainer.appendChild(typingDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Fonction pour masquer l'indicateur de saisie
+    function hideTypingIndicator() {
+        const typingIndicator = document.getElementById('typingIndicator');
+        if (typingIndicator) {
+            typingIndicator.remove();
+        }
+    }
+
+    // Fonction pour afficher le quiz
+    function displayQuiz() {
+        let quizHTML = `
+            <div class="quiz-container">
+                <div class="quiz-title">Quiz sur le dimensionnement solaire</div>
+                <div class="definition-box">
+                    Testez vos connaissances avec ces questions fréquentes. Cliquez sur une question pour voir la réponse.
+                </div>
+        `;
+        
+        quizQuestions.forEach((q, index) => {
+            quizHTML += `
+                <div class="quiz-question" onclick="toggleQuizAnswer(${index})">
+                    ${index + 1}. ${q.question}
+                </div>
+                <div class="quiz-answer" id="quizAnswer${index}">
+                    ${q.answer}
+                </div>
+            `;
+        });
+        
+        quizHTML += `</div>`;
+        displayMessage(quizHTML);
+    }
+
+    // Fonction pour basculer l'affichage des réponses du quiz
+    function toggleQuizAnswer(index) {
+        const answer = document.getElementById(`quizAnswer${index}`);
+        answer.classList.toggle('visible');
+    }
+
+    // Fonction pour traiter la question de l'utilisateur
+    function processQuestion(question) {
+        displayMessage(question, true);
+        showTypingIndicator();
+        
+        // Simuler un délai de traitement
+        setTimeout(() => {
+            hideTypingIndicator();
+            
+            // Vérifier si l'utilisateur demande le quiz
+            if (normalizeText(question).includes("quiz")) {
+                displayQuiz();
+                return;
+            }
+            
+            // Chercher une réponse dans la base de connaissances
+            const bestMatch = findBestResponse(question);
+            
+            if (bestMatch) {
+                displayMessage(bestMatch.response);
+                
+                // Si la réponse ne vient pas du quiz, proposer le quiz
+                if (!bestMatch.isQuiz) {
+                    setTimeout(() => {
+                        displayMessage(`
+                            <div class="definition-box">
+                                <strong>Envie d'en savoir plus ?</strong>
+                                <br>Je peux vous proposer un quiz avec des questions fréquentes sur le dimensionnement solaire.
+                                <button class="quiz-btn" onclick="displayQuiz()">Voir le quiz</button>
+                            </div>
+                        `);
+                    }, 1000);
+                }
+            } else {
+                // Si aucune réponse trouvée, chercher des ressources externes
+                const resources = findExternalResources(question);
+                let response = `
+                    <div class="definition-box">
+                        Je n'ai pas trouvé de réponse précise à votre question dans ma base de connaissances.
+                        <br><br>
+                        Voici quelques ressources qui pourraient vous aider :
+                    </div>
+                    <div class="resources-list">
+                        <ul>
+                `;
+                
+                resources.slice(0, 3).forEach(resource => {
+                    response += `
+                        <li>
+                            <a href="${resource.url}" target="_blank">${resource.title}</a>
+                            <br><small>${resource.description}</small>
+                        </li>
+                    `;
+                });
+                
+                response += `
+                        </ul>
+                    </div>
+                    <div class="definition-box">
+                        Vous pouvez aussi essayer de reformuler votre question ou consulter notre quiz de questions fréquentes.
+                        <button class="quiz-btn" onclick="displayQuiz()">Voir le quiz</button>
+                    </div>
+                `;
+                
+                displayMessage(response);
+            }
+        }, 1500);
+    }
+
+    // Initialisation de l'assistant
+    document.addEventListener('DOMContentLoaded', function() {
+        const assistantButton = document.getElementById('assistantButton');
+        const assistantContainer = document.getElementById('assistantContainer');
+        const assistantClose = document.getElementById('assistantClose');
+        const assistantInput = document.getElementById('assistantInput');
+        
+        // Ouvrir/fermer l'assistant
+        assistantButton.addEventListener('click', function() {
+            assistantContainer.classList.toggle('visible');
+            if (assistantContainer.classList.contains('visible')) {
+                assistantInput.focus();
+            }
+        });
+        
+        assistantClose.addEventListener('click', function() {
+            assistantContainer.classList.remove('visible');
+        });
+        
+        // Gestion de la saisie
+        assistantInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && this.value.trim() !== '') {
+                processQuestion(this.value);
+                this.value = '';
+            }
+        });
+        
+        // Message de bienvenue après un court délai
+        setTimeout(() => {
+            displayMessage(`
+                <div class="definition-box">
+                    Voici quelques exemples de questions que vous pouvez me poser :
+                    <ul>
+                        <li>"Qu'est-ce que la HMT ?"</li>
+                        <li>"Comment calculer la puissance d'une pompe ?"</li>
+                        <li>"Quelle formule utiliser pour le nombre de panneaux ?"</li>
+                        <li>"Comment optimiser mon installation solaire ?"</li>
+                    </ul>
+                    <br>
+                    Vous pouvez aussi essayer notre quiz de questions fréquentes :
+                    <button class="quiz-btn" onclick="displayQuiz()">Voir le quiz</button>
+                </div>
+            `);
+        }, 3000);
+    });
+
+    // Exposer les fonctions au scope global pour les boutons
+    window.toggleQuizAnswer = toggleQuizAnswer;
+    window.displayQuiz = displayQuiz;
+
+
+    const retour=document.querySelector('Getback').value;
+retour.addEventListener('click',()=>{
+    window.location.href = "appdimsolirrig.html";
+})
+    // Votre code existant...
+</script>
+</body>
+</html>

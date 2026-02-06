@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <!-- [Vos balises meta et liens CSS existants...] -->
+    
+    <style>
+        /* Styles existants... */
+        
+       
+        /* Ajouts pour le guide utilisateur */
+        .guide-btn {
+            position: fixed;
+            top: 60px;
+            right: 780px;
+            background-color:#2c7d3f;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .guide-btn:hover {
+            background-color: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+            border-top: 1px solid #bdc3c7;
+            padding-top: 20px;
+        }
+
+
+.guide-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 2000;
+            display: none;
+            overflow-y: auto;
+        }
+        
+        .guide-content {
+            background-color: white;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .guide-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #aaa;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        
+        .guide-close:hover {
+            color: #333;
+        }
+        
+        .guide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #27ae60;
+        }
+        
+        .guide-title {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .guide-toc {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        
+        .guide-toc ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        
+        .guide-toc li {
+            margin-bottom: 8px;
+        }
+        
+        .guide-toc a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .guide-toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .guide-section {
+            margin-bottom: 30px;
+        }
+        
+        .guide-section h2 {
+            color: #27ae60;
+            border-left: 5px solid #27ae60;
+            padding-left: 15px;
+            margin-top: 40px;
+            font-size: 22px;
+        }
+        
+        .guide-section h3 {
+            color: #3498db;
+            margin-top: 25px;
+            font-size: 18px;
+        }
+        
+        .guide-steps {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .guide-steps ol {
+            padding-left: 25px;
+        }
+        
+        .guide-steps li {
+            margin-bottom: 10px;
+        }
+        
+        .guide-note {
+            background-color: #fffde7;
+            padding: 15px;
+            border-left: 4px solid #ffd600;
+            margin: 15px 0;
+        }
+        
+        .guide-screenshot {
+            border: 1px solid #ddd;
+            margin: 15px auto;
+            max-width: 100%;
+            display: block;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .guide-screenshot-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+        
+        .guide-print-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 30px auto;
+            display: block;
+            transition: background-color 0.3s;
+        }
+        
+        .guide-print-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        @media print {
+            .guide-popup {
+                position: static;
+                background: none;
+                width: 100%;
+                height: auto;
+                max-height: none;
+            }
+            
+            .guide-content {
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                max-width: 100%;
+                max-height: none;
+            }
+            
+            .guide-close, .guide-btn {
+                display: none;
+            }
+            .guide-print-btn{
+                display: none;
+            }
+        }
+        @page {
+            size: A4;
+            margin: 1.5cm;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- [Votre contenu existant...] -->
+    
+    <!-- Bouton pour ouvrir le guide -->
+    <button class="guide-btn" id="openGuideBtn">
+        <i class="fas fa-book"></i> Voir la documentation
+    </button>
+    
+    <!-- Popup du guide -->
+    <div class="guide-popup" id="guidePopup">
+        <div class="guide-content">
+            <button class="guide-close" id="closeGuideBtn">&times;</button>
+            
+            <div class="guide-header">
+                <h1 class="guide-title">Guide d'Utilisation - Dimensionnement Pompage Solaire PV</h1>
+                <p>Version 1.0 - Avril 2025</p>
+            </div>
+            
+            <div class="guide-toc">
+                <h2>Table des Matières</h2>
+                <ul>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#fonctionnalites">Fonctionnalités</a></li>
+                    <li><a href="#etapes">Étapes de Dimensionnement</a>
+                        <ul>
+                            <li><a href="#besoins-eau">1. Besoins en Eau</a></li>
+                            <li><a href="#hmt">2. Hauteur Manométrique</a></li>
+                            <li><a href="#energie">3. Énergie Requise</a></li>
+                            <li><a href="#pv">4. Champ Photovoltaïque</a></li>
+                            <li><a href="#pompe">5. Choix de la Pompe</a></li>
+                            <li><a href="#rapport">6. Rapport Final</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#conseils">Conseils Pratiques</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="guide-section" id="introduction">
+                <h2>Introduction</h2>
+                <p>Cette application permet de dimensionner un système complet de pompage solaire photovoltaïque pour divers usages (domestique, irrigation, élevage). Le guide suivant explique comment utiliser chaque module de l'application.</p>
+                
+                <div class="guide-note">
+                    <p><strong>Note :</strong> Pour des résultats précis, assurez-vous de disposer des données techniques de votre site (besoins en eau, hauteur de pompage, irradiation solaire locale).</p>
+                </div>
+            </div>
+            
+            <div class="guide-section" id="fonctionnalites">
+                <h2>Fonctionnalités Principales</h2>
+                <p>L'application comprend 6 modules interconnectés :</p>
+                <ul>
+                    <li>Calcul des besoins quotidiens en eau</li>
+                    <li>Détermination de la Hauteur Manométrique Totale (HMT)</li>
+                    <li>Calcul de l'énergie hydraulique et électrique requise</li>
+                    <li>Dimensionnement du champ photovoltaïque</li>
+                    <li>Sélection et vérification des caractéristiques de la pompe</li>
+                    <li>Génération d'un rapport complet</li>
+                </ul>
+                
+                <img src="https://via.placeholder.com/800x400?text=Capture+Ecran+Interface+Principale" alt="Interface principale" class="guide-screenshot">
+                <p class="guide-screenshot-caption">Figure 1 : Interface principale de l'application</p>
+            </div>
+            
+            <div class="guide-section" id="etapes">
+                <h2>Étapes de Dimensionnement</h2>
+                
+                <div id="besoins-eau">
+                    <h3>1. Besoins en Eau</h3>
+                    <p>Déterminez les paramètres de base du système.</p>
+                    
+                    <div class="guide-steps">
+                        <ol>
+                            <li>Sélectionnez l'usage principal de l'eau (domestique, irrigation, élevage)</li>
+                            <li>Entrez le besoin quotidien en eau (en m³/jour)</li>
+                            <li>Indiquez le nombre d'heures d'ensoleillement effectif (généralement 6-8h)</li>
+                            <li>Choisissez le coefficient correcteur K (0.65 par défaut)</li>
+                            <li>Cliquez sur "Suivant" pour passer à l'étape 2</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="guide-note">
+                        <p><strong>Conseil :</strong> Pour l'irrigation, le besoin en eau dépend de la culture, de la superficie et du type de sol. Consultez un agronome si nécessaire.</p>
+                    </div>
+                </div>
+                
+                <div id="hmt">
+                    <h3>2. Hauteur Manométrique Totale (HMT)</h3>
+                    <p>Calculez la hauteur totale que doit vaincre la pompe.</p>
+                    
+                    <div class="guide-steps">
+                        <ol>
+                            <li>Sélectionnez le type de pompe (immergée ou de surface)</li>
+                            <li>Pour une pompe immergée :
+                                <ul>
+                                    <li>Entrez la hauteur de refoulement (Hr)</li>
+                                    <li>Entrez le niveau statique (Nst)</li>
+                                    <li>Entrez le niveau dynamique (Ndy)</li>
+                                </ul>
+                            </li>
+                            <li>Pour une pompe de surface :
+                                <ul>
+                                    <li>Entrez la hauteur de refoulement (Hr)</li>
+                                    <li>Entrez la hauteur d'aspiration (Ha)</li>
+                                </ul>
+                            </li>
+                            <li>Ou saisissez directement la HMT si vous la connaissez</li>
+                            <li>Cliquez sur "Suivant" pour passer à l'étape 3</li>
+                        </ol>
+                    </div>
+                    
+                    <img src="https://via.placeholder.com/800x400?text=Sch%C3%A9ma+HMT" alt="Schéma HMT" class="guide-screenshot">
+                    <p class="guide-screenshot-caption">Figure 2 : Schéma explicatif pour le calcul de la HMT</p>
+                </div>
+                
+                <!-- [Sections pour les autres étapes...] -->
+                
+                <div id="rapport">
+                    <h3>6. Rapport Final</h3>
+                    <p>Générez et exportez un rapport complet avec tous les résultats.</p>
+                    
+                    <div class="guide-steps">
+                        <ol>
+                            <li>Vérifiez que toutes les étapes sont complétées</li>
+                            <li>Consultez le rapport généré automatiquement</li>
+                            <li>Cliquez sur "Imprimer le Rapport" pour l'exporter en PDF</li>
+                            <li>Optionnellement, enregistrez le rapport localement</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="guide-note">
+                        <p><strong>Important :</strong> Le rapport contient toutes les spécifications techniques nécessaires pour l'achat du matériel et l'installation du système.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="guide-section" id="conseils">
+                <h2>Conseils Pratiques</h2>
+                <h3>Choix des panneaux solaires</h3>
+                <p>Privilégiez des panneaux avec :</p>
+                <ul>
+                    <li>Un rendement ≥ 15% pour les installations avec espace limité</li>
+                    <li>Garantie produit ≥ 10 ans et garantie performance ≥ 25 ans</li>
+                    <li>Certification IEC 61215 pour les modules cristallins</li>
+                </ul>
+                
+                <h3>Sélection de la pompe</h3>
+                <p>Vérifiez que :</p>
+                <ul>
+                    <li>La courbe HMT/débit couvre vos besoins</li>
+                    <li>La tension nominale correspond à celle du champ PV</li>
+                    <li>La pompe est compatible avec un démarrage progressif (pour les puissances > 1kW)</li>
+                </ul>
+            </div>
+            
+            <div class="guide-section" id="faq">
+                <h2>Foire Aux Questions</h2>         
+                <h3>Q1: Que faire si ma HMT est très élevée (>100m) ?</h3>
+                <p>Envisagez un système à plusieurs pompes en cascade ou une pompe spéciale haute pression. Consultez un expert.</p>
+                
+                <h3>Q2: Comment tenir compte des jours sans soleil ?</h3>
+                <p>Prévoyez une batterie tampon ou un groupe électrogène de secours pour les applications critiques.</p>
+               
+                <p class="faq-question">Q3: Comment estimer l'irradiation solaire de ma zone ?</p>
+                    <p>Utilisez <a href="https://globalsolaratlas.info" target="_blank">Global Solar Atlas</a> pour obtenir des données précises.</p>
+
+                <p class="faq-question">Q4 : Quelle marge prévoir pour les pertes de charge ?</p>
+                <p>Une marge de 10% est appliquée automatiquement dans le calcul de la HMT.</p>
+                <p class="faq-question">Q5 : Puis-je utiliser l'application sans stockage batterie ?</p>
+                    <p>Oui, sélectionnez "Stockage en eau" dans l'onglet 1.</p>
+                <p class="faq-question">Q6 : Comment choisir entre pompe immergée et surface ?</p>
+            </div>
+                
+                <div class="faq-item">
+                    <p class="faq-question">Q8 : Quelle marge prévoir pour les pertes de charge ?</p>
+                    <p>Une marge de 10% est appliquée automatiquement dans le calcul de la HMT.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <p class="faq-question">Q9 : Puis-je utiliser l'application sans stockage batterie ?</p>
+                    <p>Oui, sélectionnez "Stockage en eau" dans l'onglet 1.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <p class="faq-question">Q10 : Comment choisir entre pompe immergée et surface ?</p>
+                    <ul>
+                        <li>Immergée : Pour les forages profonds (>8m)</li>
+                        <li>Surface : Pour les puits ou cours d'eau peu profonds</li>
+                    </ul>
+                </div>
+                
+                <div class="faq-item">
+                    <h3> . Ressources Externes</h3>
+                    <p class="faq-question">Dimensionnement</p>
+                    <p class="resource-title">PVsyst</p>
+                    <p>Logiciel professionnel de simulation</p>
+                    <a href="https://www.pvsyst.com" class="resource-link" target="_blank">www.pvsyst.com</a>
+                </div>
+                <div class="faq-item">
+                    <p class="faq-question">SUNSLICE</p>
+                    <p>Calcul de panneau solaire et de batterie </p>
+                    <a href="https://sunslice-solar.com" class="resource-link" target="_blank">www.solar-log.com</a>
+                </div>
+                
+                <div class="faq-item">
+                    <p class="faq-question">Battery University</p>
+                    <p>Comparaison des technologies</p>
+                    <a href="https://www.batteryuniversity.com" class="resource-link" target="_blank">www.batteryuniversity.com</a>
+
+                </div>
+                <div class="faq-item">
+                    <p class="faq-question">Lorentz</p>
+                    <p>Spécialiste des pompes solaires</p>
+                    <a href="https://www.lorentz.de" class="resource-link" target="_blank">www.lorentz.de</a>
+                    <h3>Batteries</h3>
+                </div>
+                <div class="faq-item">
+                    <p class="faq-question">Solar-Electric</p>
+                    <p>Calculateur en ligne</p>
+                    <a href="https://www.solar-electric.com" class="resource-link" target="_blank">www.solar-electric.com</a>
+                    <h3>Pompes</h3>
+                </div>
+       
+            <div class="footer">
+                <p>© 2025 ISEP MATAM - Tous droits réservés</p>
+                <p>Document généré le <span id="date"></span></p>
+            </div>
+
+            <button class="guide-print-btn" onclick="window.print()">
+                <i class="fas fa-print"></i> Imprimer ce Guide
+            </button>
+        </div>
+   
+    </div>
+    
+    <!-- [Vos scripts existants...] -->
+    
+    <script>
+        // Gestion du guide utilisateur
+        document.getElementById('openGuideBtn').addEventListener('click', function() {
+            document.getElementById('guidePopup').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        document.getElementById('closeGuideBtn').addEventListener('click', function() {
+            document.getElementById('guidePopup').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Fermer le guide en cliquant à l'extérieur
+        document.getElementById('guidePopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Navigation dans le guide
+        document.querySelectorAll('.guide-toc a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+         // Écouter l'événement afterprint
+         window.addEventListener('afterprint', function() {
+                // Fermer le popup
+        
+                // Rediriger vers la page d'accueil après un court délai
+                setTimeout(function() {
+                    window.location.href = "../appdimsolirrig.html"; // Remplacez par l'URL de votre page d'accueil
+                }, 500);
+            });
+    </script>
+</body>
+</html>

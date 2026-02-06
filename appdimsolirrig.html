@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIMSOLIRRIG - Dimensionnement Solaire et Irrigation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c7d3f;
+            --secondary-color: #f8f9fa;
+            --accent-color: #28a745;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --solar-color: #f39c12;
+            --irrigation-color: #3498db;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo img {
+            height: 60px;
+            width: 60px;
+            margin-right: 15px;
+            border-radius: 50%;
+        }
+        
+        .logo-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        
+        .logo-text p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .app-description {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .main-actions {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            width: 280px;
+            height: 280px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .action-btn i {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+        
+        .action-btn h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .action-btn p {
+            font-size: 1rem;
+            opacity: 0.9;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .solar-btn {
+            background: linear-gradient(135deg, var(--solar-color) 0%, #e67e22 100%);
+        }
+        
+        .irrigation-btn {
+            background: linear-gradient(135deg, var(--irrigation-color) 0%, #2980b9 100%);
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+            padding: 0 15px;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .footer-section p {
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        .about-item {
+            margin-bottom: 10px;
+        }
+        
+        .about-item strong {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .logo-text h1 {
+                font-size: 2rem;
+            }
+            
+            .logo-text p {
+                font-size: 1rem;
+            }
+            
+            .action-btn {
+                width: 240px;
+                height: 240px;
+            }
+            
+            .action-btn i {
+                font-size: 4rem;
+            }
+            
+            .action-btn h2 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .main-actions {
+                gap: 20px;
+            }
+            
+            .action-btn {
+                width: 100%;
+                max-width: 280px;
+                height: auto;
+                padding: 30px 20px;
+            }
+            
+            .footer-section {
+                min-width: 100%;
+            }
+        }
+
+        /* Boutons de guide */
+        .guide-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        .guide-btn {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .guide-btn:hover {
+            background-color: #2ecc71;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .guide-btn.solar {
+            background-color: #f39c12;
+        }
+        
+        .guide-btn.irrigation {
+            background-color: #3498db;
+        }
+        
+        /* Popup de guide */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+        
+        .popup-content {
+            background-color: white;
+            margin: 50px auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #aaa;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        
+        .close-btn:hover {
+            color: #333;
+        }
+        
+        .guide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #27ae60;
+        }
+        
+        .guide-title {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .guide-toc {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        
+        .guide-toc ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        
+        .guide-toc li {
+            margin-bottom: 8px;
+        }
+        
+        .guide-toc a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .guide-toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .guide-section {
+            margin-bottom: 30px;
+        }
+        
+        .guide-section h2 {
+            color: #27ae60;
+            border-left: 5px solid #27ae60;
+            padding-left: 15px;
+            margin-top: 40px;
+            font-size: 22px;
+        }
+        
+        .guide-section h3 {
+            color: #3498db;
+            margin-top: 25px;
+            font-size: 18px;
+        }
+        
+        .guide-steps {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .guide-steps ol {
+            padding-left: 25px;
+        }
+        
+        .guide-steps li {
+            margin-bottom: 10px;
+        }
+        
+        .guide-note {
+            background-color: #fffde7;
+            padding: 15px;
+            border-left: 4px solid #ffd600;
+            margin: 15px 0;
+        }
+        
+        .guide-screenshot {
+            border: 1px solid #ddd;
+            margin: 15px auto;
+            max-width: 100%;
+            display: block;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .guide-screenshot-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+        
+        .guide-print-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 30px auto;
+            display: block;
+            transition: background-color 0.3s;
+        }
+        
+        .guide-print-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .main-content {
+            padding-top: 100px;
+        }
+
+        /* Style pour la modal des conditions */
+#first-use-modal {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#first-use-modal h2 {
+    color: var(--primary-color);
+    text-align: center;
+}
+
+#accept-terms {
+    transform: scale(1.3);
+}
+
+#confirm-terms {
+    transition: all 0.3s;
+    width: 100%;
+}
+
+#confirm-terms:hover {
+    background: var(--dark-color) !important;
+}
+
+#confirm-terms:disabled {
+    background: #cccccc !important;
+    cursor: not-allowed;
+}
+    </style>
+</head>
+<body>
+    <!-- Boutons de guide en haut à droite -->
+     
+    <div class="guide-buttons">
+        <a href="essets/Mode_D'Emploi_solaire.html">  <button class="guide-btn solar" >
+            <i class="fas fa-solar-panel"></i> Guide Dim-Solaire
+        </button> </a>
+        <a href="essets/Mode_D'emploi_irrigation.html">  <button class="guide-btn irrigation" >
+            <i class="fas fa-tint"></i> Guide Dim-Irrigation
+        </button></a>
+    </div>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="images/Solirrig2025-10-23 114308.png" alt="Logo DIMSOLIRRIG" id="app-logo" width="100" height="100">
+                <div class="logo-text">
+                    <h1>DIMSOLIRRIG</h1>
+                    <p>Dimensionnement Solaire et Réseau d'Irrigation sous Pression</p>
+                </div>
+            </div>
+            
+            <div class="app-description">
+                Cette application vous aide à dimensionner un système de pompage solaire et d'un Réseau d'Irrigation sous Pression en fonction de vos besoins en eau et des conditions solaires locales. Elle vous permet également de résoudre des problèmes liés au pompage solaire grâce à des calculs basés sur des formules spécifiques.
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="main-actions">
+            <a href="essets/dimensionnement-solaire.html" class="action-btn solar-btn">
+                <i class="fas fa-solar-panel"></i>
+                <h2>Dimensionnement Solaire</h2>
+                <p>Calcul des besoins énergétiques et dimensionnement du champ photovoltaïque</p>
+            </a>
+            
+            <a href="essets/dimensionnement-irrigation.html" class="action-btn irrigation-btn">
+                <i class="fas fa-tint"></i>
+                <h2>Dimensionnement Irrigation</h2>
+                <p>Calcul des besoins en eau et conception du réseau d'irrigation</p>
+            </a>
+        </div>
+    </div>
+    
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Localisation</h3>
+                <p><i class="fas fa-map-marker-alt"></i> ISEP Matam, Sénégal  <img src="images/logo isep.jpg" alt="Logo DIMSOLIRRIG" id="app-logo" width="50" height="50" style="border-radius: 50%;"></p>
+                <p><i class="fas fa-globe-africa"></i> Zone de couverture: Afrique de l'Ouest</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Réseaux sociaux</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>A propos</h3>
+                <div class="about-item">
+                    <strong>Programmeur:</strong>
+                    <p>Idrissa Bodian a.k.a Papidy From BusyManBusiness</p>
+                </div>
+                <div class="about-item">
+                    <strong> Niveau d'étude</strong>
+                    <p> Licence en management Informatisée des Organisations à L'UASZ</p>
+                </div>
+                <div class="about-item">
+                    <strong>Conceptionneur:</strong>
+                    <p>Dr Thiam</p>
+                    <p>Enseignant à l'ISEP Matam</p>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-envelope"></i> Email: busydeveloperman221@gmail.com</p>
+                <p><i class="fas fa-envelope"></i> i.b@zig.univ.sn</p>
+                <p><i class="fas fa-phone"></i> Tel: 776424169</p>
+            </div>
+        </div>
+        <!-- Ajoutez cette section dans le footer -->
+<div class="footer-section">
+    <h3>Documents officiels</h3>
+    <p>
+        <a href="docs/conditions_utilisation.pdf" download 
+           style="color: white; text-decoration: underline;">
+            <i class="fas fa-file-pdf"></i> Télécharger les conditions d'utilisation (PDF)
+        </a>
+    </p>
+    <p>
+        <a href="docs/politique_confidentialite.pdf" download
+           style="color: white; text-decoration: underline;">
+            <i class="fas fa-file-pdf"></i> Politique de confidentialité
+        </a>
+    </p>
+</div>
+
+<!-- Dans la section copyright du footer -->
+<div class="copyright">
+    &copy; 2025 DIMSOLIRRIG isepmatam. Tous droits réservés.
+    <div id="last-update" style="margin-top: 10px; font-size: 0.8em;">
+        Dernière mise à jour : <span id="update-date"></span>
+    </div>
+</div>
+
+
+    </footer>
+    
+<!-- Ajoutez ce code avant la fermeture du body -->
+<div id="first-use-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 30px; border-radius: 10px; max-width: 600px;">
+        <h2 style="color: var(--primary-color); margin-bottom: 20px;">Conditions d'utilisation</h2>
+        <div style="max-height: 300px; overflow-y: auto; margin-bottom: 20px; border: 1px solid #ddd; padding: 15px;">
+            <!-- Insérez ici le texte des conditions -->
+            <p>Bienvenue dans l'application DIMSOLIRRIG. Avant de commencer, veuillez lire attentivement les conditions d'utilisation suivantes :</p>
+            <p>Cette application est conçue pour vous aider à dimensionner un système de pompage solaire et d'un réseau d'irrigation sous pression. Elle est destinée à un usage éducatif et informatif.</p>
+            <p>Les informations fournies par cette application sont basées sur des calculs théoriques et peuvent ne pas refléter les conditions réelles de votre site. Il est recommandé de consulter un professionnel avant de prendre des décisions basées sur ces résultats.</p>
+            <p>Nous ne sommes pas responsables des erreurs ou omissions dans les informations fournies, ni des conséquences résultant de l'utilisation de cette application.</p>
+            <p>Nous nous réservons le droit de modifier ces conditions d'utilisation à tout moment. Il est de votre responsabilité de consulter régulièrement cette page pour rester informé des éventuelles modifications.</p>
+            <p>En utilisant cette application, vous acceptez de respecter ces conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser cette application.</p>
+            <p>Cette application est la propriété de l'ISEP Matam et est protégée par les lois sur le droit d'auteur. Toute reproduction ou distribution non autorisée de son contenu est interdite.</p>
+            <p>Pour toute question ou préoccupation concernant cette application, veuillez nous contacter à l'adresse suivante :00221 33 966 31 23 / 00221 33 966 31 22.Email:direction@isepmatam.sn
+            <p>En utilisant cette application, vous acceptez :</p>
+            <ul>
+                <li>Les conditions générales d'utilisation</li>
+                <li>La politique de confidentialité</li>
+                <li>Que cette application est propriété de l'ISEP Matam</li>
+            </ul>
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <input type="checkbox" id="accept-terms" style="margin-right: 10px;">
+            <label for="accept-terms">J'accepte les conditions d'utilisation</label>
+        </div>
+        <button id="confirm-terms" disabled style="background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+            Continuer vers l'application
+        </button>
+    </div>
+</div>
+
+<script>
+// la date actuelle
+    // la date de la dernière mise à jour
+    document.getElementById('last-update').textContent = 'Dernière mise à jour : ' + new Date().toLocaleDateString('fr-FR');
+document.getElementById('update-date').textContent = new Date().toLocaleDateString('fr-FR');
+    // Gestion de la modal
+    document.addEventListener('DOMContentLoaded', function() {
+        if(!localStorage.getItem('termsAccepted')) {
+            document.getElementById('first-use-modal').style.display = 'flex';
+            
+            document.getElementById('accept-terms').addEventListener('change', function() {
+                document.getElementById('confirm-terms').disabled = !this.checked;
+            });
+            
+            document.getElementById('confirm-terms').addEventListener('click', function() {
+                localStorage.setItem('termsAccepted', 'true');
+                document.getElementById('first-use-modal').style.display = 'none';
+            });
+        }
+    });
+</script>
+
+    <script>
+        // Gestion des popups de guide
+        document.getElementById('openSolarGuideBtn').addEventListener('click', function() {
+            document.getElementById('solarGuidePopup').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        document.getElementById('closeSolarGuideBtn').addEventListener('click', function() {
+            document.getElementById('solarGuidePopup').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        document.getElementById('openIrrigationGuideBtn').addEventListener('click', function() {
+            document.getElementById('irrigationGuidePopup').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        document.getElementById('closeIrrigationGuideBtn').addEventListener('click', function() {
+            document.getElementById('irrigationGuidePopup').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Fermer les popups en cliquant à l'extérieur
+        document.getElementById('solarGuidePopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        document.getElementById('irrigationGuidePopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Navigation dans les guides
+        document.querySelectorAll('.guide-toc a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

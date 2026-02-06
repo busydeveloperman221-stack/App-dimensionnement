@@ -1,0 +1,3591 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dimensionnement Réseau d'Irrigation - ISEP MATAM</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"> 
+    <style>
+        :root {
+            --primary-color: #2c7d3f;
+            --secondary-color: #f8f9fa;
+            --accent-color: #28a745;
+            --text-color: #333;
+            --light-gray: #e9ecef;
+            --dark-gray: #6c757d;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color:rgba(0, 191, 255, 0.5);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 90px;
+            width: 90px;
+            margin-right: 15px;
+            border-radius: 50%;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            color: var(--primary-color);
+        }
+        
+        .logo-text p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: var(--light-gray);
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            background-color: white;
+            padding: 25px;
+            border-radius: 5px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #1e6b32;
+        }
+        
+        .btn-print {
+            background-color: var(--dark-gray);
+            margin-left: 10px;
+        }
+        
+        .btn-print:hover {
+            background-color: #5a6268;
+        }
+        
+        .result-section {
+            background-color: var(--secondary-color);
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .result-item {
+            margin-bottom: 10px;
+        }
+        
+        .result-label {
+            font-weight: 600;
+            display: inline-block;
+            width: 250px;
+        }
+        
+        .report {
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .report-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 20px;
+        }
+        
+        .report-title {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .report-subtitle {
+            color: var(--dark-gray);
+            font-weight: normal;
+        }
+        
+        .report-logo {
+            height: 80px;
+            margin-bottom: 15px;
+        }
+        
+        .report-section {
+            margin-bottom: 25px;
+        }
+        
+        .report-section-title {
+            background-color: var(--light-gray);
+            padding: 8px 15px;
+            color: var(--primary-color);
+            font-weight: 600;
+            border-left: 4px solid var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .report-row {
+            display: flex;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .report-label {
+            font-weight: 600;
+            width: 300px;
+        }
+        
+        .signature-area {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .signature-box {
+            width: 45%;
+            text-align: center;
+        }
+        
+        .signature-line {
+            border-top: 1px solid #333;
+            margin-top: 60px;
+            padding-top: 5px;
+        }
+        @media print {
+    body * {
+        visibility: hidden;
+    }
+    
+    .report, .report * {
+        visibility: visible;
+    }
+    
+    .report {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none;
+    }
+    
+    .no-print {
+        display: none;
+    }
+    
+    /* Styles spécifiques pour les éléments du schéma */
+    #irrigation-schema, #irrigation-schema * {
+        visibility: visible !important;
+    }
+    
+    .schema-element {
+        border-style: solid !important; /* Remplacer les pointillés par des traits pleins */
+    }
+    
+    .schema-label {
+        background-color: rgba(255,255,255,0.9) !important;
+        border: 1px solid #ccc !important;
+    }
+    
+    .signature-line {
+        border-top: 1px solid #333 !important;
+    }
+    
+    .report-footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        visibility: visible !important;
+    }
+    
+    .signature-area {
+        visibility: visible !important;
+        page-break-inside: avoid;
+    }
+}
+       
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .two-columns {
+            column-count: 2;
+            column-gap: 30px;
+        }
+        
+        .info-box {
+            background-color: #e7f4e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+   /* Style du bouton Pro */
+   .pro-btn {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1e6b32 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   color: var(--accent-color);
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.pro-btn:hover {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.pro-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.pro-btn:hover::before {
+    opacity: 1;
+}
+
+/* Animation pulsante */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+.pro-btn i {
+    font-size: 12px;
+    color: var(--accent-color);
+}
+.pro-btn.pulse {
+    animation: pulse 2s infinite;
+
+}   
+
+.converter-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-group input, 
+.input-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.btn {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.btn.secondary {
+    background-color: #f44336;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+#result-container {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e8f5e9;
+    border-radius: 4px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Style du bouton */
+.converter-toggle-btn {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px;
+  transition: background-color 0.3s;
+}
+
+.converter-toggle-btn:hover {
+  background-color: #45a049;
+}
+
+/* Style du popup */
+.converter-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.converter-popup.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.converter-popup:not(.hidden) {
+  opacity: 1;
+  visibility: visible;
+}
+
+.converter-popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.close-popup {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.3s;
+}
+
+.close-popup:hover {
+  color: #f44336;
+}
+
+/* Styles existants du convertisseur */
+.converter-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.input-group input, 
+.input-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.btn {
+  padding: 10px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.btn.secondary {
+  background-color: #f44336;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+#result-container {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #e8f5e9;
+  border-radius: 4px;
+}
+
+.hidden {
+  display: none;
+}
+
+
+.schema-container {
+    margin-top: 30px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#irrigation-schema {
+    width: 100%;
+    height: 500px;
+    background-color: #f9f9f9;
+    position: relative;
+    overflow: auto;
+}
+
+.schema-element {
+    position: absolute;
+    font-size: 12px;
+    text-align: center;
+}
+
+.ligne-principale {
+    background-color: #2c7d3f;
+    height: 8px;
+    z-index: 10;
+}
+
+.ligne-secondaire {
+    background-color: #28a745;
+    height: 6px;
+    z-index: 9;
+}
+
+.porte-rampe {
+    background-color: #6c757d;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    z-index: 8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+.rampe {
+    background-color: #17a2b8;
+    height: 4px;
+    z-index: 7;
+}
+
+.station-controle {
+    background-color: #dc3545;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    z-index: 11;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+.vanne {
+    background-color: #ffc107;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    z-index: 12;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    font-weight: bold;
+    font-size: 8px;
+}
+
+.bordure-terrain {
+    border: 3px dashed #333;
+    position: absolute;
+    z-index: 5;
+}
+
+.bordure-secteur {
+    border: 2px dashed #6c757d;
+    position: absolute;
+    z-index: 6;
+}
+
+.bordure-sous-secteur {
+    border: 1px dashed #adb5bd;
+    position: absolute;
+    z-index: 5;
+}
+
+.schema-controls {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.schema-legend {
+    display: flex;
+    margin-top: 15px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    font-size: 12px;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    border: 1px solid #ddd;
+}
+
+.schema-label {
+    position: absolute;
+    font-size: 10px;
+    font-weight: bold;
+    z-index: 20;
+    background-color: rgba(255,255,255,0.8);
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+
+@media print {
+    #irrigation-schema {
+        height: auto;
+        min-height: 400px;
+        overflow: visible;
+    }
+    
+    .schema-element {
+        position: absolute;
+        font-size: 10px !important;
+    }
+    
+    .no-print-schema {
+        display: none;
+    }
+}
+
+.schema-legend-print {
+    border-left: 3px solid var(--primary-color);
+    padding-left: 15px;
+    margin-left: 20px;
+    font-size: 14px;
+}
+.schema-legend-print h4 {
+    color: var(--primary-color);
+    margin-top: 0;
+}
+.schema-legend-print p {
+    margin: 8px 0;
+}
+
+.schema-legend-print {
+    border-left: 3px solid var(--primary-color);
+    padding-left: 15px;
+    margin-left: 20px;
+    font-size: 14px;
+    page-break-inside: avoid;
+}
+
+.schema-legend-print h4 {
+    color: var(--primary-color);
+    margin-top: 0;
+}
+
+.schema-legend-print p {
+    margin: 8px 0;
+}
+
+
+
+
+
+@media print {
+    /* ... autres règles existantes ... */
+
+    /* Ajoutez ces nouvelles règles */
+    .report-footer {
+        position: fixed;
+        bottom: 0;
+        right: 0; /* Aligner à droite */
+        width: auto;
+        text-align: right; /* Texte aligné à droite */
+        padding: 10px 20px;
+    }
+
+    .signature-area {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 50px;
+        page-break-before: avoid;
+        page-break-inside: avoid;
+    }
+
+    .report-section:last-child {
+        margin-bottom: 150px; /* Espace avant les signatures */
+    }
+}
+
+.scroll-top-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.scroll-top-btn.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-top-btn:hover {
+    background-color: #1e6b32;
+    transform: translateY(-3px);
+}
+
+.legend-item {
+    counter-increment: legend-counter; /* Compteur automatique */
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 8px;
+}
+.legend-item::before {
+    content: counter(legend-counter) ".";
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.scroll-top-btn i {
+    display: block;
+    line-height: 50px;
+}
+
+/* Style pour les popups personnalisés */
+.custom-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.custom-popup.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.custom-popup-content {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    position: relative;
+    animation: popupFadeIn 0.3s ease;
+}
+
+@keyframes popupFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.custom-popup-title {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.custom-popup-message {
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.custom-popup-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #7f8c8d;
+    transition: color 0.3s;
+}
+
+.custom-popup-close:hover {
+    color: var(--accent-color);
+}
+
+.custom-popup-btn {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.custom-popup-btn:hover {
+    background-color: #2980b9;
+}
+</style>
+</head>
+<body>
+    
+    <!-- Bouton pour ouvrir le convertisseur -->
+<button id="open-converter" class="converter-toggle-btn">Ouvrir le Convertisseur</button>
+
+<!-- Popup du convertisseur (initialement caché) -->
+<div id="converter-popup" class="converter-popup hidden">
+  <div class="converter-popup-content">
+    <span class="close-popup">&times;</span>
+    
+    <!-- Votre convertisseur existant -->
+    <section id="section-convert">
+      <h1>Convertisseur d'unités</h1>
+      
+      <div class="converter-container">
+        <div class="input-group">
+          <label for="value">Entrez un nombre :</label>
+          <input type="number" id="value" placeholder="Nombre" step="any" required>
+        </div>
+        
+        <div class="input-group">
+          <label for="from-unit">Unité source :</label>
+          <select id="from-unit" class="unit-select" required>
+            <option value="">-- Sélectionnez --</option>
+            <option value="l">Litres (L)</option>
+            <option value="m3">Mètres cubes (m³)</option>
+            <option value="ha">Hectare (ha)</option>
+            <option value="mm3">Millimètre cube (mm³)</option>
+            <option value="m2">Mètres carré (m²)</option>
+          </select>
+        </div>
+        
+        <div class="input-group">
+          <label for="to-unit">Unité cible :</label>
+          <select id="to-unit" class="unit-select" required>
+            <option value="">-- Sélectionnez --</option>
+          </select>
+        </div>
+        
+        <button id="convert-btn" class="btn">Convertir</button>
+        <button id="reset-btn" class="btn secondary">Réinitialiser</button>
+        
+        <div id="result-container" class="hidden">
+          <h3>Résultat :</h3>
+          <p id="result"></p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+
+    <a href="../appdimsolirrig.html" class="pro-btn pulse" title="Retour à l'accueil" id="Getback">
+        <i class="fas fa-home" style="color: white;"></i>
+    </a>  
+    
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <img src="../images/Solirrig2025-10-23 114308.png" alt="ISEP MATAM Logo" id="app-logo">
+                <div class="logo-text">
+                    <h1>Dimensionnement Réseau d'Irrigation</h1>
+                    <p>ISEP MATAM - Outil professionnel de conception</p>
+                </div>
+            </div>
+        
+        </div>
+        
+    </header>
+    
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" data-tab="besoins">1. Besoins en eau</div>
+            <div class="tab" data-tab="sol">2. Analyse du sol</div>
+            <div class="tab" data-tab="conception">3. Conception réseau</div>
+            <div class="tab" data-tab="materiel">4. Sélection matériel</div>
+            <div class="tab" data-tab="pompe">5. Dimensionnement pompe</div>
+            <div class="tab" data-tab="resultat">Résultats</div>
+            
+        </div>
+        
+        <!-- Onglet Besoins en eau -->
+        <div id="besoins" class="tab-content active">
+            <h2>Calcul des besoins en eau des cultures</h2>
+            
+            <div class="info-box">
+                <p>Cette section permet de calculer les besoins en eau des cultures en fonction du climat, du type de culture et de son stade de croissance.</p>
+            </div>
+            
+            <div class="grid-container">
+                <div>
+                    <div class="form-group">
+                        <label for="localite">Localité</label>
+                        <select id="localite" class="form-control">
+                            <option value="">Sélectionnez une localité</option>
+                            <option value="1.41">Podor</option>
+                            <option value="1.4">Guédé</option>
+                            <option value="1.3">Dagana</option>
+                            <option value="1.3">Richard-Toll</option>
+                            <option value="1.15">Matam</option>
+                            <option value="1">Bambey</option>
+                            <option value="0.8">Dakar</option>
+                            <option value="0.77">Mbour</option>
+                            <option value="0.64">Ziguinchor</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="saison">Saison</label>
+                        <select id="saison" class="form-control">
+                            <option value="0.66">Saison sèche (novembre - mai)</option>
+                            <option value="0.78">Saison des pluies (juin - octobre)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mois">Mois de pointe</label>
+                        <select id="mois" class="form-control">
+                            <option value="9.6">Avril (1ère décade)</option>
+                            <option value="8.63">Février (2ème décade)</option>
+                            <option value="8.21">Janvier (1ère décade)</option>
+                            <option value="11.11">Mai (1ère décade)</option>
+                            <option value="10.61">Juin (2ème décade)</option>
+                            <option value="5.4">Octobre (2ème décade)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="form-group">
+                        <label for="culture">Type de culture</label>
+                        <select id="culture" class="form-control">
+                            <option value="1.1">Légumes à feuilles (salade, choux...)</option>
+                            <option value="1.1">Légumes à fruits (haricot vert, gombo...)</option>
+                            <option value="1.25">Tomate</option>
+                            <option value="1">Papayer</option>
+                            <option value="1.1">Bananier</option>
+                            <option value="0.8">Manguier et agrumes</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="systeme">Système d'irrigation</label>
+                        <select id="systeme" class="form-control">
+                            <option value="0.4">Réseau de canal en terre, irrigation de surface (Ea=40-50%)</option>
+                            <option value="0.5">Réseau de canal revêtu, irrigation de surface (Ea=50-60%)</option>
+                            <option value="0.7">Réseau de conduites sous pression, irrigation de surface (Ea=65-75%)</option>
+                            <option value="0.75">Systèmes d'aspersion basse et moyenne pression (Ea=70-75%)</option>
+                            <option value="0.8">Micro-asperseurs, micro-jets, mini-asperseurs (Ea=75-85%)</option>
+                            <option value="0.9" selected>Irrigation goutte-à-goutte (Ea=80-90%)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="superficie">Superficie à irriguer (ha)</label>
+                        <input type="number" id="superficie" step="0.01" min="0" class="form-control" value="1">
+                    </div>
+                </div>
+            </div>
+            
+            <button id="calc-besoins" class="btn btn-primary">Calculer les besoins</button>
+            
+            <div id="result-besoins" class="result-section" style="display: none;">
+                <h3>Résultats - Besoins en eau</h3>
+                <div class="result-item"><span class="result-label">Evaporation Bac Classe A (mm/j):</span> <span id="ev-bac">-</span></div>
+                <div class="result-item"><span class="result-label">ETP (mm/j):</span> <span id="etp">-</span></div>
+                <div class="result-item"><span class="result-label">Coefficient cultural (Kc):</span> <span id="kc">-</span></div>
+                <div class="result-item"><span class="result-label">Dose d'irrigation (mm/j):</span> <span id="dose-irrigation">-</span></div>
+                <div class="result-item"><span class="result-label">Efficience d'application (Ea):</span> <span id="efficience">-</span></div>
+                <div class="result-item"><span class="result-label">Dose pratique (mm/j):</span> <span id="dose-pratique">-</span></div>
+                <div class="result-item"><span class="result-label">Besoins quotidiens (m³/j):</span> <span id="besoins-quotidiens">-</span></div>
+            </div>
+        </div>
+        
+        <!-- Onglet Analyse du sol -->
+        <div id="sol" class="tab-content">
+            <h2>Analyse physique du sol</h2>
+            
+            <div class="info-box">
+                <p>Cette section permet de déterminer la texture du sol selon la méthode du toucher de la FAO ou la méthode de sédimentation.</p>
+            </div>
+            
+            <div class="two-columns">
+                <div>
+                    <h3>Méthode du toucher</h3>
+                    <div class="form-group">
+                        <label for="test-boule">1. Peut-on former une boule de 3 cm de diamètre ?</label>
+                        <select id="test-boule" class="form-control">
+                            <option value="non">Non - Sable</option>
+                            <option value="oui">Oui</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="test-saucisse">2. Peut-on former une saucisse de 6-7 cm ?</label>
+                        <select id="test-saucisse" class="form-control" disabled>
+                            <option value="non">Non - Sable limoneux</option>
+                            <option value="oui">Oui</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="test-crayon">3. Peut-on former un crayon de 15-16 cm ?</label>
+                        <select id="test-crayon" class="form-control" disabled>
+                            <option value="non">Non - Limon sableux</option>
+                            <option value="oui">Oui</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="test-demi-cercle">4. Peut-on former un demi-cercle ?</label>
+                        <select id="test-demi-cercle" class="form-control" disabled>
+                            <option value="non">Non - Limon</option>
+                            <option value="oui">Oui</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="test-cercle">5. Peut-on former un cercle complet ?</label>
+                        <select id="test-cercle" class="form-control" disabled>
+                            <option value="non">Non - Limon fin/très fin</option>
+                            <option value="fissure">Oui avec fissures - Limon argileux/Argile limoneuse</option>
+                            <option value="sans-fissure">Oui sans fissures - Argile</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>Méthode de sédimentation</h3>
+                    <div class="form-group">
+                        <label for="argile">Hauteur de la couche d'argile (cm)</label>
+                        <input type="number" id="argile" step="0.1" min="0" class="form-control" value="0.8">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="limon">Hauteur de la couche de limon (cm)</label>
+                        <input type="number" id="limon" step="0.1" min="0" class="form-control" value="1.5">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sable">Hauteur de la couche de sable (cm)</label>
+                        <input type="number" id="sable" step="0.1" min="0" class="form-control" value="4.5">
+                    </div>
+                    
+                    <button id="calc-texture" class="btn btn-primary">Déterminer la texture</button>
+                    
+                    <div id="result-texture" class="result-section" style="display: none; margin-top: 20px;">
+                        <h3>Résultats - Texture du sol</h3>
+                        <div class="result-item"><span class="result-label">Méthode du toucher:</span> <span id="texture-toucher">-</span></div>
+                        <div class="result-item"><span class="result-label">Méthode de sédimentation:</span> <span id="texture-sed">-</span></div>
+                        <div class="result-item"><span class="result-label">% Argile:</span> <span id="pct-argile">-</span></div>
+                        <div class="result-item"><span class="result-label">% Limon:</span> <span id="pct-limon">-</span></div>
+                        <div class="result-item"><span class="result-label">% Sable:</span> <span id="pct-sable">-</span></div>
+                        <div class="result-item"><span class="result-label">Texture déterminée:</span> <span id="texture-finale">-</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Onglet Conception réseau -->
+        <div id="conception" class="tab-content">
+            <h2>Conception du réseau d'irrigation</h2>
+            
+            <div class="info-box">
+                <p>Cette section permet de déterminer les paramètres clés du réseau d'irrigation en fonction du système choisi.</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="systeme-irrigation">Système d'irrigation</label>
+                <select id="systeme-irrigation" class="form-control">
+                    <option value="goutte-goutte">Goutte à goutte</option>
+                    <option value="aspersion">Aspersion</option>
+                    <option value="micro-aspersion">Micro-aspersion</option>
+                    <option value="laser-spray">Laser spray</option>
+                </select>
+            </div>
+            
+            <div id="param-goutte-goutte" class="system-params">
+                <div class="grid-container">
+                    <div>
+                        <div class="form-group">
+                            <label for="type-goutteur">Type de gaine</label>
+                            <select id="type-goutteur" class="form-control">
+                                <option value="derive">Gaine avec goutteurs en dérivation (arboriculture)</option>
+                                <option value="incorpore">Gaine avec goutteurs incorporés (maraîchage)</option>
+                            </select>
+                        </div>
+                        
+                        <div id="param-derive">
+                            <div class="form-group">
+                                <label for="nbr-pieds">Nombre de pieds</label>
+                                <input type="number" id="nbr-pieds" min="1" class="form-control" value="100">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="nbr-goutteurs">Nombre de goutteurs par pied</label>
+                                <input type="number" id="nbr-goutteurs" min="1" class="form-control" value="2">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="debit-goutteur">Débit du goutteur (l/h)</label>
+                                <input type="number" id="debit-goutteur" step="0.01" min="0" class="form-control" value="1.6">
+                            </div>
+                        </div>
+                        
+                        <div id="param-incorpore" style="display: none;">
+                            <div class="form-group">
+                                <label for="ecart-rampes">Ecartement entre rampes (m)</label>
+                                <input type="number" id="ecart-rampes" step="0.1" min="0" class="form-control" value="1.5">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="ecart-goutteurs">Ecartement entre goutteurs (m)</label>
+                                <input type="number" id="ecart-goutteurs" step="0.1" min="0" class="form-control" value="0.3">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="debit-goutteur-inc">Débit du goutteur (l/h)</label>
+                                <input type="number" id="debit-goutteur-inc" step="0.01" min="0" class="form-control" value="1.6">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label for="debit-forage">Débit du forage (m³/h)</label>
+                            <input type="number" id="debit-forage" step="0.1" min="0" class="form-control" value="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="superficie-irrig">Superficie à irriguer (ha)</label>
+                            <input type="number" id="superficie-irrig" step="0.01" min="0" class="form-control" value="1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="temps-irrig-jour">Temps d'irrigation journalier (h)</label>
+                            <input type="number" id="temps-irrig-jour" step="0.5" min="0" class="form-control" value="8">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="param-aspersion" class="system-params" style="display: none;">
+                <div class="grid-container">
+                    <div>
+                        <div class="form-group">
+                            <label for="disposition-asp">Disposition des asperseurs</label>
+                            <select id="disposition-asp" class="form-control">
+                                <option value="rectangulaire">Rectangulaire</option>
+                                <option value="triangle">En triangle</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="portee-asperseur">Portée de l'asperseur (m)</label>
+                            <input type="number" id="portee-asperseur" step="0.1" min="0" class="form-control" value="12">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="debit-asperseur">Débit de l'asperseur (m³/h)</label>
+                            <input type="number" id="debit-asperseur" step="0.1" min="0" class="form-control" value="1.8">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label for="debit-forage-asp">Débit du forage (m³/h)</label>
+                            <input type="number" id="debit-forage-asp" step="0.1" min="0" class="form-control" value="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="superficie-irrig-asp">Superficie à irriguer (ha)</label>
+                            <input type="number" id="superficie-irrig-asp" step="0.01" min="0" class="form-control" value="1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pression-asp">Pression de fonctionnement (bar)</label>
+                            <input type="number" id="pression-asp" step="0.1" min="0" class="form-control" value="3.5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="param-micro-aspersion" class="system-params" style="display: none;">
+                <div class="grid-container">
+                    <div>
+                        <div class="form-group">
+                            <label for="nbr-pieds-micro">Nombre de pieds</label>
+                            <input type="number" id="nbr-pieds-micro" min="1" class="form-control" value="100">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="nbr-micro">Nombre de micro-asperseurs par pied</label>
+                            <input type="number" id="nbr-micro" min="1" class="form-control" value="1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="debit-micro">Débit du micro-asperseur (l/h)</label>
+                            <input type="number" id="debit-micro" step="1" min="0" class="form-control" value="270">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label for="debit-forage-micro">Débit du forage (m³/h)</label>
+                            <input type="number" id="debit-forage-micro" step="0.1" min="0" class="form-control" value="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="superficie-irrig-micro">Superficie à irriguer (ha)</label>
+                            <input type="number" id="superficie-irrig-micro" step="0.01" min="0" class="form-control" value="1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pression-micro">Pression de fonctionnement (bar)</label>
+                            <input type="number" id="pression-micro" step="0.1" min="0" class="form-control" value="3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="param-laser-spray" class="system-params" style="display: none;">
+                <div class="grid-container">
+                    <div>
+                        <div class="form-group">
+                            <label for="diametre-laser">Diamètre de la rampe laser spray</label>
+                            <select id="diametre-laser" class="form-control">
+                                <option value="20">20 mm</option>
+                                <option value="32">32 mm</option>
+                                <option value="40">40 mm</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="debit-laser">Débit en l/h/m</label>
+                            <input type="number" id="debit-laser" step="1" min="0" class="form-control" value="44">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ecart-rampes-laser">Ecartement entre rampes (m)</label>
+                            <input type="number" id="ecart-rampes-laser" step="0.1" min="0" class="form-control" value="7">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label for="debit-forage-laser">Débit du forage (m³/h)</label>
+                            <input type="number" id="debit-forage-laser" step="0.1" min="0" class="form-control" value="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="superficie-irrig-laser">Superficie à irriguer (ha)</label>
+                            <input type="number" id="superficie-irrig-laser" step="0.01" min="0" class="form-control" value="1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pression-laser">Pression de fonctionnement (bar)</label>
+                            <input type="number" id="pression-laser" step="0.1" min="0" class="form-control" value="0.7">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="schema-container">
+                <h3>Schéma du réseau d'irrigation</h3>
+                <div id="irrigation-schema"></div>
+                
+                <div class="schema-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #2c7d3f;"></div>
+                        <span>Ligne principale</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #28a745;"></div>
+                        <span>Ligne secondaire</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #6c757d;"></div>
+                        <span>Porte-rampe</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #17a2b8;"></div>
+                        <span>Rampe</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #dc3545;"></div>
+                        <span>Station</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #ffc107;"></div>
+                        <span>Vanne</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="border: 2px solid #333;"></div>
+                        <span>Terrain</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="border: 2px solid #6c757d;"></div>
+                        <span>Secteur</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="border: 1px solid #adb5bd;"></div>
+                        <span>Sous-secteur</span>
+                    </div>
+
+                  
+                </div>
+                
+                <div class="schema-controls">
+                    <button id="generate-schema" class="btn btn-primary">Générer le schéma</button>
+                    <button id="zoom-in" class="btn btn-secondary">Zoom +</button>
+                    <button id="zoom-out" class="btn btn-secondary">Zoom -</button>
+                    <button id="reset-view" class="btn btn-secondary">Réinitialiser</button>
+                    <button id="export-schema" class="btn btn-secondary no-print-schema">Exporter vers rapport</button>
+                </div>
+            </div>
+
+            <button id="calc-reseau" class="btn btn-primary">Calculer les paramètres du réseau</button>
+            
+            <div id="result-reseau" class="result-section" style="display: none;">
+                <h3>Résultats - Conception du réseau</h3>
+                <div class="result-item"><span class="result-label">Surface maximale irrigable (ha/j):</span> <span id="surface-irrigable">-</span></div>
+                <div class="result-item"><span class="result-label">Nombre de secteurs d'irrigation:</span> <span id="nbr-secteurs">-</span></div>
+                <div class="result-item"><span class="result-label">Surface d'un secteur (ha):</span> <span id="surface-secteur">-</span></div>
+                <div class="result-item"><span class="result-label">Débit du système (m³/h):</span> <span id="debit-systeme">-</span></div>
+                <div class="result-item"><span class="result-label">Pluviométrie horaire (mm/h):</span> <span id="pluviometrie">-</span></div>
+                <div class="result-item"><span class="result-label">Durée d'irrigation par secteur (h):</span> <span id="duree-irrig-secteur">-</span></div>
+                <div id="result-maillage" class="result-item"><span class="result-label">Maillage (m x m):</span> <span id="maillage">-</span></div>
+                <div id="result-longueur-rampe" class="result-item"><span class="result-label">Longueur maximale des rampes (m):</span> <span id="longueur-rampe">-</span></div>
+            </div>
+
+        </div>
+        
+        <!-- Onglet Sélection matériel -->
+        <div id="materiel" class="tab-content">
+            <h2>Sélection des équipements</h2>
+            
+            <div class="info-box">
+                <p>Cette section permet de sélectionner les équipements appropriés pour le réseau d'irrigation.</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="type-emetteur">Type d'émetteur</label>
+                <select id="type-emetteur" class="form-control">
+                    <option value="goutteur">Goutteur</option>
+                    <option value="asperseur">Asperseur</option>
+                    <option value="micro-asperseur">Micro-asperseur</option>
+                    <option value="laser">Laser spray</option>
+                </select>
+            </div>
+            
+            <div id="selection-goutteur" class="selection-emetteur">
+                <h3>Sélection des goutteurs</h3>
+                <div class="grid-container">
+                    <div>
+                        <div class="form-group">
+                            <label for="marque-goutteur">Marque</label>
+                            <select id="marque-goutteur" class="form-control">
+                                <option value="rivulis">Rivulis</option>
+                                <option value="netafim">Nétafim</option>
+                                <option value="naandanjain">Naandanjain</option>
+                            </select>
+                        </div>
+                        
+                        <div id="param-rivulis" class="param-marque">
+                            <div class="form-group">
+                                <label for="debit-goutteur-riv">Débit nominal (l/h)</label>
+                                <select id="debit-goutteur-riv" class="form-control">
+                                    <option value="0.25">0.25 l/h @ 0.55 bar</option>
+                                    <option value="0.33">0.33 l/h @ 0.55 bar</option>
+                                    <option value="0.5">0.50 l/h @ 0.55 bar</option>
+                                    <option value="0.75">0.75 l/h @ 0.55 bar</option>
+                                    <option value="1.0" selected>1.00 l/h @ 0.55 bar</option>
+                                    <option value="1.25">1.25 l/h @ 0.55 bar</option>
+                                    <option value="2.0">2.00 l/h @ 0.55 bar</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pression-goutteur-riv">Pression de fonctionnement (bar)</label>
+                                <select id="pression-goutteur-riv" class="form-control">
+                                    <option value="0.55">0.55 bar</option>
+                                    <option value="0.8">0.80 bar</option>
+                                    <option value="1.0">1.00 bar</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="param-netafim" class="param-marque" style="display: none;">
+                            <div class="form-group">
+                                <label for="debit-goutteur-net">Débit nominal (l/h)</label>
+                                <select id="debit-goutteur-net" class="form-control">
+                                    <option value="0.5">0.50 l/h</option>
+                                    <option value="0.7">0.70 l/h</option>
+                                    <option value="1.0" selected>1.00 l/h</option>
+                                    <option value="1.6">1.60 l/h</option>
+                                    <option value="2.2">2.20 l/h</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="espacement-goutteur-net">Espacement entre goutteurs (m)</label>
+                                <select id="espacement-goutteur-net" class="form-control">
+                                    <option value="0.15">0.15 m</option>
+                                    <option value="0.2">0.20 m</option>
+                                    <option value="0.25">0.25 m</option>
+                                    <option value="0.3" selected>0.30 m</option>
+                                    <option value="0.35">0.35 m</option>
+                                    <option value="0.4">0.40 m</option>
+                                    <option value="0.5">0.50 m</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="param-naandanjain" class="param-marque" style="display: none;">
+                            <div class="form-group">
+                                <label for="debit-goutteur-naan">Débit nominal (l/h)</label>
+                                <select id="debit-goutteur-naan" class="form-control">
+                                    <option value="2">2 l/h @ 1.0 bar</option>
+                                    <option value="4">4 l/h @ 1.0 bar</option>
+                                    <option value="8" selected>8 l/h @ 1.0 bar</option>
+                                    <option value="14">14 l/h @ 1.0 bar</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pression-goutteur-naan">Pression de fonctionnement (bar)</label>
+                                <select id="pression-goutteur-naan" class="form-control">
+                                    <option value="0.5">0.5 bar</option>
+                                    <option value="1.0" selected>1.0 bar</option>
+                                    <option value="1.5">1.5 bar</option>
+                                    <option value="2.0">2.0 bar</option>
+                                    <option value="2.5">2.5 bar</option>
+                                    <option value="3.0">3.0 bar</option>
+                                    <option value="3.5">3.5 bar</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label for="diametre-rampe">Diamètre de la rampe</label>
+                            <select id="diametre-rampe" class="form-control">
+                                <option value="16">16 mm</option>
+                                <option value="20">20 mm</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pression-rampe">Pression à l'entrée de rampe (bar)</label>
+                            <select id="pression-rampe" class="form-control">
+                                <option value="1">1 bar</option>
+                                <option value="3" selected>3 bar</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="longueur-rampe-select">Longueur de rampe (m)</label>
+                            <input type="number" id="longueur-rampe-select" step="1" min="0" class="form-control" value="100">
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="valider-goutteur" class="btn btn-primary">Valider la sélection</button>
+                
+                <div id="result-goutteur" class="result-section" style="display: none; margin-top: 20px;">
+                    <h3>Caractéristiques du goutteur sélectionné</h3>
+                    <div class="result-item"><span class="result-label">Marque:</span> <span id="marque-goutteur-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Débit à la pression donnée (l/h):</span> <span id="debit-goutteur-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Pression de fonctionnement (bar):</span> <span id="pression-goutteur-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Espacement entre goutteurs (m):</span> <span id="espacement-goutteur-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Diamètre de la rampe (mm):</span> <span id="diametre-rampe-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Longueur maximale recommandée (m):</span> <span id="longueur-max-rampe">-</span></div>
+                </div>
+            </div>
+            
+            <div id="selection-asperseur" class="selection-emetteur" style="display: none;">
+                <h3>Sélection des asperseurs</h3>
+                <div class="grid-container">
+                    <div>
+                        <div class="form-group">
+                            <label for="maillage-asp">Maillage (m x m)</label>
+                            <select id="maillage-asp" class="form-control">
+                                <option value="12x15">12 x 15</option>
+                                <option value="12x18">12 x 18</option>
+                                <option value="18x15">18 x 15</option>
+                                <option value="18x18" selected>18 x 18</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="debit-asp-select">Débit à l'asperseur (m³/h)</label>
+                            <input type="number" id="debit-asp-select" step="0.1" min="0" class="form-control" value="1.8">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pression-asp-select">Pression de fonctionnement (bar)</label>
+                            <input type="number" id="pression-asp-select" step="0.1" min="0" class="form-control" value="3.5">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label for="materiau-rampe">Matériau de la rampe</label>
+                            <select id="materiau-rampe" class="form-control">
+                                <option value="alu">Aluminium</option>
+                                <option value="pet">PET (Polyéthylène)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="diametre-rampe-asp">Diamètre de la rampe</label>
+                            <select id="diametre-rampe-asp" class="form-control">
+                                <option value="40">40 mm</option>
+                                <option value="50" selected>50 mm</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="longueur-rampe-asp">Longueur de rampe (m)</label>
+                            <input type="number" id="longueur-rampe-asp" step="1" min="0" class="form-control" value="90">
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="valider-asperseur" class="btn btn-primary">Valider la sélection</button>
+                
+                <div id="result-asperseur" class="result-section" style="display: none; margin-top: 20px;">
+                    <h3>Caractéristiques de l'asperseur sélectionné</h3>
+                    <div class="result-item"><span class="result-label">Maillage (m x m):</span> <span id="maillage-asp-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Débit à la pression donnée (m³/h):</span> <span id="debit-asp-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Pression de fonctionnement (bar):</span> <span id="pression-asp-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Nombre d'asperseurs par rampe:</span> <span id="nbr-asp-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Débit de la rampe (m³/h):</span> <span id="debit-rampe-asp-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Longueur maximale recommandée (m):</span> <span id="longueur-max-rampe-asp">-</span></div>
+                    <div class="result-item"><span class="result-label">Pluviométrie horaire (mm/h):</span> <span id="pluviometrie-asp-result">-</span></div>
+                </div>
+            </div>
+            
+            <div id="selection-micro" class="selection-emetteur" style="display: none;">
+                <h3>Sélection des micro-asperseurs</h3>
+                <div class="grid-container">
+                    <div>
+                        <div class="form-group">
+                            <label for="maillage-micro">Maillage (m x m)</label>
+                            <select id="maillage-micro" class="form-control">
+                                <option value="6x6">6 x 6</option>
+                                <option value="8x8" selected>8 x 8</option>
+                                <option value="9x9">9 x 9</option>
+                                <option value="12x12">12 x 12</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="debit-micro-select">Débit du micro-asperseur (l/h)</label>
+                            <input type="number" id="debit-micro-select" step="10" min="0" class="form-control" value="270">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pression-micro-select">Pression de fonctionnement (bar)</label>
+                            <input type="number" id="pression-micro-select" step="0.1" min="0" class="form-control" value="3">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label for="diametre-rampe-micro">Diamètre de la rampe</label>
+                            <select id="diametre-rampe-micro" class="form-control">
+                                <option value="40" selected>40 mm</option>
+                                <option value="50">50 mm</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="longueur-rampe-micro">Longueur de rampe (m)</label>
+                            <input type="number" id="longueur-rampe-micro" step="1" min="0" class="form-control" value="176">
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="valider-micro" class="btn btn-primary">Valider la sélection</button>
+                
+                <div id="result-micro" class="result-section" style="display: none; margin-top: 20px;">
+                    <h3>Caractéristiques du micro-asperseur sélectionné</h3>
+                    <div class="result-item"><span class="result-label">Maillage (m x m):</span> <span id="maillage-micro-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Débit à la pression donnée (l/h):</span> <span id="debit-micro-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Pression de fonctionnement (bar):</span> <span id="pression-micro-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Nombre de micro-asperseurs par rampe:</span> <span id="nbr-micro-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Débit de la rampe (m³/h):</span> <span id="debit-rampe-micro-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Longueur maximale recommandée (m):</span> <span id="longueur-max-rampe-micro">-</span></div>
+                    <div class="result-item"><span class="result-label">Pluviométrie horaire (mm/h):</span> <span id="pluviometrie-micro-result">-</span></div>
+                </div>
+            </div>
+            
+            <div id="selection-laser" class="selection-emetteur" style="display: none;">
+                <h3>Sélection des rampes laser-spray</h3>
+                <div class="grid-container">
+                    <div>
+                        <div class="form-group">
+                            <label for="diametre-laser-select">Diamètre de la rampe</label>
+                            <select id="diametre-laser-select" class="form-control">
+                                <option value="20">20 mm</option>
+                                <option value="32" selected>32 mm</option>
+                                <option value="40">40 mm</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="debit-laser-select">Débit en l/h/m</label>
+                            <input type="number" id="debit-laser-select" step="1" min="0" class="form-control" value="44">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pression-laser-select">Pression de fonctionnement (bar)</label>
+                            <input type="number" id="pression-laser-select" step="0.1" min="0" class="form-control" value="0.7">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label for="ecart-rampes-laser-select">Ecartement entre rampes (m)</label>
+                            <input type="number" id="ecart-rampes-laser-select" step="0.1" min="0" class="form-control" value="7">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="longueur-rampe-laser">Longueur de rampe (m)</label>
+                            <input type="number" id="longueur-rampe-laser" step="1" min="0" class="form-control" value="50">
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="valider-laser" class="btn btn-primary">Valider la sélection</button>
+                
+                <div id="result-laser" class="result-section" style="display: none; margin-top: 20px;">
+                    <h3>Caractéristiques de la rampe laser-spray</h3>
+                    <div class="result-item"><span class="result-label">Diamètre de la rampe (mm):</span> <span id="diametre-laser-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Débit (l/h/m):</span> <span id="debit-laser-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Pression de fonctionnement (bar):</span> <span id="pression-laser-result">-</span></div>
+                    <div class="result-item"><span class="result-label">Longueur maximale recommandée (m):</span> <span id="longueur-max-laser">-</span></div>
+                    <div class="result-item"><span class="result-label">Distance de mouillage (m):</span> <span id="distance-mouillage">-</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Onglet Dimensionnement pompe -->
+        <div id="pompe" class="tab-content">
+            <h2>Dimensionnement de la pompe</h2>
+            
+            <div class="info-box">
+                <p>Cette section permet de calculer la Hauteur Manométrique Totale (HMT) nécessaire pour dimensionner correctement la pompe.</p>
+            </div>
+            
+            <div class="grid-container">
+                <div>
+                    <div class="form-group">
+                        <label for="type-pompe">Type de pompe</label>
+                        <select id="type-pompe" class="form-control">
+                            <option value="surface">Pompe de surface</option>
+                            <option value="immergee">Pompe immergée</option>
+                        </select>
+                    </div>
+                    
+                    <div id="hauteur-aspiration" class="form-group">
+                        <label for="hauteur-asp">Hauteur d'aspiration (m)</label>
+                        <input type="number" id="hauteur-asp" step="0.1" min="0" class="form-control" value="5">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hauteur-refoulement">Hauteur de refoulement (m)</label>
+                        <input type="number" id="hauteur-refoulement" step="0.1" min="0" class="form-control" value="25">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="longueur-tuyaux">Longueur totale des tuyaux (m)</label>
+                        <input type="number" id="longueur-tuyaux" step="1" min="0" class="form-control" value="200">
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="form-group">
+                        <label for="pression-util">Pression utile nécessaire (bar)</label>
+                        <select id="pression-util" class="form-control">
+                            <option value="2">Goutte à goutte (2-3 bar)</option>
+                            <option value="4.5" selected>Aspersion (4-5 bar)</option>
+                            <option value="7">Enrouleur (5-7 bar)</option>
+                            <option value="custom">Personnalisée</option>
+                        </select>
+                    </div>
+                    
+                    <div id="pression-custom-group" class="form-group" style="display: none;">
+                        <label for="pression-custom">Pression personnalisée (bar)</label>
+                        <input type="number" id="pression-custom" step="0.1" min="0" class="form-control" value="3">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="besoin-ferti">Besoin de pression pour ferti-irrigation (bar)</label>
+                        <input type="number" id="besoin-ferti" step="0.1" min="0" class="form-control" value="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="debit-pompe">Débit nécessaire (m³/h)</label>
+                        <input type="number" id="debit-pompe" step="0.1" min="0" class="form-control" value="10">
+                    </div>
+                </div>
+            </div>
+            
+            <button id="calc-pompe" class="btn btn-primary">Calculer la HMT</button>
+            
+            <div id="result-pompe" class="result-section" style="display: none;">
+                <h3>Résultats - Dimensionnement de la pompe</h3>
+                <div class="result-item"><span class="result-label">Type de pompe:</span> <span id="type-pompe-result">-</span></div>
+                <div class="result-item"><span class="result-label">Hauteur d'aspiration (m):</span> <span id="hauteur-asp-result">-</span></div>
+                <div class="result-item"><span class="result-label">Hauteur de refoulement (m):</span> <span id="hauteur-ref-result">-</span></div>
+                <div class="result-item"><span class="result-label">Pertes de charge (m):</span> <span id="pertes-charge">-</span></div>
+                <div class="result-item"><span class="result-label">Pression utile (m):</span> <span id="pression-util-result">-</span></div>
+                <div class="result-item"><span class="result-label">Pression ferti-irrigation (m):</span> <span id="pression-ferti-result">-</span></div>
+                <div class="result-item"><span class="result-label">Hauteur Manométrique Totale (HMT) (m):</span> <span id="hmt">-</span></div>
+                <div class="result-item"><span class="result-label">Débit nécessaire (m³/h):</span> <span id="debit-pompe-result">-</span></div>
+            </div>
+        </div>
+        
+        <!-- Onglet Résultats -->
+        <div id="resultat" class="tab-content">
+            <h2>Résultats complets du dimensionnement</h2>
+            
+            <div class="info-box">
+                <p>Cette section présente une synthèse de tous les paramètres calculés pour votre réseau d'irrigation.</p>
+            </div>
+            
+            <div id="resume-resultats" class="result-section">
+                <h3>Synthèse des résultats</h3>
+                <div id="resume-content">
+                    <p>Veuillez compléter toutes les étapes précédentes pour générer le rapport complet.</p>
+                </div>
+            </div>
+            <!-- Boutons generation rapport et autres -->
+            <button id="generer-rapport" class="btn btn-primary">Générer le rapport complet</button>
+            <button id="imprimer-rapport" class="btn btn-primary btn-print no-print" disabled>Imprimer le rapport</button>
+      
+            <div id="rapport-complet" class="report">
+                <div class="report-header">
+                    <img src="../images/logo isep.jpg" alt="Logo ISEP MATAM" class="report-logo">
+                    <h1 class="report-title">Rapport de Dimensionnement de Réseau d'Irrigation</h1>
+                    <p class="report-subtitle">ISEP MATAM - Le métier au cœur de la formation</p>
+                    <div class="report-row">
+                        <div><strong>Date:</strong> <span id="report-date"></span></div>
+                        <div><strong>Localité:</strong> <span id="report-localite"></span></div>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <div class="report-section-title">1. Données générales</div>
+                    <div class="report-row">
+                        <div class="report-label">Superficie à irriguer:</div>
+                        <div id="report-superficie"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Type de culture:</div>
+                        <div id="report-culture"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Système d'irrigation:</div>
+                        <div id="report-systeme"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Texture du sol:</div>
+                        <div id="report-texture"></div>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <div class="report-section-title">2. Besoins en eau</div>
+                    <div class="report-row">
+                        <div class="report-label">Evaporation Bac Classe A (mm/j):</div>
+                        <div id="report-ev-bac"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">ETP (mm/j):</div>
+                        <div id="report-etp"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Coefficient cultural (Kc):</div>
+                        <div id="report-kc"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Dose d'irrigation (mm/j):</div>
+                        <div id="report-dose-irrig"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Dose pratique (mm/j):</div>
+                        <div id="report-dose-pratique"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Besoins quotidiens (m³/j):</div>
+                        <div id="report-besoins-quot"></div>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <div class="report-section-title">3. Conception du réseau</div>
+                    <div class="report-row">
+                        <div class="report-label">Surface maximale irrigable (ha/j):</div>
+                        <div id="report-surface-irrig"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Nombre de secteurs d'irrigation:</div>
+                        <div id="report-nbr-secteurs"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Surface d'un secteur (ha):</div>
+                        <div id="report-surface-secteur"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Débit du système (m³/h):</div>
+                        <div id="report-debit-systeme"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Pluviométrie horaire (mm/h):</div>
+                        <div id="report-pluviometrie"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Durée d'irrigation par secteur (h):</div>
+                        <div id="report-duree-irrig"></div>
+                    </div>
+                    <div id="report-maillage-row" class="report-row">
+                        <div class="report-label">Maillage (m x m):</div>
+                        <div id="report-maillage"></div>
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <div class="report-section-title">4. Sélection des équipements</div>
+                    <div id="report-emetteur-section">
+                        <!-- Contenu dynamique selon le type d'émetteur -->
+                    </div>
+                </div>
+                
+                <div class="report-section">
+                    <div class="report-section-title">5. Dimensionnement de la pompe</div>
+                    <div class="report-row">
+                        <div class="report-label">Type de pompe:</div>
+                        <div id="report-type-pompe"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Hauteur d'aspiration (m):</div>
+                        <div id="report-hauteur-asp"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Hauteur de refoulement (m):</div>
+                        <div id="report-hauteur-ref"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Pertes de charge (m):</div>
+                        <div id="report-pertes-charge"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Pression utile (m):</div>
+                        <div id="report-pression-util"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Hauteur Manométrique Totale (HMT) (m):</div>
+                        <div id="report-hmt"></div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Débit nécessaire (m³/h):</div>
+                        <div id="report-debit-pompe"></div>
+                    </div>
+                </div>
+
+                
+                <div class="signature-area ">
+                    <div class="signature-box">
+                        <div class="signature-line"></div>
+                        <p>Signature du concepteur</p>
+                    </div>
+                    <div class="signature-box">
+                        <div class="signature-line"></div>
+                        <p>Signature du client</p>
+                    </div>
+                </div>
+                
+                <div class="report-footer ">
+                    <p>ISEP MATAM - Institut Supérieur d'Enseignement Professionnel<br>
+                    BP 16 Matam, Sénégal<br>
+                     Dimensionnement de Réseau d'Irrigation sous Pression<br>
+                    Tél: +221 00221 33 966 31 23| Email: <a href="mailto:">direction@isepmatam.sn</a> </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales pour stocker les résultats
+        const results = {
+            besoins: {},
+            sol: {},
+            conception: {},
+            materiel: {},
+            pompe: {}
+        };
+        
+        // Gestion des onglets
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Désactiver tous les onglets et contenus
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Activer l'onglet et le contenu sélectionné
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Initialiser les interactions
+            initBesoinsCalcul();
+            initTextureSol();
+            initConceptionReseau();
+            initSelectionMateriel();
+            initDimensionnementPompe();
+            initGenerationRapport();
+            
+            // Mettre à jour la date dans le rapport
+            const now = new Date();
+            document.getElementById('report-date').textContent = now.toLocaleDateString('fr-FR');
+        });
+        
+// Initialisation
+document.addEventListener('DOMContentLoaded', function() {
+    // ... code existant ...
+    initReportHistory();
+});
+
+function initReportHistory() {
+    document.getElementById('view-history').addEventListener('click', showReportHistory);
+    document.getElementById('export-pdf').addEventListener('click', exportToPDF);
+}
+
+function showReportHistory() {
+    const reports = JSON.parse(localStorage.getItem('irrigationReports') || []);
+    
+    let html = `
+        <div class="history-popup">
+            <h3>Historique des rapports (${reports.length})</h3>
+            <div class="history-list">
+    `;
+    
+    if (reports.length === 0) {
+        html += '<p>Aucun rapport enregistré</p>';
+    } else {
+        html += '<ul>';
+        reports.forEach((report, index) => {
+            html += `
+                <li>
+                    <span>${report.date}</span>
+                    <button class="btn-history-load" data-id="${index}">Ouvrir</button>
+                    <button class="btn-history-delete" data-id="${index}">Supprimer</button>
+                </li>
+            `;
+        });
+        html += '</ul>';
+    }
+    
+    html += `</div></div>`;
+    
+    // Utilisez votre système de popup existant ou créez-en un
+    showCustomPopup('Historique des rapports', html);
+    
+    // Ajouter les événements après l'affichage
+    document.querySelectorAll('.btn-history-load').forEach(btn => {
+        btn.addEventListener('click', function() {
+            loadReport(parseInt(this.getAttribute('data-id')));
+            closePopup();
+        });
+    });
+    
+    document.querySelectorAll('.btn-history-delete').forEach(btn => {
+        btn.addEventListener('click', function() {
+            deleteReport(parseInt(this.getAttribute('data-id')));
+        });
+    });
+}
+
+function loadReport(index) {
+    const reports = JSON.parse(localStorage.getItem('irrigationReports'));
+    if (reports && reports[index]) {
+        document.getElementById('rapport-complet').innerHTML = reports[index].content;
+        document.getElementById('rapport-complet').style.display = 'block';
+        // Scroll vers le rapport
+        document.getElementById('rapport-complet').scrollIntoView();
+    }
+}
+
+function deleteReport(index) {
+    const reports = JSON.parse(localStorage.getItem('irrigationReports'));
+    if (reports && reports[index]) {
+        if (confirm('Supprimer ce rapport ?')) {
+            reports.splice(index, 1);
+            localStorage.setItem('irrigationReports', JSON.stringify(reports));
+            showReportHistory(); // Rafraîchir l'affichage
+        }
+    }
+}
+
+function exportToPDF() {
+    // Implémentation avec html2pdf.js
+    const element = document.getElementById('rapport-complet');
+    const opt = {
+        margin: 10,
+        filename: 'rapport-irrigation.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    
+    html2pdf().set(opt).from(element).save();
+}
+
+// Fonction pour afficher un popup personnalisé
+function showCustomPopup(title, content) {
+    const popup = document.createElement('div');
+    popup.className = 'custom-popup';
+    popup.innerHTML = `
+        <div class="popup-content">
+            <h2>${title}</h2>
+            <div class="popup-body">${content}</div>
+            <button class="popup-close">Fermer</button>
+        </div>
+    `;
+    
+    document.body.appendChild(popup);
+    
+    popup.querySelector('.popup-close').addEventListener('click', () => {
+        document.body.removeChild(popup);
+    });
+}
+
+function closePopup() {
+    const popup = document.querySelector('.custom-popup');
+    if (popup) {
+        document.body.removeChild(popup);
+    }
+}
+
+        // 1. Calcul des besoins en eau
+        function initBesoinsCalcul() {
+            const btnCalc = document.getElementById('calc-besoins');
+            btnCalc.addEventListener('click', function() {
+                // Récupérer les valeurs des champs
+                const localiteCoeff = parseFloat(document.getElementById('localite').value);
+                const saisonCoeff = parseFloat(document.getElementById('saison').value);
+                const evBac = parseFloat(document.getElementById('mois').value);
+                const kc = parseFloat(document.getElementById('culture').value);
+                const ea = parseFloat(document.getElementById('systeme').value);
+                const superficie = parseFloat(document.getElementById('superficie').value);
+                
+                // Calculs
+                const etpBambey = evBac * saisonCoeff;
+                const etpLocalite = etpBambey * localiteCoeff;
+                const doseIrrigation = etpLocalite * kc;
+                const dosePratique = doseIrrigation / ea;
+                const besoinsQuotidiens = dosePratique * 10 * superficie; // 1 mm = 10 m³/ha
+                
+                // Stocker les résultats
+                results.besoins = {
+                    evBac: evBac.toFixed(2),
+                    etp: etpLocalite.toFixed(2),
+                    kc: kc.toFixed(2),
+                    doseIrrigation: doseIrrigation.toFixed(2),
+                    efficience: (ea * 100).toFixed(0) + '%',
+                    dosePratique: dosePratique.toFixed(2),
+                    besoinsQuotidiens: besoinsQuotidiens.toFixed(2),
+                    superficie: superficie,
+                    localite: document.getElementById('localite').options[document.getElementById('localite').selectedIndex].text,
+                    culture: document.getElementById('culture').options[document.getElementById('culture').selectedIndex].text,
+                    systeme: document.getElementById('systeme').options[document.getElementById('systeme').selectedIndex].text
+                };
+                
+                // Afficher les résultats
+                document.getElementById('ev-bac').textContent = results.besoins.evBac;
+                document.getElementById('etp').textContent = results.besoins.etp;
+                document.getElementById('kc').textContent = results.besoins.kc;
+                document.getElementById('dose-irrigation').textContent = results.besoins.doseIrrigation;
+                document.getElementById('efficience').textContent = results.besoins.efficience;
+                document.getElementById('dose-pratique').textContent = results.besoins.dosePratique;
+                document.getElementById('besoins-quotidiens').textContent = results.besoins.besoinsQuotidiens;
+                
+                // Afficher la section résultats
+                document.getElementById('result-besoins').style.display = 'block';
+                
+                // Mettre à jour le résumé
+                updateResume();
+            });
+        }
+        
+        // 2. Analyse du sol
+        function initTextureSol() {
+            // Activer/désactiver les étapes du test de toucher
+            document.getElementById('test-boule').addEventListener('change', function() {
+                document.getElementById('test-saucisse').disabled = this.value !== 'oui';
+            });
+            
+            document.getElementById('test-saucisse').addEventListener('change', function() {
+                document.getElementById('test-crayon').disabled = this.value !== 'oui';
+            });
+            
+            document.getElementById('test-crayon').addEventListener('change', function() {
+                document.getElementById('test-demi-cercle').disabled = this.value !== 'oui';
+            });
+            
+            document.getElementById('test-demi-cercle').addEventListener('change', function() {
+                document.getElementById('test-cercle').disabled = this.value !== 'oui';
+            });
+            
+            // Calcul de la texture
+            document.getElementById('calc-texture').addEventListener('click', function() {
+                // Méthode du toucher
+                let textureToucher = "Non déterminée";
+                
+                if (document.getElementById('test-boule').value === 'non') {
+                    textureToucher = "Sable";
+                } else if (document.getElementById('test-saucisse').value === 'non') {
+                    textureToucher = "Sable limoneux";
+                } else if (document.getElementById('test-crayon').value === 'non') {
+                    textureToucher = "Limon sableux";
+                } else if (document.getElementById('test-demi-cercle').value === 'non') {
+                    textureToucher = "Limon";
+                } else if (document.getElementById('test-cercle').value === 'non') {
+                    textureToucher = "Limon fin/très fin";
+                } else if (document.getElementById('test-cercle').value === 'fissure') {
+                    textureToucher = "Limon argileux/Argile limoneuse";
+                } else if (document.getElementById('test-cercle').value === 'sans-fissure') {
+                    textureToucher = "Argile";
+                }
+                
+                // Méthode de sédimentation
+                const argile = parseFloat(document.getElementById('argile').value);
+                const limon = parseFloat(document.getElementById('limon').value);
+                const sable = parseFloat(document.getElementById('sable').value);
+                const total = argile + limon + sable;
+                
+                const pctArgile = (argile / total * 100).toFixed(1);
+                const pctLimon = (limon / total * 100).toFixed(1);
+                const pctSable = (sable / total * 100).toFixed(1);
+                
+                // Détermination de la texture finale (simplifiée)
+                let textureFinale = "Non déterminée";
+                
+                if (pctArgile > 40) {
+                    textureFinale = "Argile";
+                } else if (pctArgile > 27 && pctSable < 20) {
+                    textureFinale = "Argile limoneuse";
+                } else if (pctArgile > 27 && pctSable > 45) {
+                    textureFinale = "Argile sableuse";
+                } else if (pctArgile > 20 && pctSable < 45) {
+                    textureFinale = "Limon argileux";
+                } else if (pctArgile < 12 && pctSable < 20) {
+                    textureFinale = "Limon";
+                } else if (pctArgile < 12 && pctSable > 50) {
+                    textureFinale = "Sable";
+                } else if (pctArgile < 20 && pctSable > 45) {
+                    textureFinale = "Limon sableux";
+                } else {
+                    textureFinale = "Limon";
+                }
+                
+                // Stocker les résultats
+                results.sol = {
+                    textureToucher: textureToucher,
+                    textureSed: "Méthode sédimentation",
+                    pctArgile: pctArgile,
+                    pctLimon: pctLimon,
+                    pctSable: pctSable,
+                    textureFinale: textureFinale
+                };
+                
+                // Afficher les résultats
+                document.getElementById('texture-toucher').textContent = results.sol.textureToucher;
+                document.getElementById('texture-sed').textContent = results.sol.textureSed;
+                document.getElementById('pct-argile').textContent = results.sol.pctArgile + '%';
+                document.getElementById('pct-limon').textContent = results.sol.pctLimon + '%';
+                document.getElementById('pct-sable').textContent = results.sol.pctSable + '%';
+                document.getElementById('texture-finale').textContent = results.sol.textureFinale;
+                
+                // Afficher la section résultats
+                document.getElementById('result-texture').style.display = 'block';
+                
+                // Mettre à jour le résumé
+                updateResume();
+            });
+        }
+        
+        // 3. Conception du réseau
+        function initConceptionReseau() {
+            // Gestion du changement de système d'irrigation
+            document.getElementById('systeme-irrigation').addEventListener('change', function() {
+                document.querySelectorAll('.system-params').forEach(el => el.style.display = 'none');
+                document.getElementById('param-' + this.value).style.display = 'block';
+            });
+            
+            // Gestion du changement de type de gaine pour le goutte à goutte
+            document.getElementById('type-goutteur').addEventListener('change', function() {
+                document.getElementById('param-derive').style.display = this.value === 'derive' ? 'block' : 'none';
+                document.getElementById('param-incorpore').style.display = this.value === 'incorpore' ? 'block' : 'none';
+            });
+            
+            // Calcul des paramètres du réseau
+            document.getElementById('calc-reseau').addEventListener('click', function() {
+                const systeme = document.getElementById('systeme-irrigation').value;
+                const debitForage = parseFloat(document.getElementById('debit-forage').value);
+                const superficie = parseFloat(document.getElementById('superficie-irrig').value);
+                const tempsIrrig = parseFloat(document.getElementById('temps-irrig-jour').value);
+                
+                let debitSysteme = 0;
+                let surfaceSecteur = 0;
+                let nbrSecteurs = 0;
+                let pluviometrie = 0;
+                let dureeIrrigSecteur = 0;
+                let maillage = "-";
+                let longueurRampe = "-";
+                
+                if (systeme === 'goutte-goutte') {
+                    const typeGoutteur = document.getElementById('type-goutteur').value;
+                    
+                    if (typeGoutteur === 'derive') {
+                        const nbrPieds = parseInt(document.getElementById('nbr-pieds').value);
+                        const nbrGoutteurs = parseInt(document.getElementById('nbr-goutteurs').value);
+                        const debitGoutteur = parseFloat(document.getElementById('debit-goutteur').value);
+                        
+                        debitSysteme = (nbrPieds * nbrGoutteurs * debitGoutteur) / 1000; // conversion en m³/h
+                    } else {
+                        const ecartRampe = parseFloat(document.getElementById('ecart-rampes').value);
+                        const ecartGoutteur = parseFloat(document.getElementById('ecart-goutteurs').value);
+                        const debitGoutteur = parseFloat(document.getElementById('debit-goutteur-inc').value);
+                        
+                        debitSysteme = (10 / (ecartRampe * ecartGoutteur)) * debitGoutteur;
+                    }
+                    
+                    surfaceSecteur = debitForage / debitSysteme;
+                    nbrSecteurs = Math.ceil(superficie / surfaceSecteur);
+                    dureeIrrigSecteur = (tempsIrrig * surfaceSecteur) / superficie;
+                    
+                    // Pour le goutte à goutte, on ne calcule pas de pluviométrie horaire
+                    pluviometrie = "-";
+                    
+                } else if (systeme === 'aspersion') {
+                    const portee = parseFloat(document.getElementById('portee-asperseur').value);
+                    const debitAsperseur = parseFloat(document.getElementById('debit-asperseur').value);
+                    const disposition = document.getElementById('disposition-asp').value;
+                    
+                    let espacementAsp, espacementRampes;
+                    
+                    if (disposition === 'rectangulaire') {
+                        espacementAsp = portee * Math.sqrt(2);
+                        espacementRampes = portee * Math.sqrt(2);
+                    } else { // triangle
+                        espacementAsp = portee * Math.sqrt(3);
+                        espacementRampes = 1.5 * portee;
+                    }
+                    
+                    maillage = espacementAsp.toFixed(1) + " x " + espacementRampes.toFixed(1);
+                    
+                    debitSysteme = (10 / (espacementAsp * espacementRampes)) * debitAsperseur;
+                    surfaceSecteur = debitForage / debitSysteme;
+                    nbrSecteurs = Math.ceil(superficie / surfaceSecteur);
+                    dureeIrrigSecteur = (tempsIrrig * surfaceSecteur) / superficie;
+                    pluviometrie = (debitAsperseur * 1000 / (espacementAsp * espacementRampes)).toFixed(1);
+                    
+                    // Longueur maximale des rampes (simplifié)
+                    longueurRampe = (espacementRampes * 5).toFixed(0); // 5 asperseurs par rampe
+                    
+                } else if (systeme === 'micro-aspersion') {
+                    const nbrPieds = parseInt(document.getElementById('nbr-pieds-micro').value);
+                    const nbrMicro = parseInt(document.getElementById('nbr-micro').value);
+                    const debitMicro = parseFloat(document.getElementById('debit-micro').value);
+                    
+                    debitSysteme = (nbrPieds * nbrMicro * debitMicro) / 1000; // conversion en m³/h
+                    surfaceSecteur = debitForage / debitSysteme;
+                    nbrSecteurs = Math.ceil(superficie / surfaceSecteur);
+                    dureeIrrigSecteur = (tempsIrrig * surfaceSecteur) / superficie;
+                    
+                    // Pour la micro-aspersion, on ne calcule pas de pluviométrie horaire dans cet exemple
+                    pluviometrie = "-";
+                    
+                } else if (systeme === 'laser-spray') {
+                    const ecartRampe = parseFloat(document.getElementById('ecart-rampes-laser').value);
+                    const debitLaser = parseFloat(document.getElementById('debit-laser').value);
+                    
+                    debitSysteme = (10 / ecartRampe) * (debitLaser / 1000); // conversion en m³/h
+                    surfaceSecteur = debitForage / debitSysteme;
+                    nbrSecteurs = Math.ceil(superficie / surfaceSecteur);
+                    dureeIrrigSecteur = (tempsIrrig * surfaceSecteur) / superficie;
+                    pluviometrie = (debitLaser / ecartRampe).toFixed(1);
+                    
+                    // Longueur maximale selon diamètre
+                    const diametre = document.getElementById('diametre-laser').value;
+                    longueurRampe = diametre === '20' ? '45' : (diametre === '32' ? '50' : '60');
+                }
+                
+                // Calcul de la surface maximale irrigable
+                const volumeDispo = debitForage * tempsIrrig;
+                const dosePratique = results.besoins.dosePratique ? parseFloat(results.besoins.dosePratique) : 10; // Valeur par défaut si non calculé
+                const surfaceMaxIrrigable = volumeDispo / (dosePratique * 10); // 1 mm = 10 m³/ha
+                
+                // Stocker les résultats
+                results.conception = {
+                    systeme: document.getElementById('systeme-irrigation').options[document.getElementById('systeme-irrigation').selectedIndex].text,
+                    surfaceMaxIrrigable: surfaceMaxIrrigable.toFixed(2),
+                    nbrSecteurs: nbrSecteurs,
+                    surfaceSecteur: surfaceSecteur.toFixed(2),
+                    debitSysteme: debitSysteme.toFixed(2),
+                    pluviometrie: pluviometrie,
+                    dureeIrrigSecteur: dureeIrrigSecteur.toFixed(1),
+                    maillage: maillage,
+                    longueurRampe: longueurRampe,
+                    debitForage: debitForage,
+                    superficie: superficie,
+                    tempsIrrig: tempsIrrig
+                };
+                
+                // Afficher les résultats
+                document.getElementById('surface-irrigable').textContent = results.conception.surfaceMaxIrrigable;
+                document.getElementById('nbr-secteurs').textContent = results.conception.nbrSecteurs;
+                document.getElementById('surface-secteur').textContent = results.conception.surfaceSecteur;
+                document.getElementById('debit-systeme').textContent = results.conception.debitSysteme;
+                document.getElementById('pluviometrie').textContent = results.conception.pluviometrie;
+                document.getElementById('duree-irrig-secteur').textContent = results.conception.dureeIrrigSecteur;
+                
+                if (maillage !== "-") {
+                    document.getElementById('maillage').textContent = results.conception.maillage;
+                    document.getElementById('result-maillage').style.display = 'block';
+                } else {
+                    document.getElementById('result-maillage').style.display = 'none';
+                }
+                
+                if (longueurRampe !== "-") {
+                    document.getElementById('longueur-rampe').textContent = results.conception.longueurRampe;
+                    document.getElementById('result-longueur-rampe').style.display = 'block';
+                } else {
+                    document.getElementById('result-longueur-rampe').style.display = 'none';
+                }
+                
+                // Afficher la section résultats
+                document.getElementById('result-reseau').style.display = 'block';
+                
+                // Mettre à jour le résumé
+                updateResume();
+            });
+        }
+        
+        // 4. Sélection du matériel
+        function initSelectionMateriel() {
+            // Gestion du changement de type d'émetteur
+            document.getElementById('type-emetteur').addEventListener('change', function() {
+                document.querySelectorAll('.selection-emetteur').forEach(el => el.style.display = 'none');
+                document.getElementById('selection-' + this.value).style.display = 'block';
+            });
+            
+            // Gestion du changement de marque pour les goutteurs
+            document.getElementById('marque-goutteur').addEventListener('change', function() {
+                document.querySelectorAll('.param-marque').forEach(el => el.style.display = 'none');
+                document.getElementById('param-' + this.value).style.display = 'block';
+            });
+            
+            // Validation de la sélection des goutteurs
+            document.getElementById('valider-goutteur').addEventListener('click', function() {
+                const marque = document.getElementById('marque-goutteur').value;
+                let debit = 0;
+                let pression = 0;
+                let espacement = "-";
+                
+                if (marque === 'rivulis') {
+                    debit = parseFloat(document.getElementById('debit-goutteur-riv').value);
+                    pression = parseFloat(document.getElementById('pression-goutteur-riv').value);
+                    
+                    // Ajustement du débit selon la pression (simplifié)
+                    if (pression === 0.8) {
+                        if (debit === 0.25) debit = 0.32;
+                        else if (debit === 0.33) debit = 0.42;
+                        else if (debit === 0.5) debit = 0.62;
+                        else if (debit === 0.75) debit = 0.89;
+                        else if (debit === 1.0) debit = 1.20;
+                        else if (debit === 1.25) debit = 1.47;
+                        else if (debit === 2.0) debit = 2.31;
+                    } else if (pression === 1.0) {
+                        if (debit === 0.25) debit = 0.37;
+                        else if (debit === 0.33) debit = 0.49;
+                        else if (debit === 0.5) debit = 0.70;
+                        else if (debit === 0.75) debit = 1.00;
+                        else if (debit === 1.0) debit = 1.35;
+                        else if (debit === 1.25) debit = 1.65;
+                        else if (debit === 2.0) debit = 2.58;
+                    }
+                    
+                    espacement = "Variable selon installation";
+                    
+                } else if (marque === 'netafim') {
+                    debit = parseFloat(document.getElementById('debit-goutteur-net').value);
+                    espacement = document.getElementById('espacement-goutteur-net').value + " m";
+                    pression = 1.0; // Valeur par défaut pour Netafim dans cet exemple
+                    
+                } else if (marque === 'naandanjain') {
+                    debit = parseFloat(document.getElementById('debit-goutteur-naan').value);
+                    pression = parseFloat(document.getElementById('pression-goutteur-naan').value);
+                    
+                    // Ajustement du débit selon la pression (simplifié)
+                    if (pression === 0.5) {
+                        if (debit === 2) debit = 1.4;
+                        else if (debit === 4) debit = 2.9;
+                        else if (debit === 8) debit = 5.7;
+                        else if (debit === 14) debit = 10.0;
+                    } else if (pression === 1.5) {
+                        if (debit === 2) debit = 2.4;
+                        else if (debit === 4) debit = 4.9;
+                        else if (debit === 8) debit = 9.7;
+                        else if (debit === 14) debit = 17.0;
+                    } else if (pression === 2.0) {
+                        if (debit === 2) debit = 2.8;
+                        else if (debit === 4) debit = 5.6;
+                        else if (debit === 8) debit = 11.2;
+                        else if (debit === 14) debit = 19.5;
+                    } else if (pression === 2.5) {
+                        if (debit === 2) debit = 3.1;
+                        else if (debit === 4) debit = 6.2;
+                        else if (debit === 8) debit = 12.4;
+                        else if (debit === 14) debit = 21.7;
+                    } else if (pression === 3.0) {
+                        if (debit === 2) debit = 3.4;
+                        else if (debit === 4) debit = 6.8;
+                        else if (debit === 8) debit = 13.6;
+                        else if (debit === 14) debit = 23.7;
+                    } else if (pression === 3.5) {
+                        if (debit === 2) debit = 3.6;
+                        else if (debit === 4) debit = 7.3;
+                        else if (debit === 8) debit = 14.6;
+                        else if (debit === 14) debit = 25.5;
+                    }
+                    
+                    espacement = "Variable selon installation";
+                }
+                
+                const diametreRampe = document.getElementById('diametre-rampe').value;
+                const pressionRampe = document.getElementById('pression-rampe').value;
+                const longueurRampe = document.getElementById('longueur-rampe-select').value;
+                
+                // Calcul de la longueur maximale recommandée (simplifié)
+                let longueurMax = 100; // Valeur par défaut
+                
+                if (diametreRampe === '16' && pressionRampe === '1') {
+                    longueurMax = marque === 'netafim' ? 140 : 100;
+                } else if (diametreRampe === '16' && pressionRampe === '3') {
+                    longueurMax = marque === 'netafim' ? 260 : 100;
+                } else if (diametreRampe === '20' && pressionRampe === '1') {
+                    longueurMax = marque === 'netafim' ? 190 : 140;
+                } else if (diametreRampe === '20' && pressionRampe === '3') {
+                    longueurMax = marque === 'netafim' ? 360 : 140;
+                }
+                
+                // Stocker les résultats
+                results.materiel = {
+                    type: 'goutteur',
+                    marque: document.getElementById('marque-goutteur').options[document.getElementById('marque-goutteur').selectedIndex].text,
+                    debit: debit.toFixed(2),
+                    pression: pression.toFixed(1),
+                    espacement: espacement,
+                    diametreRampe: diametreRampe,
+                    longueurRampe: longueurRampe,
+                    longueurMax: longueurMax
+                };
+                
+                // Afficher les résultats
+                document.getElementById('marque-goutteur-result').textContent = results.materiel.marque;
+                document.getElementById('debit-goutteur-result').textContent = results.materiel.debit;
+                document.getElementById('pression-goutteur-result').textContent = results.materiel.pression;
+                document.getElementById('espacement-goutteur-result').textContent = results.materiel.espacement;
+                document.getElementById('diametre-rampe-result').textContent = results.materiel.diametreRampe;
+                document.getElementById('longueur-max-rampe').textContent = results.materiel.longueurMax;
+                
+                // Afficher la section résultats
+                document.getElementById('result-goutteur').style.display = 'block';
+                
+                // Mettre à jour le résumé
+                updateResume();
+            });
+            
+            // Validation de la sélection des asperseurs
+            document.getElementById('valider-asperseur').addEventListener('click', function() {
+                const maillage = document.getElementById('maillage-asp').value;
+                const debitAsp = parseFloat(document.getElementById('debit-asp-select').value);
+                const pression = parseFloat(document.getElementById('pression-asp-select').value);
+                const materiau = document.getElementById('materiau-rampe').value;
+                const diametre = document.getElementById('diametre-rampe-asp').value;
+                const longueur = document.getElementById('longueur-rampe-asp').value;
+                
+                // Calculs simplifiés
+                let nbrAsperseurs = 0;
+                let debitRampe = 0;
+                let longueurMax = 0;
+                let pluviometrie = 0;
+                
+                if (maillage === '12x15') {
+                    nbrAsperseurs = 8;
+                    debitRampe = nbrAsperseurs * debitAsp;
+                    longueurMax = materiau === 'alu' ? 120 : 96;
+                    pluviometrie = 7.2;
+                } else if (maillage === '12x18') {
+                    nbrAsperseurs = 7;
+                    debitRampe = nbrAsperseurs * debitAsp;
+                    longueurMax = materiau === 'alu' ? 126 : 84;
+                    pluviometrie = 6.9;
+                } else if (maillage === '18x15') {
+                    nbrAsperseurs = 5;
+                    debitRampe = nbrAsperseurs * debitAsp;
+                    longueurMax = materiau === 'alu' ? 135 : 90;
+                    pluviometrie = 6.7;
+                } else if (maillage === '18x18') {
+                    nbrAsperseurs = diametre === '40' ? 5 : 7;
+                    debitRampe = nbrAsperseurs * debitAsp;
+                    longueurMax = diametre === '40' ? (materiau === 'alu' ? 135 : 90) : (materiau === 'alu' ? 189 : 126);
+                    pluviometrie = diametre === '40' ? 6.8 : 7.1;
+                }
+                
+                // Stocker les résultats
+                results.materiel = {
+                    type: 'asperseur',
+                    maillage: maillage.replace('x', ' x '),
+                    debit: debitAsp.toFixed(1),
+                    pression: pression.toFixed(1),
+                    nbrAsperseurs: nbrAsperseurs,
+                    debitRampe: debitRampe.toFixed(1),
+                    longueurMax: longueurMax,
+                    pluviometrie: pluviometrie.toFixed(1),
+                    materiau: materiau === 'alu' ? 'Aluminium' : 'PET',
+                    diametreRampe: diametre
+                };
+                
+                // Afficher les résultats
+                document.getElementById('maillage-asp-result').textContent = results.materiel.maillage;
+                document.getElementById('debit-asp-result').textContent = results.materiel.debit;
+                document.getElementById('pression-asp-result').textContent = results.materiel.pression;
+                document.getElementById('nbr-asp-result').textContent = results.materiel.nbrAsperseurs;
+                document.getElementById('debit-rampe-asp-result').textContent = results.materiel.debitRampe;
+                document.getElementById('longueur-max-rampe-asp').textContent = results.materiel.longueurMax;
+                document.getElementById('pluviometrie-asp-result').textContent = results.materiel.pluviometrie;
+                
+                // Afficher la section résultats
+                document.getElementById('result-asperseur').style.display = 'block';
+                
+                // Mettre à jour le résumé
+                updateResume();
+            });
+            
+            // Validation de la sélection des micro-asperseurs
+            document.getElementById('valider-micro').addEventListener('click', function() {
+                const maillage = document.getElementById('maillage-micro').value;
+                const debitMicro = parseFloat(document.getElementById('debit-micro-select').value);
+                const pression = parseFloat(document.getElementById('pression-micro-select').value);
+                const diametre = document.getElementById('diametre-rampe-micro').value;
+                const longueur = document.getElementById('longueur-rampe-micro').value;
+                
+                // Calculs simplifiés
+                let nbrMicro = 0;
+                let debitRampe = 0;
+                let longueurMax = 0;
+                let pluviometrie = 0;
+                
+                if (maillage === '6x6') {
+                    nbrMicro = 36;
+                    debitRampe = (nbrMicro * debitMicro) / 1000; // en m³/h
+                    longueurMax = 216;
+                    pluviometrie = 4.2;
+                } else if (maillage === '8x8') {
+                    nbrMicro = 22;
+                    debitRampe = (nbrMicro * debitMicro) / 1000;
+                    longueurMax = 176;
+                    pluviometrie = 4.2;
+                } else if (maillage === '9x9') {
+                    nbrMicro = 19;
+                    debitRampe = (nbrMicro * debitMicro) / 1000;
+                    longueurMax = 171;
+                    pluviometrie = 4.0;
+                } else if (maillage === '12x12') {
+                    nbrMicro = diametre === '40' ? 12 : 17;
+                    debitRampe = (nbrMicro * debitMicro) / 1000;
+                    longueurMax = diametre === '40' ? 144 : 204;
+                    pluviometrie = diametre === '40' ? 4.0 : 4.5;
+                }
+                
+                // Stocker les résultats
+                results.materiel = {
+                    type: 'micro-asperseur',
+                    maillage: maillage.replace('x', ' x '),
+                    debit: debitMicro.toFixed(0),
+                    pression: pression.toFixed(1),
+                    nbrMicro: nbrMicro,
+                    debitRampe: debitRampe.toFixed(1),
+                    longueurMax: longueurMax,
+                    pluviometrie: pluviometrie.toFixed(1),
+                    diametreRampe: diametre
+                };
+                
+                // Afficher les résultats
+                document.getElementById('maillage-micro-result').textContent = results.materiel.maillage;
+                document.getElementById('debit-micro-result').textContent = results.materiel.debit;
+                document.getElementById('pression-micro-result').textContent = results.materiel.pression;
+                document.getElementById('nbr-micro-result').textContent = results.materiel.nbrMicro;
+                document.getElementById('debit-rampe-micro-result').textContent = results.materiel.debitRampe;
+                document.getElementById('longueur-max-rampe-micro').textContent = results.materiel.longueurMax;
+                document.getElementById('pluviometrie-micro-result').textContent = results.materiel.pluviometrie;
+                
+                // Afficher la section résultats
+                document.getElementById('result-micro').style.display = 'block';
+                
+                // Mettre à jour le résumé
+                updateResume();
+            });
+            
+            // Validation de la sélection des laser-spray
+            document.getElementById('valider-laser').addEventListener('click', function() {
+                const diametre = document.getElementById('diametre-laser-select').value;
+                const debit = parseFloat(document.getElementById('debit-laser-select').value);
+                const pression = parseFloat(document.getElementById('pression-laser-select').value);
+                const ecartRampe = parseFloat(document.getElementById('ecart-rampes-laser-select').value);
+                const longueur = document.getElementById('longueur-rampe-laser').value;
+                
+                // Calculs simplifiés
+                let longueurMax = 0;
+                let distanceMouillage = 0;
+                
+                if (diametre === '20') {
+                    longueurMax = 45;
+                    distanceMouillage = 3;
+                } else if (diametre === '32') {
+                    longueurMax = 50;
+                    distanceMouillage = 7;
+                } else if (diametre === '40') {
+                    longueurMax = 60;
+                    distanceMouillage = 7;
+                }
+                
+                // Stocker les résultats
+                results.materiel = {
+                    type: 'laser-spray',
+                    diametre: diametre,
+                    debit: debit.toFixed(0),
+                    pression: pression.toFixed(1),
+                    longueurMax: longueurMax,
+                    distanceMouillage: distanceMouillage,
+                    ecartRampe: ecartRampe.toFixed(1)
+                };
+                
+                // Afficher les résultats
+                document.getElementById('diametre-laser-result').textContent = results.materiel.diametre;
+                document.getElementById('debit-laser-result').textContent = results.materiel.debit;
+                document.getElementById('pression-laser-result').textContent = results.materiel.pression;
+                document.getElementById('longueur-max-laser').textContent = results.materiel.longueurMax;
+                document.getElementById('distance-mouillage').textContent = results.materiel.distanceMouillage;
+                
+                // Afficher la section résultats
+                document.getElementById('result-laser').style.display = 'block';
+                
+                // Mettre à jour le résumé
+                updateResume();
+            });
+        }
+        
+        // 5. Dimensionnement de la pompe
+        function initDimensionnementPompe() {
+            // Gestion du changement de type de pompe
+            document.getElementById('type-pompe').addEventListener('change', function() {
+                document.getElementById('hauteur-aspiration').style.display = this.value === 'surface' ? 'block' : 'none';
+            });
+            
+            // Gestion du changement de pression utile
+            document.getElementById('pression-util').addEventListener('change', function() {
+                document.getElementById('pression-custom-group').style.display = this.value === 'custom' ? 'block' : 'none';
+            });
+            
+            // Calcul de la HMT
+            document.getElementById('calc-pompe').addEventListener('click', function() {
+                const typePompe = document.getElementById('type-pompe').value;
+                const hauteurAsp = typePompe === 'surface' ? parseFloat(document.getElementById('hauteur-asp').value) : 0;
+                const hauteurRef = parseFloat(document.getElementById('hauteur-refoulement').value);
+                const longueurTuyaux = parseFloat(document.getElementById('longueur-tuyaux').value);
+                
+                let pressionUtil = 0;
+                const pressionSelect = document.getElementById('pression-util').value;
+                
+                if (pressionSelect === 'custom') {
+                    pressionUtil = parseFloat(document.getElementById('pression-custom').value);
+                } else {
+                    pressionUtil = parseFloat(pressionSelect);
+                }
+                
+                const besoinFerti = parseFloat(document.getElementById('besoin-ferti').value);
+                const debitPompe = parseFloat(document.getElementById('debit-pompe').value);
+                
+                // Calcul des pertes de charge (simplifié: 0.1 m/m de tuyau)
+                const pertesCharge = 0.1 * longueurTuyaux;
+                
+                // Calcul de la HMT
+                let hmt = 0;
+                
+                if (typePompe === 'surface') {
+                    hmt = hauteurAsp + hauteurRef + pertesCharge + (besoinFerti * 10) + (pressionUtil * 10);
+                } else {
+                    hmt = hauteurRef + pertesCharge + (besoinFerti * 10) + (pressionUtil * 10);
+                }
+                
+                // Stocker les résultats
+                results.pompe = {
+                    type: typePompe === 'surface' ? 'Pompe de surface' : 'Pompe immergée',
+                    hauteurAsp: hauteurAsp.toFixed(1),
+                    hauteurRef: hauteurRef.toFixed(1),
+                    pertesCharge: pertesCharge.toFixed(1),
+                    pressionUtil: (pressionUtil * 10).toFixed(1),
+                    besoinFerti: (besoinFerti * 10).toFixed(1),
+                    hmt: hmt.toFixed(1),
+                    debitPompe: debitPompe.toFixed(1)
+                };
+                
+                // Afficher les résultats
+                document.getElementById('type-pompe-result').textContent = results.pompe.type;
+                document.getElementById('hauteur-asp-result').textContent = results.pompe.hauteurAsp;
+                document.getElementById('hauteur-ref-result').textContent = results.pompe.hauteurRef;
+                document.getElementById('pertes-charge').textContent = results.pompe.pertesCharge;
+                document.getElementById('pression-util-result').textContent = results.pompe.pressionUtil;
+                document.getElementById('pression-ferti-result').textContent = results.pompe.besoinFerti;
+                document.getElementById('hmt').textContent = results.pompe.hmt;
+                document.getElementById('debit-pompe-result').textContent = results.pompe.debitPompe;
+                
+                // Afficher la section résultats
+                document.getElementById('result-pompe').style.display = 'block';
+                
+                // Mettre à jour le résumé
+                updateResume();
+            });
+        }
+        
+
+        function initGenerationRapport() {
+    // Générer le rapport complet
+    document.getElementById('generer-rapport').addEventListener('click', function() {
+        // Vérifier que tous les calculs ont été faits
+        let calculsComplets = true;
+
+        if (!results.besoins || Object.keys(results.besoins).length === 0) {
+            showPopup("Veuillez d'abord calculer les besoins en eau","Erreur de saisie");
+            calculsComplets = false;
+        } else if (!results.sol || Object.keys(results.sol).length === 0) {
+            showPopup("Veuillez d'abord déterminer la texture du sol","Erreur de saisie");
+            calculsComplets = false;
+        } else if (!results.conception || Object.keys(results.conception).length === 0) {
+            showPopup("Veuillez d'abord concevoir le réseau","Erreur de saisie");
+            calculsComplets = false;
+        } else if (!results.materiel || Object.keys(results.materiel).length === 0) {
+            showPopup("Veuillez d'abord sélectionner le matériel","Erreur de saisie");
+            calculsComplets = false;
+        } else if (!results.pompe || Object.keys(results.pompe).length === 0) {
+            showPopup("Veuillez d'abord dimensionner la pompe","Erreur de saisie");
+            calculsComplets = false;
+        }
+
+        if (calculsComplets) {
+            // Remplir le rapport
+            document.getElementById('report-localite').textContent = results.besoins.localite;
+            document.getElementById('report-superficie').textContent = results.besoins.superficie + " ha";
+            document.getElementById('report-culture').textContent = results.besoins.culture;
+            document.getElementById('report-systeme').textContent = results.besoins.systeme;
+            document.getElementById('report-texture').textContent = results.sol.textureFinale;
+            document.getElementById('report-ev-bac').textContent = results.besoins.evBac + " mm/j";
+            document.getElementById('report-etp').textContent = results.besoins.etp + " mm/j";
+            document.getElementById('report-kc').textContent = results.besoins.kc;
+            document.getElementById('report-dose-irrig').textContent = results.besoins.doseIrrigation + " mm/j";
+            document.getElementById('report-dose-pratique').textContent = results.besoins.dosePratique + " mm/j";
+            document.getElementById('report-besoins-quot').textContent = results.besoins.besoinsQuotidiens + " m³/j";
+            document.getElementById('report-surface-irrig').textContent = results.conception.surfaceMaxIrrigable + " ha/j";
+            document.getElementById('report-nbr-secteurs').textContent = results.conception.nbrSecteurs;
+            document.getElementById('report-surface-secteur').textContent = results.conception.surfaceSecteur + " ha";
+            document.getElementById('report-debit-systeme').textContent = results.conception.debitSysteme + " m³/h";
+            document.getElementById('report-pluviometrie').textContent = results.conception.pluviometrie !== "-" ? results.conception.pluviometrie + " mm/h" : "-";
+            document.getElementById('report-duree-irrig').textContent = results.conception.dureeIrrigSecteur + " h";
+
+            if (results.conception.maillage !== "-") {
+                document.getElementById('report-maillage').textContent = results.conception.maillage + " m";
+                document.getElementById('report-maillage-row').style.display = 'flex';
+            } else {
+                document.getElementById('report-maillage-row').style.display = 'none';
+            }
+
+            // Section équipements selon le type
+            const emetteurSection = document.getElementById('report-emetteur-section');
+            emetteurSection.innerHTML = '';
+
+            if (results.materiel.type === 'goutteur') {
+                emetteurSection.innerHTML = `
+                    <div class="report-row">
+                        <div class="report-label">Type d'émetteur:</div>
+                        <div>Goutteur ${results.materiel.marque}</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Débit:</div>
+                        <div>${results.materiel.debit} l/h @ ${results.materiel.pression} bar</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Espacement:</div>
+                        <div>${results.materiel.espacement}</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Diamètre rampe:</div>
+                        <div>${results.materiel.diametreRampe} mm</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Longueur max rampe:</div>
+                        <div>${results.materiel.longueurMax} m</div>
+                    </div>
+                `;
+            } else if (results.materiel.type === 'asperseur') {
+                emetteurSection.innerHTML = `
+                    <div class="report-row">
+                        <div class="report-label">Type d'émetteur:</div>
+                        <div>Asperseur</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Maillage:</div>
+                        <div>${results.materiel.maillage} m</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Débit:</div>
+                        <div>${results.materiel.debit} m³/h @ ${results.materiel.pression} bar</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Nombre par rampe:</div>
+                        <div>${results.materiel.nbrAsperseurs}</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Débit rampe:</div>
+                        <div>${results.materiel.debitRampe} m³/h</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Longueur max rampe:</div>
+                        <div>${results.materiel.longueurMax} m</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Pluviométrie:</div>
+                        <div>${results.materiel.pluviometrie} mm/h</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Matériau rampe:</div>
+                        <div>${results.materiel.materiau} ${results.materiel.diametreRampe} mm</div>
+                    </div>
+                `;
+            } else if (results.materiel.type === 'micro-asperseur') {
+                emetteurSection.innerHTML = `
+                    <div class="report-row">
+                        <div class="report-label">Type d'émetteur:</div>
+                        <div>Micro-asperseur</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Maillage:</div>
+                        <div>${results.materiel.maillage} m</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Débit:</div>
+                        <div>${results.materiel.debit} l/h @ ${results.materiel.pression} bar</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Nombre par rampe:</div>
+                        <div>${results.materiel.nbrMicro}</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Débit rampe:</div>
+                        <div>${results.materiel.debitRampe} m³/h</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Longueur max rampe:</div>
+                        <div>${results.materiel.longueurMax} m</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Pluviométrie:</div>
+                        <div>${results.materiel.pluviometrie} mm/h</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Diamètre rampe:</div>
+                        <div>${results.materiel.diametreRampe} mm</div>
+                    </div>
+                `;
+            } else if (results.materiel.type === 'laser-spray') {
+                emetteurSection.innerHTML = `
+                    <div class="report-row">
+                        <div class="report-label">Type d'émetteur:</div>
+                        <div>Laser-spray</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Diamètre rampe:</div>
+                        <div>${results.materiel.diametre} mm</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Débit:</div>
+                        <div>${results.materiel.debit} l/h/m @ ${results.materiel.pression} bar</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Ecartement rampes:</div>
+                        <div>${results.materiel.ecartRampe} m</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Longueur max rampe:</div>
+                        <div>${results.materiel.longueurMax} m</div>
+                    </div>
+                    <div class="report-row">
+                        <div class="report-label">Distance mouillage:</div>
+                        <div>${results.materiel.distanceMouillage} m</div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('report-type-pompe').textContent = results.pompe.type;
+            document.getElementById('report-hauteur-asp').textContent = results.pompe.hauteurAsp + " m";
+            document.getElementById('report-hauteur-ref').textContent = results.pompe.hauteurRef + " m";
+            document.getElementById('report-pertes-charge').textContent = results.pompe.pertesCharge + " m";
+            document.getElementById('report-pression-util').textContent = results.pompe.pressionUtil + " m";
+            document.getElementById('report-hmt').textContent = results.pompe.hmt + " m";
+            document.getElementById('report-debit-pompe').textContent = results.pompe.debitPompe + " m³/h";
+
+            // Ajouter le schéma s'il existe
+            if (results.schema) {
+                const schemaSection = document.createElement('div');
+                schemaSection.className = 'report-section';
+                schemaSection.innerHTML = `
+                    <div class="report-section-title">6. Schéma du réseau</div>
+                    ${results.schema}
+                `;
+                document.getElementById('rapport-complet').appendChild(schemaSection);
+            }
+
+            // Afficher le rapport
+            document.getElementById('rapport-complet').style.display = 'block';
+            document.getElementById('imprimer-rapport').disabled = false;
+        }
+    });
+
+    // Imprimer le rapport
+    document.getElementById('imprimer-rapport').addEventListener('click', function() {
+        window.print();
+    });
+}
+
+
+
+               
+        // Mise à jour du résumé des résultats
+        function updateResume() {
+            const resumeContent = document.getElementById('resume-content');
+            let html = '<div class="grid-container">';
+            
+            // Section Besoins en eau
+            if (results.besoins && Object.keys(results.besoins).length > 0) {
+                html += `
+                    <div>
+                        <h4>Besoins en eau</h4>
+                        <div class="result-item"><span class="result-label">ETP:</span> ${results.besoins.etp} mm/j</div>
+                        <div class="result-item"><span class="result-label">Dose pratique:</span> ${results.besoins.dosePratique} mm/j</div>
+                        <div class="result-item"><span class="result-label">Besoins quotidiens:</span> ${results.besoins.besoinsQuotidiens} m³/j</div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div>
+                        <h4>Besoins en eau</h4>
+                        <p>Non calculés</p>
+                    </div>
+                `;
+            }
+            
+            // Section Sol
+            if (results.sol && Object.keys(results.sol).length > 0) {
+                html += `
+                    <div>
+                        <h4>Analyse du sol</h4>
+                        <div class="result-item"><span class="result-label">Texture:</span> ${results.sol.textureFinale}</div>
+                        <div class="result-item"><span class="result-label">Argile:</span> ${results.sol.pctArgile}%</div>
+                        <div class="result-item"><span class="result-label">Limon:</span> ${results.sol.pctLimon}%</div>
+                        <div class="result-item"><span class="result-label">Sable:</span> ${results.sol.pctSable}%</div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div>
+                        <h4>Analyse du sol</h4>
+                        <p>Non effectuée</p>
+                    </div>
+                `;
+            }
+            
+            // Section Conception
+            if (results.conception && Object.keys(results.conception).length > 0) {
+                html += `
+                    <div>
+                        <h4>Conception réseau</h4>
+                        <div class="result-item"><span class="result-label">Système:</span> ${results.conception.systeme}</div>
+                        <div class="result-item"><span class="result-label">Secteurs:</span> ${results.conception.nbrSecteurs}</div>
+                        <div class="result-item"><span class="result-label">Surface/secteur:</span> ${results.conception.surfaceSecteur} ha</div>
+                        <div class="result-item"><span class="result-label">Débit système:</span> ${results.conception.debitSysteme} m³/h</div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div>
+                        <h4>Conception réseau</h4>
+                        <p>Non effectuée</p>
+                    </div>
+                `;
+            }
+            
+            // Section Matériel
+            if (results.materiel && Object.keys(results.materiel).length > 0) {
+                html += `
+                    <div>
+                        <h4>Équipements</h4>
+                        <div class="result-item"><span class="result-label">Type:</span> ${results.materiel.type}</div>
+                `;
+                
+                if (results.materiel.type === 'goutteur') {
+                    html += `
+                        <div class="result-item"><span class="result-label">Marque:</span> ${results.materiel.marque}</div>
+                        <div class="result-item"><span class="result-label">Débit:</span> ${results.materiel.debit} l/h</div>
+                    `;
+                } else if (results.materiel.type === 'asperseur') {
+                    html += `
+                        <div class="result-item"><span class="result-label">Maillage:</span> ${results.materiel.maillage} m</div>
+                        <div class="result-item"><span class="result-label">Débit:</span> ${results.materiel.debit} m³/h</div>
+                    `;
+                } else if (results.materiel.type === 'micro-asperseur') {
+                    html += `
+                        <div class="result-item"><span class="result-label">Maillage:</span> ${results.materiel.maillage} m</div>
+                        <div class="result-item"><span class="result-label">Débit:</span> ${results.materiel.debit} l/h</div>
+                    `;
+                } else if (results.materiel.type === 'laser-spray') {
+                    html += `
+                        <div class="result-item"><span class="result-label">Débit:</span> ${results.materiel.debit} l/h/m</div>
+                        <div class="result-item"><span class="result-label">Long. max:</span> ${results.materiel.longueurMax} m</div>
+                    `;
+                }
+                
+                html += `</div>`;
+            } else {
+                html += `
+                    <div>
+                        <h4>Équipements</h4>
+                        <p>Non sélectionnés</p>
+                    </div>
+                `;
+            }
+            
+            // Section Pompe
+            if (results.pompe && Object.keys(results.pompe).length > 0) {
+                html += `
+                    <div>
+                        <h4>Pompe</h4>
+                        <div class="result-item"><span class="result-label">Type:</span> ${results.pompe.type}</div>
+                        <div class="result-item"><span class="result-label">HMT:</span> ${results.pompe.hmt} m</div>
+                        <div class="result-item"><span class="result-label">Débit:</span> ${results.pompe.debitPompe} m³/h</div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div>
+                        <h4>Pompe</h4>
+                        <p>Non dimensionnée</p>
+                    </div>
+                `;
+            }
+            
+            html += '</div>';
+            resumeContent.innerHTML = html;
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+  // Gestion du popup
+  const openConverterBtn = document.getElementById('open-converter');
+  const converterPopup = document.getElementById('converter-popup');
+  const closePopupBtn = document.querySelector('.close-popup');
+  
+  // Ouvrir le popup
+  openConverterBtn.addEventListener('click', function() {
+    converterPopup.classList.remove('hidden');
+    document.body.style.overflow = 'hidden'; // Empêche le défilement
+  });
+  
+  // Fermer le popup
+  closePopupBtn.addEventListener('click', function() {
+    converterPopup.classList.add('hidden');
+    document.body.style.overflow = ''; // Rétablit le défilement
+  });
+  
+  // Fermer quand on clique en dehors du contenu
+  converterPopup.addEventListener('click', function(e) {
+    if (e.target === converterPopup) {
+      converterPopup.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+  });
+  
+  // Facteurs de conversion
+  const conversionFactors = {
+    'l': { 'm3': 0.001, 'ml': 1000, 'mm3': 1000000 },
+    'm3': { 'l': 1000, 'ml': 1000000, 'mm3': 1000000000 },
+    'mm3': { 'l': 0.000001, 'm3': 0.000000001, 'ml': 0.001 },
+    'm2': { 'ha': 0.0001, 'cm2': 10000, 'km2': 0.000001 },
+    'ha': { 'm2': 10000, 'cm2': 100000000, 'km2': 0.01 }
+  };
+  
+  // Groupes d'unités compatibles
+  const unitGroups = {
+    volume: ['l', 'm3', 'ml', 'mm3'],
+    surface: ['m2', 'ha', 'cm2', 'km2']
+  };
+  
+  // Éléments du convertisseur
+  const fromUnitSelect = document.getElementById('from-unit');
+  const toUnitSelect = document.getElementById('to-unit');
+  const valueInput = document.getElementById('value');
+  const convertBtn = document.getElementById('convert-btn');
+  const resetBtn = document.getElementById('reset-btn');
+  const resultContainer = document.getElementById('result-container');
+  const resultText = document.getElementById('result');
+  
+  // Mettre à jour les unités cibles
+  fromUnitSelect.addEventListener('change', updateTargetUnits);
+  
+  function updateTargetUnits() {
+    const fromUnit = fromUnitSelect.value;
+    toUnitSelect.innerHTML = '<option value="">-- Sélectionnez --</option>';
+    
+    if (!fromUnit) return;
+    
+    let unitGroup = null;
+    for (const group in unitGroups) {
+      if (unitGroups[group].includes(fromUnit)) {
+        unitGroup = group;
+        break;
+      }
+    }
+    
+    if (!unitGroup) return;
+    
+    unitGroups[unitGroup].forEach(unit => {
+      if (unit !== fromUnit) {
+        const option = document.createElement('option');
+        option.value = unit;
+        option.textContent = getUnitName(unit);
+        toUnitSelect.appendChild(option);
+      }
+    });
+  }
+  
+  // Conversion
+  convertBtn.addEventListener('click', function() {
+    const value = parseFloat(valueInput.value);
+    const fromUnit = fromUnitSelect.value;
+    const toUnit = toUnitSelect.value;
+    
+    if (isNaN(value)) {
+        showPopup("Veuillez entrer un nombre valide","Erreur de saisie");
+      return;
+    }
+    
+    if (!fromUnit || !toUnit) {
+        showPopup("Veuillez sélectionner les unités source et cible","Erreur de saisie");
+      return;
+    }
+    
+    if (!conversionFactors[fromUnit] || !conversionFactors[fromUnit][toUnit]) {
+        showPopup("Conversion non prise en charge entre ces unités","Erreur de saisie");
+      return;
+    }
+    
+    const factor = conversionFactors[fromUnit][toUnit];
+    const result = value * factor;
+    
+    resultText.textContent = `${value} ${getUnitName(fromUnit)} = ${result.toFixed(6)} ${getUnitName(toUnit)}`;
+    resultContainer.classList.remove('hidden');
+  });
+  
+  // Réinitialisation
+  resetBtn.addEventListener('click', function() {
+    valueInput.value = '';
+    fromUnitSelect.value = '';
+    toUnitSelect.innerHTML = '<option value="">-- Sélectionnez --</option>';
+    resultContainer.classList.add('hidden');
+  });
+  
+  // Obtenir le nom complet d'une unité
+  function getUnitName(unit) {
+    const unitNames = {
+      'l': 'L', 'm3': 'm³', 'ha': 'ha', 'mm3': 'mm³', 'm2': 'm²',
+      'ml': 'ml', 'cm2': 'cm²', 'km2': 'km²'
+    };
+    return unitNames[unit] || unit;
+  }
+});
+
+
+
+
+
+
+
+//  Ajoutez ceci dans la section
+function initSchemaGeneration() {
+    const schemaContainer = document.getElementById('irrigation-schema');
+    let currentScale = 1;
+    let currentSchema = null;
+    
+    document.getElementById('generate-schema').addEventListener('click', generateSchema);
+    document.getElementById('zoom-in').addEventListener('click', () => adjustZoom(1.2));
+    document.getElementById('zoom-out').addEventListener('click', () => adjustZoom(0.8));
+    document.getElementById('reset-view').addEventListener('click', resetView);
+    document.getElementById('export-schema').addEventListener('click', exportToReport);
+    
+    function generateSchema() {
+        // Effacer le schéma existant
+        schemaContainer.innerHTML = '';
+        
+        // Récupérer les paramètres du réseau
+        const systeme = document.getElementById('systeme-irrigation').value;
+        const superficie = parseFloat(document.getElementById('superficie-irrig').value) || 1;
+        const nbrSecteurs = results.conception?.nbrSecteurs || 1;
+        
+        // Dimensions de base
+        const containerWidth = schemaContainer.clientWidth;
+        const containerHeight = schemaContainer.clientHeight;
+        
+        // Dimensions du terrain (ratio 3:2 par défaut)
+        const terrainWidth = containerWidth * 0.9;
+        const terrainHeight = containerHeight * 0.8;
+        const terrainX = (containerWidth - terrainWidth) / 2;
+        const terrainY = 20;
+        
+        // Créer la bordure du terrain
+        const terrain = createElement('bordure-terrain', '', terrainX, terrainY, terrainWidth, terrainHeight);
+        schemaContainer.appendChild(terrain);
+        addLabel('Terrain', terrainX + 10, terrainY + 10);
+        
+        // Calcul des secteurs
+        const secteurs = Math.min(4, Math.max(1, nbrSecteurs));
+        const secteurWidth = terrainWidth * 0.9;
+        const secteurHeight = terrainHeight * 0.9;
+        const secteurX = terrainX + (terrainWidth - secteurWidth) / 2;
+        const secteurY = terrainY + (terrainHeight - secteurHeight) / 2;
+        
+        // Créer les bordures des secteurs
+        for (let i = 0; i < secteurs; i++) {
+            const secteur = createElement('bordure-secteur', '', 
+                secteurX + (i % 2) * secteurWidth * 0.5, 
+                secteurY + Math.floor(i / 2) * secteurHeight * 0.5,
+                secteurWidth * 0.5,
+                secteurHeight * 0.5);
+            schemaContainer.appendChild(secteur);
+            addLabel(`Secteur ${i+1}`, secteur.offsetLeft + 10, secteur.offsetTop + 10);
+            
+            // Sous-secteurs (2 par secteur)
+            for (let j = 0; j < 2; j++) {
+                const sousSecteur = createElement('bordure-sous-secteur', '', 
+                    secteur.offsetLeft + j * secteurWidth * 0.25,
+                    secteur.offsetTop,
+                    secteurWidth * 0.25,
+                    secteurHeight * 0.5);
+                schemaContainer.appendChild(sousSecteur);
+                addLabel(`Sous-secteur ${i+1}-${j+1}`, sousSecteur.offsetLeft + 5, sousSecteur.offsetTop + 5);
+            }
+        }
+        
+        // Créer la station de contrôle
+        const station = createElement('station-controle', 'S', terrainX + 20, terrainY + 20);
+        schemaContainer.appendChild(station);
+        
+        // Créer la ligne principale (horizontale)
+        const mainLine = createElement('ligne-principale', '', 
+            terrainX + 50, terrainY + 40, 
+            terrainWidth - 70, 8);
+        schemaContainer.appendChild(mainLine);
+        
+        // Ajouter une vanne à la sortie de la station
+        const vanneStation = createElement('vanne', 'V', terrainX + 45, terrainY + 36);
+        schemaContainer.appendChild(vanneStation);
+        
+        // Calculer le nombre de lignes secondaires
+        const secondaryLines = systeme === 'aspersion' ? Math.min(6, Math.max(2, Math.ceil(superficie / 0.5))) : 
+                             systeme === 'micro-aspersion' ? Math.min(8, Math.max(2, Math.ceil(superficie / 0.3))) : 
+                             Math.min(4, nbrSecteurs);
+        
+        // Espacement entre les lignes secondaires
+        const spacing = (terrainHeight - 100) / (secondaryLines + 1);
+        
+        // Créer les lignes secondaires et les porte-rampes
+        for (let i = 0; i < secondaryLines; i++) {
+            const yPos = terrainY + 60 + (i * spacing);
+            
+            // Ligne secondaire (verticale)
+            const secondaryLine = createElement('ligne-secondaire', '', 
+                terrainX + 120, yPos, 
+                6, terrainHeight - (yPos - terrainY) - 40);
+            schemaContainer.appendChild(secondaryLine);
+            
+            // Vanne sur la ligne secondaire
+            const vanne = createElement('vanne', 'V', terrainX + 115, yPos + 10);
+            schemaContainer.appendChild(vanne);
+            
+            // Porte-rampe
+            const porteRampe = createElement('porte-rampe', (i+1).toString(), terrainX + 140, yPos);
+            schemaContainer.appendChild(porteRampe);
+            
+            // Rampe (horizontale)
+            const rampeLength = systeme === 'aspersion' ? 200 : 150;
+            const rampe = createElement('rampe', '', 
+                terrainX + 150, yPos + 6, 
+                rampeLength, 4);
+            schemaContainer.appendChild(rampe);
+            
+            // Ajouter des vannes sur les rampes
+            if (systeme === 'aspersion' || systeme === 'micro-aspersion') {
+                const vanneRampe = createElement('vanne', 'V', terrainX + 220, yPos + 3);
+                schemaContainer.appendChild(vanneRampe);
+            }
+        }
+        
+        // Stocker le schéma généré pour export
+        currentSchema = schemaContainer.innerHTML;
+        
+        // Ajuster la vue
+        resetView();
+    }
+    
+    function createElement(className, text, x, y, width, height) {
+    const element = document.createElement('div');
+    element.className = `schema-element ${className}`;
+    element.textContent = text;
+    element.style.left = `${x}px`;
+    element.style.top = `${y}px`;
+    
+    // Ajout de styles pour l'impression
+    if (className.includes('bordure')) {
+        element.style.borderStyle = 'solid'; // Remplacer les pointillés par des traits pleins
+    }
+    
+    if (width) element.style.width = `${width}px`;
+    if (height) element.style.height = `${height}px`;
+    return element;
+}
+    
+    function addLabel(text, x, y) {
+        const label = document.createElement('div');
+        label.className = 'schema-label';
+        label.textContent = text;
+        label.style.left = `${x}px`;
+        label.style.top = `${y}px`;
+        schemaContainer.appendChild(label);
+    }
+    
+    function adjustZoom(factor) {
+        currentScale *= factor;
+        schemaContainer.style.transform = `scale(${currentScale})`;
+        schemaContainer.style.transformOrigin = '0 0';
+    }
+    
+    function resetView() {
+        currentScale = 1;
+        schemaContainer.style.transform = 'scale(1)';
+        schemaContainer.scrollTo(0, 0);
+    }
+    
+    
+
+    function exportToReport() {
+    if (!currentSchema) {
+        showPopup("Veuillez d'abord générer un schéma","Erreur de saisie");
+        return;
+    }
+
+    // Créer une version imprimable du schéma avec légende
+    const printSchema = `
+        <div style="page-break-inside: avoid;">
+            <div style="position: relative; width: 100%; height: 400px; background-color: #f9f9f9; margin: 20px 0;">
+                ${currentSchema}
+            </div>
+            <div class="schema-legend-print">
+                <h4>Légende du schéma</h4>
+                <p><strong>A1. Ligne principale :</strong> Conduite principale d'alimentation en eau</p>
+                <p><strong>A2. Lignes secondaires :</strong> Branchements vers les différents secteurs</p>
+                <p><strong>A3. Porte-rampes :</strong> Points de connexion des rampes d'irrigation</p>
+                <p><strong>A4. Rampes :</strong> Conduites d'irrigation principales</p>
+                <p><strong>A5. Station :</strong> Station de contrôle principale</p>
+                <p><strong>A6. Vannes :</strong> Points de contrôle du débit d'eau</p>
+                <p><strong>A7. Terrain :</strong> Limite du terrain à irriguer</p>
+                <p><strong>A8. Secteurs :</strong> Zones d'irrigation indépendantes</p>
+                <p><strong>A9. Sous-secteurs :</strong> Subdivisions des secteurs</p>
+                <p>Ce schéma montre l'organisation générale du réseau avec ${results.conception?.nbrSecteurs || 'X'} secteurs d'irrigation.</p>
+            </div>
+        </div>
+    `;
+
+
+    // Stocker pour inclusion dans le rapport
+    results.schema = printSchema;
+    showPopup("Le schéma a été exporté et sera inclus dans le rapport final","!Notification");
+}}
+
+// Appelez cette fonction dans le DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    // ... autres initialisations ...
+    initSchemaGeneration();
+});
+
+
+// Fonction pour afficher un popup personnalisé
+function showPopup(message, title = 'Notification') {
+    const popup = document.getElementById('custom-popup');
+    const popupMessage = document.getElementById('custom-popup-message');
+    const popupTitle = document.querySelector('.custom-popup-title');
+    const closeBtn = document.querySelector('.custom-popup-close');
+    const okBtn = document.getElementById('custom-popup-ok');
+    
+    popupTitle.textContent = title;
+    popupMessage.textContent = message;
+    popup.classList.add('show');
+    
+    // Fermer le popup
+    const closePopup = () => {
+        popup.classList.remove('show');
+    };
+    
+    closeBtn.onclick = closePopup;
+    okBtn.onclick = closePopup;
+    
+    // Fermer en cliquant à l'extérieur
+    popup.onclick = function(e) {
+        if (e.target === popup) {
+            closePopup();
+        }
+    };
+}
+
+// Ajoutez ce code à la fin de votre script
+document.addEventListener('DOMContentLoaded', function() {
+    const scrollBtn = document.getElementById('scrollToTopBtn');
+    
+    // Afficher/masquer le bouton selon la position de défilement
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            scrollBtn.classList.add('visible');
+        } else {
+            scrollBtn.classList.remove('visible');
+        }
+    });
+    
+    // Retour en haut lors du clic
+    scrollBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+});
+
+// const retour=document.querySelector('Getback').value;
+// retour.addEventListener('click',()=>{
+//     window.location.href = "appdimsolirrig.html";
+// })
+</script>
+<!-- Popup personnalisé -->
+<div id="custom-popup" class="custom-popup">
+    <div class="custom-popup-content">
+        <span class="custom-popup-close">&times;</span>
+        <h3 class="custom-popup-title">Notification</h3>
+        <p class="custom-popup-message" id="custom-popup-message"></p>
+        <button class="custom-popup-btn" id="custom-popup-ok">OK</button>
+    </div>
+</div>
+<button id="scrollToTopBtn" class="scroll-top-btn" title="Retour en haut">
+    <i class="fas fa-arrow-up"></i>
+</button>
+</body>
+</html>
